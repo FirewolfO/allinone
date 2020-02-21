@@ -1,1 +1,1 @@
-this is code![enter description here](https://markdown.xiaoshujiang.com/img/spinner.gif "[[[1582254265153]]]" )
+this is code![enter description here](https://gitee.com/firewolf/allinone/raw/master/images)
