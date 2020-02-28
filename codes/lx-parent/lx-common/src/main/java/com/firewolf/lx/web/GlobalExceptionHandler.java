@@ -22,6 +22,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = Exception.class)
     public Response<String> commonErrorHandler(Exception e){
 
-        return Response.ok();
+        return null;
     }
 }

@@ -1,7 +1,5 @@
 package com.firewolf.lx.domain;
 
-import lombok.Data;
-
 /**
  * Author: liuxing
  * Date: 2020/2/25 10:25

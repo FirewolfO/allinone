@@ -1,5 +1,6 @@
 package com.firewolf.lx.tools;
 
+import com.alibaba.ttl.TransmittableThreadLocal;
 import com.firewolf.lx.domain.RequestData;
 
 /**
@@ -9,7 +10,7 @@ import com.firewolf.lx.domain.RequestData;
  */
 public class RequestThreadLocal {
 
-    private static final InheritableThreadLocal<RequestData> threadLocal = new InheritableThreadLocal<>();
+    private static final TransmittableThreadLocal<RequestData> threadLocal = new TransmittableThreadLocal<>();
 
     /**
      * 设置数据

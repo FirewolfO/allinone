@@ -41,6 +41,6 @@ public class Response<T> {
     }
 
     public static <T> Response ok(T data) {
-        return new Response(SpringContextUtil);
+        return null;
     }
 }
