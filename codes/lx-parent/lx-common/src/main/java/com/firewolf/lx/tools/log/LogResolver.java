@@ -21,9 +21,7 @@ import java.util.concurrent.Executor;
  * 日志注解解析器，日志可以异步保存到数据库，这里只是打印了而已，
  */
 @Aspect
-@Component
 @Slf4j
-@ConditionalOnBean(value = {LogHandler.class})
 public class LogResolver {
 
     @Autowired
@@ -33,6 +31,9 @@ public class LogResolver {
     @Qualifier("lx_executor")
     @Autowired
     private Executor executor;
+
+    @Autowired
+    private LogOperator logOperator;
 
     /**
      * 切点
@@ -87,7 +88,8 @@ public class LogResolver {
         logEntity.setStartTime(new Date());
         logEntity.setMethod(methodName);
         logEntity.setParms(paramStr);
-        logEntity.setOperator(operate);
+        logEntity.setOperate(operate);
+        logEntity.setOperator(logOperator.getOperator());
 
         //执行方法
         Object result = null;
@@ -108,5 +110,4 @@ public class LogResolver {
 
         return result;
     }
-
 }

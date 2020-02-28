@@ -1,6 +1,11 @@
 package com.firewolf.lx.domain;
 
+import com.firewolf.lx.tools.InternationalMsgUtil;
+import com.firewolf.lx.tools.SpringContextUtil;
 import lombok.Data;
+
+import static com.firewolf.lx.domain.ResponseEnum.*;
+
 /**
  * Author: liuxing
  * Date: 2020/2/24 20:49
@@ -41,6 +46,6 @@ public class Response<T> {
     }
 
     public static <T> Response ok(T data) {
-        return null;
+        return new Response(OK.getCode(), SpringContextUtil.getBean(InternationalMsgUtil.class).getMsg(OK.getMsg()), data);
     }
 }

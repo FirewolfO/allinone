@@ -15,12 +15,12 @@ public class InternationalMsgUtil {
 
     /**
      * 根据key获取国际化结果
+     *
      * @param key
      * @return
      */
-    public String getMsg(String key){
-
-        return null;
+    public String getMsg(String key) {
+        return key;
     }
 
 }
