@@ -16,7 +16,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/log")
-public class LogHandler extends BaseController {
+public class LogController extends BaseController {
 
 
     @Autowired
