@@ -1,4 +1,7 @@
-package com.firewolf.lx.tools.log;
+package com.firewolf.lx.tools.log.handler;
+
+import com.firewolf.lx.tools.log.LogHandler;
+import com.firewolf.lx.tools.log.LogPO;
 
 /**
  * Author: liuxing

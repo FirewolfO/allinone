@@ -22,6 +22,12 @@
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+        </dependency>
+
+
         <!-- common 工具包-->
         <dependency>
             <groupId>org.apache.commons</groupId>
