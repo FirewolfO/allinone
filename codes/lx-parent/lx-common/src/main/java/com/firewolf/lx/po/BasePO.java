@@ -1,11 +1,20 @@
 package com.firewolf.lx.po;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+
 import java.util.Date;
 
 /**
  * Author: liuxing
  * Date: 2020/2/25 14:55
  */
+@Data
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
 public class BasePO {
     /**
      * 主键

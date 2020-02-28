@@ -9,5 +9,5 @@ public interface LogHandler {
      * 对日志的处理
      * @param log
      */
-    void handle(LogEntity log);
+    void handle(LogPO log);
 }

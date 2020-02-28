@@ -7,7 +7,7 @@ package com.firewolf.lx.tools.log;
 public class DefaultLogHandler implements LogHandler {
 
     @Override
-    public void handle(LogEntity log) {
+    public void handle(LogPO log) {
         System.out.println(log);
     }
 }

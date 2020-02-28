@@ -8,8 +8,6 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 import java.util.Date;
@@ -83,13 +81,13 @@ public class LogResolver {
         log.info("参数信息为：[ {}", paramStr);
 
 
-        LogEntity logEntity = new LogEntity();
-        logEntity.setStart(startLog);
-        logEntity.setStartTime(new Date());
-        logEntity.setMethod(methodName);
-        logEntity.setParms(paramStr);
-        logEntity.setOperate(operate);
-        logEntity.setOperator(logOperator.getOperator());
+        LogPO logPO = new LogPO();
+        logPO.setStart(startLog);
+        logPO.setStartTime(new Date());
+        logPO.setMethod(methodName);
+        logPO.setParms(paramStr);
+        logPO.setOperate(operate);
+        logPO.setOperator(logOperator.getOperator());
 
         //执行方法
         Object result = null;
@@ -97,16 +95,16 @@ public class LogResolver {
         try {
             result = joinPoint.proceed();
             String resultStr = result == null ? "null" : result.toString();
-            logEntity.setResult(resultStr);
-            logEntity.setEnd(endLog);
+            logPO.setResult(resultStr);
+            logPO.setEnd(endLog);
         } catch (Exception e) {
-            logEntity.setError(errorLog + e.getCause());
+            logPO.setError(errorLog + e.getCause());
         } finally {
-            logEntity.setEndTime(new Date());
+            logPO.setEndTime(new Date());
         }
 
         // 异步线程处理日志
-        logHandlerList.forEach(logHandler -> CompletableFuture.runAsync(() -> logHandler.handle(logEntity), executor));
+        logHandlerList.forEach(logHandler -> CompletableFuture.runAsync(() -> logHandler.handle(logPO), executor));
 
         return result;
     }

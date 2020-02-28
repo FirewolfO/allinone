@@ -1,6 +1,10 @@
 package com.firewolf.lx.tools.log;
 
+import com.firewolf.lx.po.BasePO;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.util.Date;
 
@@ -9,7 +13,10 @@ import java.util.Date;
  * Date: 2020/2/28 9:27
  */
 @Data
-public class LogEntity {
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
+public class LogPO extends BasePO {
     /**
      * 开始描述
      */
