@@ -15,6 +15,7 @@ import java.util.stream.Stream;
 /**
  * Author: liuxing
  * Date: 2020/3/1 21:23
+ * 把日志放入到数据库中的操作方法
  */
 public class DBLogService implements LogService {
 

@@ -16,6 +16,7 @@ import java.util.Map;
 /**
  * Author: liuxing
  * Date: 2020/2/28 15:44
+ * 日志Rest接口，主要用于查询
  */
 @RestController
 @RequestMapping("/log")
