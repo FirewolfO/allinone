@@ -4,7 +4,8 @@ import com.firewolf.lx.tools.log.LogPO;
 
 /**
  * Author: liuxing
- * Date: 2020/2/28 9:34
+ * Date: 2020/2/28 9:34\
+ * 日志处理器，用来保存产生的日志
  * 默认的日志建表语句：
      CREATE TABLE `lx_log` (
      `id` int NOT NULL AUTO_INCREMENT COMMENT '主键',
