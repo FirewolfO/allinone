@@ -1,5 +1,7 @@
 package com.firewolf.lx.tools.log;
 
+import com.firewolf.lx.tools.log.handler.LogHandler;
+import com.firewolf.lx.tools.log.operator.LogOperator;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -10,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.lang.reflect.Method;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
@@ -83,7 +85,7 @@ public class LogResolver {
 
         LogPO logPO = new LogPO();
         logPO.setStart(startLog);
-        logPO.setStartTime(new Date());
+        logPO.setStartTime(LocalDateTime.now());
         logPO.setMethod(methodName);
         logPO.setParms(paramStr);
         logPO.setOperate(operate);
@@ -100,11 +102,15 @@ public class LogResolver {
         } catch (Exception e) {
             logPO.setError(errorLog + e.getCause());
         } finally {
-            logPO.setEndTime(new Date());
+            logPO.setEndTime(LocalDateTime.now());
         }
 
         // 异步线程处理日志
-        logHandlerList.forEach(logHandler -> CompletableFuture.runAsync(() -> logHandler.handle(logPO), executor));
+        logHandlerList.forEach(logHandler -> CompletableFuture.runAsync(() -> {
+            Object object = logHandler.transLog2SelfObj(logPO);
+            logHandler.handle(object == null ? logPO : object);
+        }, executor));
+
 
         return result;
     }

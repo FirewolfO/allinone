@@ -13,20 +13,17 @@ import org.springframework.stereotype.Component;
 @Data
 public class LogDBProperties {
 
-    private String host;
+    private String host = "locahost";
 
     private int post = 3306;
 
-    private String datasoure;
+    private String datasoure="lx-log";
 
-    private String username;
+    private String username = "root";
 
     private String password;
 
-    private String table;
-
-    private String colums;
-
+    private String table = "lx_log";
 
     public String getUrl() {
         String s = "jdbc:mysql://%s:%s/%s?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC";

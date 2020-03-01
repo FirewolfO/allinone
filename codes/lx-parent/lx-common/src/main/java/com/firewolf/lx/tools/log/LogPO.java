@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Author: liuxing
@@ -56,9 +56,9 @@ public class LogPO extends BasePO {
     /**
      * 开始时间
      */
-    private Date startTime;
+    private LocalDateTime startTime;
     /**
      * 结束时间
      */
-    private Date endTime;
+    private LocalDateTime endTime;
 }

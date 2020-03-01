@@ -4,6 +4,9 @@ import com.alibaba.ttl.threadpool.TtlExecutors;
 import com.firewolf.lx.tools.log.*;
 import com.firewolf.lx.tools.log.handler.DefaultDBLogHandler;
 import com.firewolf.lx.tools.log.handler.DefaultLogHandler;
+import com.firewolf.lx.tools.log.handler.LogHandler;
+import com.firewolf.lx.tools.log.operator.DefaultLogOperator;
+import com.firewolf.lx.tools.log.operator.LogOperator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -14,7 +17,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import javax.sql.DataSource;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -40,7 +42,6 @@ public class DefaultBeanConfiguration {
     @Bean("lx_executor")
     public Executor getExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-
         executor.setCorePoolSize(executorProperties.getCore());
         executor.setMaxPoolSize(executorProperties.getMax());
         executor.setQueueCapacity(executorProperties.getCapacity());

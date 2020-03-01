@@ -1,6 +1,6 @@
 package com.firewolf.lx.log;
 
-import com.firewolf.lx.tools.log.LogOperator;
+import com.firewolf.lx.tools.log.operator.LogOperator;
 import org.springframework.stereotype.Component;
 
 /**
