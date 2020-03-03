@@ -1,6 +1,6 @@
 package com.firewolf.lx.tools.log.handler;
 
-import com.firewolf.lx.tools.log.LogPO;
+import com.firewolf.lx.tools.log.Log;
 
 /**
  * Author: liuxing
@@ -34,7 +34,7 @@ public interface LogHandler<T> {
      * @param logPO
      * @return
      */
-    default T transLog2SelfObj(LogPO logPO) {
+    default T transLog2SelfObj(Log logPO) {
         return null;
     }
 

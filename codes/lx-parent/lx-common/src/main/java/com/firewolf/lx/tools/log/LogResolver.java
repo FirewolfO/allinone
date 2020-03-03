@@ -38,7 +38,7 @@ public class LogResolver {
     /**
      * 切点
      */
-    private final String EXECUTION = "@annotation(com.firewolf.lx.tools.log.Log)";
+    private final String EXECUTION = "@annotation(com.firewolf.lx.tools.log.LXLog)";
 
     @Around(EXECUTION)
     public Object arround(ProceedingJoinPoint joinPoint) throws Throwable {
@@ -51,7 +51,7 @@ public class LogResolver {
         String methodName = String.format("%s.%s", className, method.getName());
 
         //获取注解信息
-        Log upgradeProgress = method.getAnnotation(Log.class);
+        LXLog upgradeProgress = method.getAnnotation(LXLog.class);
 
         String operate = upgradeProgress.operate(); // 当前操作
 
@@ -65,9 +65,6 @@ public class LogResolver {
         String errorLog = StringUtils.defaultIfBlank(upgradeProgress.error(), StringUtils.isNotEmpty(operate) ? String.format("execute %s error", operate) : String.format("execute %s error", methodName));
 
 
-        //记录方法执行前日志
-        log.info(startLog);
-
         //获取方法信息
         String[] argNames = ((MethodSignature) joinPoint.getSignature()).getParameterNames(); //参数名
 
@@ -80,10 +77,9 @@ public class LogResolver {
             sb.append(argNames[i]).append("=").append(value).append(",");
         }
         String paramStr = sb.length() > 0 ? sb.toString().substring(0, sb.length() - 1) + "]" : "";
-        log.info("参数信息为：[ {}", paramStr);
 
 
-        LogPO logPO = new LogPO();
+        Log logPO = new Log();
         logPO.setStart(startLog);
         logPO.setStartTime(LocalDateTime.now());
         logPO.setMethod(methodName);

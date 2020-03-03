@@ -1,7 +1,7 @@
 package com.firewolf.lx.web;
 
 import com.firewolf.lx.domain.Response;
-import com.firewolf.lx.tools.log.LogPO;
+import com.firewolf.lx.tools.log.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -24,7 +24,7 @@ public class TestController {
 
     @GetMapping
     public Response<String> test() {
-        List<LogPO> logPOS = jdbcTemplate.query("select * from lx_log", new BeanPropertyRowMapper<>(LogPO.class));
+        List<Log> logPOS = jdbcTemplate.query("select * from lx_log", new BeanPropertyRowMapper<>(Log.class));
         return Response.ok(logPOS);
     }
 }

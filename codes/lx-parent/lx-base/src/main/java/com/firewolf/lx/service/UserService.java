@@ -1,6 +1,6 @@
 package com.firewolf.lx.service;
 
-import com.firewolf.lx.dao.UserDao;
+import com.firewolf.lx.mapper.UserMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,5 +15,5 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     @Autowired
-    private UserDao userDao;
+    private UserMapper userMapper;
 }

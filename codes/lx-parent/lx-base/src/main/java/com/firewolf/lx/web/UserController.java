@@ -6,7 +6,7 @@ package com.firewolf.lx.web;
  */
 
 import com.firewolf.lx.domain.Response;
-import com.firewolf.lx.tools.log.Log;
+import com.firewolf.lx.tools.log.LXLog;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +22,7 @@ public class UserController extends BaseController {
 
 
     @GetMapping
-    @Log(operate = "test")
+    @LXLog(operate = "test log",start = "start test user")
     public Response<String> test() {
         return Response.ok("hello");
     }

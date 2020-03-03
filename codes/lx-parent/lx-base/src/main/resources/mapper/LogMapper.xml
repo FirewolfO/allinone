@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.firewolf.lx.mapper.LogMapper">
 
-    <select id="findByConditon" resultType="com.firewolf.lx.tools.log.LogPO">
+    <select id="findByConditon" resultType="com.firewolf.lx.tools.log.Log">
         select * from lx_log;
     </select>
 </mapper>

@@ -1,21 +1,64 @@
 package com.firewolf.lx.tools.log;
 
-import java.lang.annotation.*;
+import com.firewolf.lx.po.BasePO;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+
+import java.time.LocalDateTime;
 
 /**
  * Author: liuxing
- * Date: 2020/2/28 8:45
- * 业务日志注解
+ * Date: 2020/2/28 9:27
  */
-@Target({ElementType.METHOD})
-@Retention(RetentionPolicy.RUNTIME)
-@Documented
-public @interface Log {
-    String start() default ""; // 方法开始执行前日志
+@Data
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
+public class Log extends BasePO {
+    /**
+     * 开始描述
+     */
+    private String start;
+    /**
+     * 结束描述
+     */
+    private String end;
+    /**
+     * 具体操作
+     */
+    private String operate;
 
-    String end() default ""; // 方法结束执行日志
+    /**
+     * 操作者
+     */
+    private String operator;
 
-    String operate() default "";//操作
+    /**
+     * 执行的方法
+     */
+    private String method;
+    /**
+     * 方法传入的参数
+     */
+    private String parms;
 
-    String error() default "";//错误日志
+    /**
+     * 执行产生的错误
+     */
+    private String error;
+
+    /**
+     * 执行的结果
+     */
+    private String result;
+    /**
+     * 开始时间
+     */
+    private LocalDateTime startTime;
+    /**
+     * 结束时间
+     */
+    private LocalDateTime endTime;
 }
