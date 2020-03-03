@@ -1,6 +1,7 @@
 package com.firewolf.lx.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 /**
@@ -8,7 +9,7 @@ import org.springframework.stereotype.Component;
  * Date: 2020/2/28 9:57
  * 线程池配置
  */
-@Component
+@Configuration
 @ConfigurationProperties(prefix = "thread.pool")
 public class ExecutorProperties {
     /**

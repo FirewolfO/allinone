@@ -1,6 +1,8 @@
 package com.firewolf.lx.vo;
 
 import com.firewolf.lx.po.BasePO;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,26 +17,31 @@ import lombok.experimental.SuperBuilder;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ApiModel("用户操作封装类")
 public class UserVO  extends BasePO {
 
     /**
      * 账号
      */
+    @ApiModelProperty("账号")
     private String account;
 
     /**
      * 用户名
      */
+    @ApiModelProperty("用户名")
     private String name;
 
     /**
      * 密码
      */
+    @ApiModelProperty("密码")
     private String password;
 
     /**
      * 密码确认
      */
+    @ApiModelProperty("确认密码")
     private String confirmPassword;
 
 }

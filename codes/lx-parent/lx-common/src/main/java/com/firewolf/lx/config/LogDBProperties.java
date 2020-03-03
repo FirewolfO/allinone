@@ -2,14 +2,14 @@ package com.firewolf.lx.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * Author: liuxing
  * Date: 2020/2/28 16:27
  */
 @ConfigurationProperties(prefix = "log.db")
-@Component
+@Configuration
 @Data
 public class LogDBProperties {
 
