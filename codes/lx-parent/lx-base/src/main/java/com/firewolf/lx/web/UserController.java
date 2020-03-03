@@ -6,11 +6,13 @@ package com.firewolf.lx.web;
  */
 
 import com.firewolf.lx.domain.Response;
+import com.firewolf.lx.domain.ResponseEnum;
+import com.firewolf.lx.service.UserService;
 import com.firewolf.lx.tools.log.LXLog;
+import com.firewolf.lx.vo.UserVO;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 用户处理器
@@ -21,10 +23,19 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController extends BaseController {
 
 
+    @Autowired
+    private UserService userService;
+
+
     @GetMapping
-    @LXLog(operate = "test log",start = "start test user")
+    @LXLog(operate = "test log", start = "start test user")
     public Response<String> test() {
         return Response.ok("hello");
     }
 
+    @PostMapping
+    public Response<String> addUser(@RequestBody UserVO userVO) {
+        userService.add(userVO);
+        return Response.ok(ResponseEnum.OK.getMsg());
+    }
 }

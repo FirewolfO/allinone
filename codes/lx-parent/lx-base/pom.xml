@@ -16,21 +16,6 @@
     <url>http://www.example.com</url>
 
     <dependencies>
-
-        <!--        mybatis-->
-        <dependency>
-            <groupId>org.mybatis.spring.boot</groupId>
-            <artifactId>mybatis-spring-boot-starter</artifactId>
-            <version>2.1.1</version>
-        </dependency>
-
-        <!--    jdbc-->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-        </dependency>
-
-
         <dependency>
             <groupId>com.firewolf.lx</groupId>
             <artifactId>lx-common</artifactId>

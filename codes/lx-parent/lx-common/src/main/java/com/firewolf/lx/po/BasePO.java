@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import javax.persistence.Id;
 import java.time.LocalDateTime;
 
 /**
@@ -19,6 +20,7 @@ public class BasePO {
     /**
      * 主键
      */
+    @Id
     private Integer id;
 
     /**
