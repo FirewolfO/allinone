@@ -15,11 +15,6 @@ public class DefaultDBLogHandler implements LogHandler<LogPO> {
     private LogService logService;
 
     @Override
-    public LogPO transLog2SelfObj(LogPO logPO) {
-        return logPO;
-    }
-
-    @Override
     public void handle(LogPO log) {
         logService.save(log);
     }
