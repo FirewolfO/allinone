@@ -1,4 +1,4 @@
-package com.firewolf.lx.po;
+package com.firewolf.lx.entity;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class BasePO {
+public class BaseEntity {
     /**
      * 主键
      */

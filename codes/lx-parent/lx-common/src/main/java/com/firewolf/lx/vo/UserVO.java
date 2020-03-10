@@ -1,6 +1,6 @@
 package com.firewolf.lx.vo;
 
-import com.firewolf.lx.po.BasePO;
+import com.firewolf.lx.entity.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -18,7 +18,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel("用户操作封装类")
-public class UserVO  extends BasePO {
+public class UserVO  extends BaseEntity {
 
     /**
      * 账号

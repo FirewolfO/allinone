@@ -26,7 +26,7 @@ public class LogDBProperties {
     private String table = "lx_log";
 
     public String getUrl() {
-        String s = "jdbc:mysql://%s:%s/%s?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC";
+        String s = "jdbc:mysql://%s:%s/%s?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC&useSSL=false";
         return String.format(s, host, post, datasoure);
     }
 

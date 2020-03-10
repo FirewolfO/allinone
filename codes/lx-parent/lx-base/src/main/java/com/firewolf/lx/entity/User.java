@@ -1,4 +1,4 @@
-package com.firewolf.lx.po;
+package com.firewolf.lx.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User extends BasePO {
+public class User extends BaseEntity {
 
 
     /**

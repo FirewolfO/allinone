@@ -1,6 +1,6 @@
 package com.firewolf.lx.mapper;
 
-import com.firewolf.lx.po.User;
+import com.firewolf.lx.entity.User;
 import tk.mybatis.mapper.common.Mapper;
 
 /**

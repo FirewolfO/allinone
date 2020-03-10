@@ -2,7 +2,7 @@ package com.firewolf.lx.dto;
 
 import com.firewolf.lx.domain.ResponseEnum;
 import com.firewolf.lx.exception.BusinessException;
-import com.firewolf.lx.po.User;
+import com.firewolf.lx.entity.User;
 import com.firewolf.lx.vo.UserVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanUtils;

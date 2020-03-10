@@ -1,6 +1,6 @@
 package com.firewolf.lx.tools.log;
 
-import com.firewolf.lx.po.BasePO;
+import com.firewolf.lx.entity.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Log extends BasePO {
+public class Log extends BaseEntity {
     /**
      * 开始描述
      */
