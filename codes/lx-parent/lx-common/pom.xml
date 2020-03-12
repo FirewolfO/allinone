@@ -71,7 +71,6 @@
             <version>2.1.1</version>
         </dependency>
 
-        <!--    jdbc-->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>

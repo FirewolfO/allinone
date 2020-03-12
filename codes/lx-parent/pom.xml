@@ -27,6 +27,7 @@
         <java.version>1.8</java.version>
         <spring-cloud.version>Finchley.RELEASE</spring-cloud.version>
         <lombok.version>1.16.10</lombok.version>
+        <mysql.version>5.1.48</mysql.version>
     </properties>
 
     <dependencies>
