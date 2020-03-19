@@ -79,6 +79,7 @@
         </dependency>
     </dependencies>
 
+    <!-- 自定义starter的时候，这个maven插件一定不要使用springboot提供的，否则构建出来的starter中的类不能被引用 -->
     <build>
         <plugins>
             <plugin>
