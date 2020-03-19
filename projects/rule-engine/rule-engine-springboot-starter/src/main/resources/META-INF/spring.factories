@@ -1,1 +1,1 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.firewolf.lx.rule.engine.config.RuleAutoConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.firewolf.rule.engine.config.RuleAutoConfiguration
