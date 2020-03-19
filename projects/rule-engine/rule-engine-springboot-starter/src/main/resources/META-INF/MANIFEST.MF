@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Implementation-Title: rule starter
+Automatic-Module-Name: rule-springboot.starter
+Implementation-Version: 2.2.5.RELEASE
+Built-By: megvii
+Build-Jdk-Spec: 1.8
+Created-By: LX
