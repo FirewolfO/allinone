@@ -1,6 +1,5 @@
 package com.firewolf.rule.engine.config;
 
-import com.firewolf.lx.rule.engine.core.*;
 import com.firewolf.rule.engine.core.*;
 import com.firewolf.rule.engine.core.conflict.resolver.AbstractConflictResolver;
 import com.firewolf.rule.engine.core.conflict.resolver.DefaultConflictResolver;
