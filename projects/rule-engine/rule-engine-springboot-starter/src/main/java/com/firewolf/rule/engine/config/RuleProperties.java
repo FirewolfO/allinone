@@ -27,8 +27,4 @@ public class RuleProperties {
      */
     private String conflictStrategy = "cover";
 
-    /**
-     * 用来查找规则的列
-     */
-    private List<String> searchColumn;
 }
