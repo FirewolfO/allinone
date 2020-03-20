@@ -1,5 +1,6 @@
 package com.firewolf.rule.engine.utils;
 
+import com.firewolf.rule.engine.core.QueryVO;
 import org.apache.commons.collections4.MapUtils;
 
 import java.lang.reflect.Array;
@@ -154,6 +155,26 @@ public class BeanUtil {
             return false;
         }
         return (o instanceof Collection) || o.getClass().isArray();
+    }
+
+    /**
+     * 获取某个
+     *
+     * @param o
+     * @param fieldName
+     * @return
+     */
+    public static Object getFileValue(Object o, String fieldName) {
+        if (o == null || fieldName == null) {
+            return null;
+        }
+        try {
+            Field field = o.getClass().getDeclaredField(fieldName);
+            field.setAccessible(true);
+            return field.get(o);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getCause());
+        }
     }
 
 }
