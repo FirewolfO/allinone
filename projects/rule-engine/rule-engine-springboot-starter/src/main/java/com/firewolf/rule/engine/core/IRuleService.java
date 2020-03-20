@@ -38,5 +38,16 @@ public interface IRuleService<R, I> {
      * @param subClazz  子表class
      * @return
      */
-    List<R> searchRules(QueryVO data, Class<?> mainClazz, Class<?> subClazz);
+    List<R> queryRules(QueryVO data, Class<?> mainClazz, Class<?> subClazz);
+
+    /**
+     * 检测冲突了的规则,没有冲突返回null
+     *
+     * @param rule
+     * @param mainClazz     主表class
+     * @param subClazz      子表Class
+     * @param uniqueColumns 规则唯一标志
+     * @return 没有冲突返回null
+     */
+    R checkConflictRule(R rule, Class<?> mainClazz, Class<?> subClazz, List<String> uniqueColumns);
 }

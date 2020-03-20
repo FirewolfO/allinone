@@ -2,13 +2,11 @@ package com.firewolf.rule.engine.utils.sql;
 
 import com.firewolf.rule.engine.core.EntityMetaInfo;
 import com.firewolf.rule.engine.enums.LikeType;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -41,6 +39,11 @@ public class SqlBuilder {
      * 连接符 and
      */
     private static final String SEPARATOR_AND = " and ";
+
+    /**
+     * 连接符 or
+     */
+    private static final String SEPARATOR_OR = " or ";
 
     /**
      * 连接符 ,
@@ -92,6 +95,33 @@ public class SqlBuilder {
         }
         sql = StringUtils.removeEnd(sql, " and ");
         sql += " GROUP BY " + StringUtils.join(uniqueColumns, ",");
+        return sql;
+    }
+
+    /**
+     * 构建唯一性查询语句 SELECT CONCAT( event_type,",",device_id,",") unikey FROM event_rule_item where (event_type=:event_type0 and device_id=:device_id0) or (event_type=:event_type1 and device_id=:device_id1) or (event_type=:event_type2 and device_id=:device_id2)
+     *
+     * @param table         表名
+     * @param uniqueColumns 唯一性列
+     * @param size          参数数量
+     * @return
+     */
+    public static String buildUniqueQuerySql(String table, List<String> uniqueColumns, int size) {
+        String sql = "SELECT CONCAT( ";
+        for (String column : uniqueColumns) {
+            sql += column + ",\",\",";
+        }
+        sql = StringUtils.removeEnd(sql, ",");
+        sql += ") unikey FROM " + table;
+        if (size > 0) {
+            sql += " where ";
+            for (int i = 0; i < size; i++) {
+                final int index = i;
+                String oneItem = uniqueColumns.stream().map(column -> column + "=:" + (column + index)).collect(Collectors.joining(SEPARATOR_AND, "(", ")"));
+                sql = sql + oneItem + SEPARATOR_OR;
+            }
+            sql = StringUtils.removeEnd(sql, SEPARATOR_OR);
+        }
         return sql;
     }
 
@@ -211,13 +241,4 @@ public class SqlBuilder {
         }
         return "";
     }
-
-
-    public static void main(String[] args) {
-        LikeType likeType = LikeType.all;
-        String key = "name";
-        String format = key + " like " + JOIN_LIKE + ":" + key + JOIN_LIKE;
-        System.out.println(format);
-    }
-
 }

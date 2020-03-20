@@ -1,14 +1,21 @@
 package com.firewolf.rule.engine.core;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 查询对象
+ * 查询对象，
+ * 如果是单表结构，就直接放到mainParams中就可以了
  */
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class QueryVO {
 
     /**

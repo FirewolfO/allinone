@@ -28,6 +28,27 @@ public class RuleEngine<R, I, D> {
     private List<IRuleMatcher<R, D>> ruleMatchers;
 
     /**
+     * 检测冲突的规则，如果自己实现了RuleEngine，调用这个方法
+     *
+     * @return 返回冲突的规则，没有冲突返回null
+     */
+    public R checkConflict(R rule) {
+        return checkConflict(rule, getSubClazz());
+
+    }
+
+    /**
+     * 检测冲突的规则，如果是直接注入了系统提供的RuleEngine，需要调用这个方法
+     *
+     * @param rule     规则
+     * @param subClazz 子表Class
+     * @return 返回冲突的规则，没有冲突返回null
+     */
+    public R checkConflict(R rule, Class<?> subClazz) {
+        return iRuleService.checkConflictRule(rule, rule.getClass(), subClazz, ruleProperties.getUniqueColumns());
+    }
+
+    /**
      * 添加规则，如果自己实现了RuleEngine，调用这个方法
      *
      * @param rule 规则实体，规则项保存在里面的
@@ -82,15 +103,19 @@ public class RuleEngine<R, I, D> {
     /**
      * 查找规则,如果自己实现了RuleEngine，调用这个方法
      *
+     * @param queryVO 查询参数
      * @return
      */
     public List<R> findRules(QueryVO queryVO) {
-        return iRuleService.searchRules(queryVO, getMainClazz(), getSubClazz());
+        return findRules(queryVO, getMainClazz(), getSubClazz());
     }
 
     /**
      * 查找规则,如果是直接注入了系统提供的RuleEngine，需要调用这个参数
      *
+     * @param queryVO   查询参数
+     * @param mainClazz 主表Class
+     * @param subClazz  主表Class
      * @return
      */
     public List<R> findRules(QueryVO queryVO, Class<?> mainClazz, Class<?> subClazz) {
@@ -107,7 +132,7 @@ public class RuleEngine<R, I, D> {
      * @return 返回满足条件的规则信息
      */
     public List<R> matchRules(QueryVO searcher, Class<?> mainClazz, Class<?> subClazz, D data) {
-        List<R> rules = iRuleService.searchRules(searcher, mainClazz, subClazz);
+        List<R> rules = iRuleService.queryRules(searcher, mainClazz, subClazz);
         if (CollectionUtils.isNotEmpty(rules)) {
             return rules.stream().filter(rule -> {
                         if ("or".equals(ruleProperties.getMatchType())) {

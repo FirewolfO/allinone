@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
  */
 public class DiscardConflictResolver extends AbstractConflictResolver {
     @Override
-    public List beforeSub(EntityMetaInfo mainEntityMetaInfo, EntityMetaInfo subMetaInfo, List data)  throws Exception{
+    public List beforeSub(EntityMetaInfo mainEntityMetaInfo, EntityMetaInfo subMetaInfo, List data) throws Exception {
         Class<?> aClass = data.get(0).getClass();
         String sql = SqlBuilder.buildUniqueCountSql(subMetaInfo, ruleProperties.getUniqueColumns());
         Map<String, Set> params = new HashMap<>();

@@ -17,8 +17,6 @@ import java.util.*;
 @ConditionalOnProperty(prefix = "lx.rule", name = "conflict-strategy", havingValue = "cover")
 @Component
 public class CoverConflictResolver extends AbstractConflictResolver {
-
-
     @Override
     public List beforeSub(EntityMetaInfo mainEntityMetaInfo, EntityMetaInfo subMetaInfo, List data) throws Exception {
 
@@ -38,7 +36,6 @@ public class CoverConflictResolver extends AbstractConflictResolver {
             String delSql = SqlBuilder.buildDeleteSql(subMetaInfo.getTable(), params);
             namedParameterJdbcTemplate.update(delSql, params);
         }
-
         return data;
     }
 
