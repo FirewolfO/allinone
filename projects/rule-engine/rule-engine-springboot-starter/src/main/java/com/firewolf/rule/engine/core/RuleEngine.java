@@ -119,7 +119,7 @@ public class RuleEngine<R, I, D> {
      * @return
      */
     public List<R> findRules(QueryVO queryVO, Class<?> mainClazz, Class<?> subClazz) {
-        return findRules(queryVO, mainClazz, subClazz);
+        return iRuleService.queryRules(queryVO, mainClazz, subClazz);
     }
 
     /**
