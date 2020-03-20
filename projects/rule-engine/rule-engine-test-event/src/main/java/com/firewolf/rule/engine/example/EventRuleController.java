@@ -1,7 +1,6 @@
-package com.lx.event;
+package com.firewolf.rule.engine.example;
 
 import com.firewolf.rule.engine.core.QueryVO;
-import com.firewolf.rule.engine.core.RuleEngine;
 import com.firewolf.rule.engine.utils.BeanUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -20,7 +19,7 @@ public class EventRuleController {
 
     @Autowired
     @Qualifier("eventRuleEngine")
-    private RuleEngine ruleEngine;
+    private EventRuleEngine ruleEngine;
 
     @ApiOperation("添加规则")
     @PostMapping
@@ -109,5 +108,30 @@ public class EventRuleController {
         return ruleEngine.findRules(q);
     }
 
+
+    @ApiOperation("检查唯一性")
+    @PostMapping("check")
+    public EventRule check(EventRuleVO exRuleVO) throws Exception {
+        EventRule eventRule = new EventRule();
+        eventRule.setName(exRuleVO.getName());
+        eventRule.setTimePlan(exRuleVO.getTimePlan());
+        eventRule.setLinkage(exRuleVO.getLinkage());
+        eventRule.setIsEnable(exRuleVO.getIsEnable());
+        List<String> deviceIds = exRuleVO.getDeviceIds();
+        List<Integer> eventTypes = exRuleVO.getEventTypes();
+        Integer eventLevel = exRuleVO.getEventLevel();
+        List<EventRuleItem> ruleItems = new ArrayList<>();
+        for (String deviceId : deviceIds) {
+            for (Integer eventType : eventTypes) {
+                EventRuleItem eventRuleItem = new EventRuleItem();
+                eventRuleItem.setDeviceId(deviceId);
+                eventRuleItem.setEventLevel(eventLevel);
+                eventRuleItem.setEventType(eventType);
+                ruleItems.add(eventRuleItem);
+            }
+        }
+        eventRule.setRuleItems(ruleItems);
+        return ruleEngine.checkConflict(eventRule);
+    }
 
 }

@@ -1,4 +1,4 @@
-package com.lx.event;
+package com.firewolf.rule.engine.example;
 
 import com.firewolf.rule.engine.core.IRuleMatcher;
 import org.springframework.stereotype.Component;

@@ -1,10 +1,10 @@
-package com.lx.event.test;
+package com.firewolf.rule.engine.test;
 
+import com.firewolf.rule.engine.example.EventRule;
+import com.firewolf.rule.engine.example.EventRuleItem;
 import com.firewolf.rule.engine.core.EntityMetaInfo;
 import com.firewolf.rule.engine.utils.BeanUtil;
 import com.firewolf.rule.engine.utils.MetaInfoUtil;
-import com.lx.event.EventRule;
-import com.lx.event.EventRuleItem;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 

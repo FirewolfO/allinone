@@ -1,4 +1,4 @@
-package com.lx.event;
+package com.firewolf.rule.engine.example;
 
 import lombok.Data;
 

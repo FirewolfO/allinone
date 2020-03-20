@@ -1,4 +1,4 @@
-package com.lx.event;
+package com.firewolf.rule.engine.example;
 
 import com.firewolf.rule.engine.annotations.*;
 import lombok.Data;

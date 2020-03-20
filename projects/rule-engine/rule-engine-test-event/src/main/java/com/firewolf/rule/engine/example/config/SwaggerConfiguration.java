@@ -1,4 +1,4 @@
-package com.lx.event.config;
+package com.firewolf.rule.engine.example.config;
 
 import com.spring4all.swagger.EnableSwagger2Doc;
 import io.swagger.annotations.ApiOperation;

@@ -1,4 +1,4 @@
-package com.lx.event;
+package com.firewolf.rule.engine.example;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
