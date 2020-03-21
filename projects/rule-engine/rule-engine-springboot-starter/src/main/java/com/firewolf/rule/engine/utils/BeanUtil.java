@@ -176,4 +176,23 @@ public class BeanUtil {
         }
     }
 
+    /**
+     * 获取某个对象的某个字段值
+     *
+     * @param o         对象
+     * @param fieldName 字段名
+     * @return
+     */
+    public static Object getValue(Object o, String fieldName) {
+        if (o == null || fieldName == null) {
+            return null;
+        }
+        try {
+            Object value = MetaInfoUtil.getMetaInfo(o.getClass()).getColumnFieldMap().get(fieldName).get(o);
+            return value;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
