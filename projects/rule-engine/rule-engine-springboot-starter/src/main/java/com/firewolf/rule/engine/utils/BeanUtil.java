@@ -1,6 +1,5 @@
 package com.firewolf.rule.engine.utils;
 
-import com.firewolf.rule.engine.core.QueryVO;
 import org.apache.commons.collections4.MapUtils;
 
 import java.lang.reflect.Array;
