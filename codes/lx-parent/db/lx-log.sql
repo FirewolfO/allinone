@@ -2,7 +2,8 @@
 SQLyog Ultimate v10.00 Beta1
 MySQL - 8.0.19 : Database - lx-log
 *********************************************************************
-*/
+*/
+
 
 /*!40101 SET NAMES utf8 */;
 
@@ -41,7 +42,7 @@ CREATE TABLE `lx_log` (
 
 /*Data for the table `lx_log` */
 
-insert  into `lx_log`(`id`,`create_time`,`modify_time`,`version`,`deleted`,`start`,`end`,`operate`,`operator`,`method`,`parms`,`error`,`result`,`start_time`,`end_time`) values (2,'2020-03-01 21:05:01','2020-03-01 21:05:01',0,0,'start test','execute test successfully','test','liuxing','com.firewolf.lx.web.UserController.test','',NULL,'Response(requestId=null, code=200, msg=LX_RESPONSE_001, data=hello)','2020-03-01 13:05:01','2020-03-01 13:05:01'),(3,'2020-03-01 21:57:12','2020-03-01 21:57:12',0,0,'start test','execute test successfully','test','liuxing','com.firewolf.lx.web.UserController.test','',NULL,'Response(requestId=null, code=200, msg=LX_RESPONSE_001, data=hello)','2020-03-01 13:57:12','2020-03-01 13:57:12'),(4,'2020-03-03 09:44:29','2020-03-03 09:44:29',0,0,'start test','execute test log successfully','test log',NULL,'com.firewolf.lx.web.UserController.test','',NULL,'Response(requestId=null, code=200, msg=LX_RESPONSE_001, data=hello)','2020-03-03 01:44:28','2020-03-03 01:44:28'),(5,'2020-03-03 09:47:18','2020-03-03 09:47:18',0,0,'start test user','execute test log successfully','test log',NULL,'com.firewolf.lx.web.UserController.test','',NULL,'Response(requestId=null, code=200, msg=LX_RESPONSE_001, data=hello)','2020-03-03 01:47:18','2020-03-03 01:47:18');
+insert  into `lx_log`(`id`,`create_time`,`modify_time`,`version`,`deleted`,`start`,`end`,`operate`,`operator`,`method`,`parms`,`error`,`result`,`start_time`,`end_time`) values (2,'2020-03-01 21:05:01','2020-03-01 21:05:01',0,0,'start test','execute test successfully','test','liuxing','UserController.test','',NULL,'Response(requestId=null, code=200, msg=LX_RESPONSE_001, data=hello)','2020-03-01 13:05:01','2020-03-01 13:05:01'),(3,'2020-03-01 21:57:12','2020-03-01 21:57:12',0,0,'start test','execute test successfully','test','liuxing','UserController.test','',NULL,'Response(requestId=null, code=200, msg=LX_RESPONSE_001, data=hello)','2020-03-01 13:57:12','2020-03-01 13:57:12'),(4,'2020-03-03 09:44:29','2020-03-03 09:44:29',0,0,'start test','execute test log successfully','test log',NULL,'UserController.test','',NULL,'Response(requestId=null, code=200, msg=LX_RESPONSE_001, data=hello)','2020-03-03 01:44:28','2020-03-03 01:44:28'),(5,'2020-03-03 09:47:18','2020-03-03 09:47:18',0,0,'start test user','execute test log successfully','test log',NULL,'UserController.test','',NULL,'Response(requestId=null, code=200, msg=LX_RESPONSE_001, data=hello)','2020-03-03 01:47:18','2020-03-03 01:47:18');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
