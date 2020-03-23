@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,15 +25,12 @@ class UserServiceTest {
 
     @Test
     void addUser() {
-
-        when(userMapper.selectCount(eq(User.builder().account("tianqi").build()))).thenReturn(1);
-
         assertThrows(RuntimeException.class, () -> userService.addUser(User.builder().name("周扒皮").password("1111").build()), "account is too short");
-
         assertThrows(RuntimeException.class, () -> userService.addUser(User.builder().account("abc").name("周扒皮").password("1111").build()), "account is too short");
 
-        assertThrows(RuntimeException.class, () -> userService.addUser(User.builder().account("tianqi").build()));
-
+        String name = "myname";
+        when(userMapper.selectCount(eq(User.builder().account(name).build()))).thenReturn(1);
+        assertThrows(RuntimeException.class, () -> userService.addUser(User.builder().account(name).build()));
         assertDoesNotThrow(() -> userService.addUser(User.builder().account("wangba").build()));
     }
 

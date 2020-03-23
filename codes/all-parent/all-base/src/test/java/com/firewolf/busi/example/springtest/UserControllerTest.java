@@ -1,32 +1,40 @@
 package com.firewolf.busi.example.springtest;
 
 import org.junit.jupiter.api.Test;
-import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultHandler;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
-import java.util.List;
-
-//@SpringBootTest
-@MybatisTest
-@AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE )
-@Transactional(propagation = Propagation.NOT_SUPPORTED)
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.junit.jupiter.api.Assertions.*;
+@SpringBootTest
+@AutoConfigureMockMvc
 class UserControllerTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
 
     @SpyBean
     private UserService userService;
 
     @Test
     void addUser() throws Exception {
-      userService.addUser(User.builder().account("mmmmm").build());
+        doNothing().when(userService).addUser(any(User.class));
+        MvcResult mockResult = mockMvc
+                .perform(post("/users").contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("account","liuxing").param("password","123345"))
+                .andExpect(status().isOk())
+                .andReturn();
+        assertEquals("success",mockResult.getResponse().getContentAsString());
     }
 
-    @Test
-    void selectUser() throws Exception {
-        List<User> users =  userService.selectUser();
-
-        System.out.println(users.size());
-    }
 }

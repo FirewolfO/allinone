@@ -13,8 +13,6 @@ public class UserService {
     @Resource
     private UserMapper userMapper;
 
-
-//    @Transactional
     public void addUser(User user) {
         if (StringUtils.isEmpty(user.getAccount()) || user.getAccount().length() < 4) {
             throw new RuntimeException("account is too short");
