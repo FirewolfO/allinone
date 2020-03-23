@@ -1,4 +1,4 @@
-package com.firewolf.busi.example;
+package com.firewolf.busi.example.junit;
 
 /**
  * Hello工具类

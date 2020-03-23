@@ -1,5 +1,6 @@
 package com.firewolf.busi.example;
 
+import com.firewolf.busi.example.junit.HelloUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

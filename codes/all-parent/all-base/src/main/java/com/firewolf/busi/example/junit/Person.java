@@ -1,4 +1,4 @@
-package com.firewolf.busi.example;
+package com.firewolf.busi.example.junit;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

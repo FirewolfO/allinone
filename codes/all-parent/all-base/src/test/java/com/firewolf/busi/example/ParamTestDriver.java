@@ -1,5 +1,6 @@
 package com.firewolf.busi.example;
 
+import com.firewolf.busi.example.junit.Person;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.aggregator.AggregateWith;
