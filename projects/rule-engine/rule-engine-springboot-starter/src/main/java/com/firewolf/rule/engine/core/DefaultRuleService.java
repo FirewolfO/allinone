@@ -2,6 +2,7 @@ package com.firewolf.rule.engine.core;
 
 import com.firewolf.rule.engine.core.conflict.resolver.AbstractConflictResolver;
 import com.firewolf.rule.engine.utils.BeanUtil;
+import com.firewolf.rule.engine.utils.MetaInfoUtil;
 import com.firewolf.rule.engine.utils.sql.Limit;
 import com.firewolf.rule.engine.utils.sql.SqlBuildParam;
 import com.firewolf.rule.engine.utils.sql.SqlBuilder;
@@ -144,7 +145,15 @@ public class DefaultRuleService<R, I> implements IRuleService<R, I> {
                 }
                 return null;
             } else {
-                return filterRule(rule, metaInfo.getItemFieldName(), subClazz, uniqueColumns, true);
+                // 主子表结构，过滤子表
+                Object data = getObjValue(rule, metaInfo.getItemFieldName());
+                Object o = filterRuleItems(data, uniqueColumns, true);
+                // 有冲突的
+                if (o != null) {
+                    setObjValue(rule, metaInfo.getItemFieldName(), o);
+                    return rule;
+                }
+                return null;
             }
         } catch (Exception e) {
             throw new RuntimeException(e.getCause());
@@ -153,25 +162,22 @@ public class DefaultRuleService<R, I> implements IRuleService<R, I> {
 
 
     /**
-     * 过滤规则
+     * 过滤子表数据
      *
-     * @param rule          规则
-     * @param itemFieldName 规则项数据
-     * @param exists        true 返回已经存在的，false返回不存在的
+     * @param orignalData   原始数据
+     * @param uniqueColumns 唯一字段
+     * @param exists        保留数据库中存在的
      * @return
      */
-    private R filterRule(R rule, String itemFieldName, Class<?> subClazz, List<String> uniqueColumns, boolean exists) {
+    private Object filterRuleItems(Object orignalData, List<String> uniqueColumns, boolean exists) {
 
-        // 主子表结构，只看子表的唯一性
-        EntityMetaInfo subMetaInfo = getMetaInfo(subClazz);
-        // 获取子表数据集合
-        Object data = getObjValue(rule, itemFieldName);
-        List items = BeanUtil.transObj2List(data);
+
+        List items = BeanUtil.transObj2List(orignalData);
         if (CollectionUtils.isEmpty(items)) {
-            return null;
+            return orignalData;
         }
         //查询冲突项
-        String sql = SqlBuilder.buildUniqueQuerySql(subMetaInfo.getTable(), uniqueColumns, items.size());
+        String sql = SqlBuilder.buildUniqueQuerySql(MetaInfoUtil.getMetaInfo(items.get(0).getClass()).getTable(), uniqueColumns, items.size());
         Map<String, Object> params = new HashMap<>();
         for (int i = 0; i < items.size(); i++) {
             Object item = items.get(i);
@@ -182,7 +188,7 @@ public class DefaultRuleService<R, I> implements IRuleService<R, I> {
         }
 
         // 默认认为所有的子表数据项都冲突了
-        Object conflictItems = data;
+        Object conflictItems = orignalData;
         List<Integer> conflictCounts = new ArrayList<>();
         List<String> conflictUniqueKeys = namedParameterJdbcTemplate.query(sql, params, (resultSet, i) -> resultSet.getString(1));
         if (CollectionUtils.isNotEmpty(conflictUniqueKeys)) {
@@ -206,21 +212,18 @@ public class DefaultRuleService<R, I> implements IRuleService<R, I> {
                 }
                 return !exists;
             });
-            if (data instanceof Set) {
+            if (conflictCounts.size() == 0) {
+                return null;
+            }
+            if (orignalData instanceof Set) {
                 conflictItems = stream.collect(Collectors.toSet());
-            } else if (data instanceof List) {
+            } else if (orignalData instanceof List) {
                 conflictItems = stream.collect(Collectors.toList());
             } else {
                 conflictItems = stream.toArray();
             }
-            // 有冲突的
-            if (conflictCounts.size() > 0) {
-                setObjValue(rule, itemFieldName, conflictItems);
-                return rule;
-            }
-            return null;
         }
-        return null;
+        return conflictItems;
     }
 
 
