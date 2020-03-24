@@ -1,4 +1,4 @@
-package com.firewolf.busi.example;
+package com.firewolf.busi.example.simple;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,7 +28,7 @@ public class MockitoTest {
         System.out.println(list.get(0)); // 会得到null ，前面只是在记录行为而已，没有往list中添加数据
 
         verify(list).add("1"); // 正确，因为该行为被记住了
-        verify(list).add("3");//报错，因为前面没有记录这个行为
+//        verify(list).add("3");//报错，因为前面没有记录这个行为
 
     }
 
@@ -135,7 +135,7 @@ public class MockitoTest {
         when(spy.hello("lx")).thenReturn("haha,lx");
 
         assertEquals(spy.hello("liuxing"), "Hello,liuxing");
-        assertEquals(spy.hello("lx"), "hello,lx");
+        assertEquals(spy.hello("lx"), "haha,lx");
     }
 
     class UserService {

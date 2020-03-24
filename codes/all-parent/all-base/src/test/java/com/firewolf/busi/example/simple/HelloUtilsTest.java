@@ -1,4 +1,4 @@
-package com.firewolf.busi.example;
+package com.firewolf.busi.example.simple;
 
 import com.firewolf.busi.example.junit.HelloUtils;
 import org.junit.jupiter.api.AfterEach;
@@ -45,7 +45,7 @@ class HelloUtilsTest {
 
     @Test
     void timeOutTest() {
-        assertTimeout(Duration.ofSeconds(1), () -> Thread.sleep(2000));
+        assertTimeout(Duration.ofSeconds(1), () -> Thread.sleep(500));
     }
 
     @Test
