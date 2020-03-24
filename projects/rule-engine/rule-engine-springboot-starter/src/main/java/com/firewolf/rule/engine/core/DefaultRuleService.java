@@ -43,10 +43,10 @@ public class DefaultRuleService<R, I> implements IRuleService<R, I> {
         Object id = insertAndReturnKey(metaInfo, rule, null);
 
         // 如果有子表，插入子表数据
-        Field itemField = metaInfo.getItemField();
-        if (itemField != null) {
+        String itemFieldName = metaInfo.getItemFieldName();
+        if (StringUtils.isNotEmpty(itemFieldName)) {
             EntityMetaInfo subMetaInfo = getMetaInfo(subClazz);
-            List data = BeanUtil.transObj2List(itemField.get(rule));
+            List data = BeanUtil.transObj2List(getObjValue(rule, itemFieldName));
             insertRuleItems(metaInfo, subMetaInfo, data, id);
         }
 
@@ -72,72 +72,53 @@ public class DefaultRuleService<R, I> implements IRuleService<R, I> {
         }
 
         try {
-            // 有主表的查询参数，或者没有主表的查询参数
-            if (MapUtils.isNotEmpty(mainParams) || MapUtils.isEmpty(subParams)) {
-                // 查询主表数据
-                List<R> mainData = findList(mainClazz, mainParams, data.getStart(), data.getPageSize());
-                if (CollectionUtils.isEmpty(mainData))
-                    return mainData;
-                Field mainIdField = mainMetaInfo.getColumnFieldMap().get(mainMetaInfo.getIdColumn());
-                Map<Object, Object> map = new HashMap<>();
-                for (int i = 0; i < mainData.size(); i++) {
-                    map.put(mainIdField.get(mainData.get(i)), mainData.get(i));
-                }
-
-                // 查询子表数据
-                String foreignKey = subMetaInfo.getForeignKeyColumn();
-                if (StringUtils.isNotEmpty(foreignKey)) {
-                    subParams.put(subMetaInfo.getForeignKeyColumn(), map.keySet());
-                    Field foreignField = subMetaInfo.getColumnFieldMap().get(foreignKey);
-                    List subData = findList(subClazz, subParams, -1, 0);
-                    Map subDataMap = (Map) subData.stream().collect(Collectors.groupingBy(o -> {
-                        try {
-                            return foreignField.get(o);
-                        } catch (IllegalAccessException e) {
-                            e.printStackTrace();
-                        }
-                        return null;
-                    }));
-                    Field itemField = mainMetaInfo.getItemField();
-                    subDataMap.keySet().forEach(key -> {
-                        Object o = map.get(key);
-                        try {
-                            itemField.set(o, subDataMap.get(key));
-                        } catch (IllegalAccessException e) {
-                            e.printStackTrace();
-                        }
-                    });
-                    return mainData;
-                }
-            } else {
+            // 只有子表查询参数
+            if (MapUtils.isEmpty(mainParams) && MapUtils.isNotEmpty(subParams)) {
                 List list = findList(subClazz, subParams, -1, 0);
-                Map<String, Field> subColumnFieldMap = subMetaInfo.getColumnFieldMap();
-                Field foreignField = subColumnFieldMap.get(subMetaInfo.getForeignKeyColumn());
+                String foreignKeyFieldName = subMetaInfo.getColumnFieldNameMap().get(subMetaInfo.getForeignKeyColumn());
                 // 根据外键分组，到时候放到规则主表的属性里面
-                Map maps = (Map) list.stream().collect(Collectors.groupingBy(x -> {
-                    try {
-                        return foreignField.get(x);
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    }
-                    return null;
-                }));
+                Map maps = (Map) list.stream().collect(Collectors.groupingBy(x -> getObjValue(x, foreignKeyFieldName)));
 
                 Set ids = maps.keySet();
                 mainParams.put(mainMetaInfo.getIdColumn(), ids);
 
                 List resutList = findList(mainClazz, mainParams, data.getStart(), data.getPageSize());
-                Field itemField = mainMetaInfo.getItemField();
-                Field idField = mainMetaInfo.getColumnFieldMap().get(mainMetaInfo.getIdColumn());
+
+                String itemField = mainMetaInfo.getItemFieldName();
+                String idFieldName = mainMetaInfo.getColumnFieldNameMap().get(mainMetaInfo.getIdColumn());
                 for (int i = 0; i < resutList.size(); i++) {
                     Object o = resutList.get(i);
-                    itemField.set(o, maps.get(idField.get(o)));
+                    setObjValue(o, itemField, maps.get(getObjValue(o, idFieldName)));
                 }
                 return resutList;
-            }
+            } else {
+                // 查询主表数据
+                List<R> mainData = findList(mainClazz, mainParams, data.getStart(), data.getPageSize());
+                if (CollectionUtils.isEmpty(mainData))
+                    return mainData;
+                String idFieldName = mainMetaInfo.getColumnFieldNameMap().get(mainMetaInfo.getIdColumn());
+                Map<Object, Object> map = new HashMap<>();
+                for (int i = 0; i < mainData.size(); i++) {
+                    map.put(getObjValue(mainData.get(i), idFieldName), mainData.get(i));
+                }
 
+                // 查询子表数据
+                String foreignKey = subMetaInfo.getForeignKeyColumn();
+                if (StringUtils.isNotEmpty(foreignKey)) {
+                    subParams.put(foreignKey, map.keySet()); // 根据外键查询
+                    List subData = findList(subClazz, subParams, -1, 0);
+                    String foreignKeyFieldName = subMetaInfo.getColumnFieldNameMap().get(foreignKey);
+                    Map subDataMap = (Map) subData.stream().collect(Collectors.groupingBy(o -> getObjValue(o, foreignKeyFieldName)));
+                    subDataMap.keySet().forEach(key -> {
+                        Object o = map.get(key);
+                        setObjValue(o, mainMetaInfo.getItemFieldName(), subDataMap.get(key));
+                    });
+                    return mainData;
+                }
+
+            }
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException("query data error!!!", e);
         }
 
         return null;
@@ -280,7 +261,6 @@ public class DefaultRuleService<R, I> implements IRuleService<R, I> {
      */
     private List findList(Class<?> clazz, Map<String, Object> params, int start, int size) {
         EntityMetaInfo metaInfo = getMetaInfo(clazz);
-        Map<String, Field> columnFieldMap = metaInfo.getColumnFieldMap();
         SqlBuildParam sqlBuildParam = SqlBuildParam.builder()
                 .table(metaInfo.getTable())
                 .limit(Limit.builder().start(start).size(size).build())
@@ -288,14 +268,17 @@ public class DefaultRuleService<R, I> implements IRuleService<R, I> {
                 .orderBy(metaInfo.getOrderColumnMap())
                 .build();
         String sql = SqlBuilder.buildQuerySql(sqlBuildParam);
+
+        LinkedHashMap<String, String> fields = metaInfo.getColumnFieldNameMap();
         return namedParameterJdbcTemplate.query(sql, params, (resultSet, rowNumber) -> {
             Object o = null;
             try {
                 o = clazz.newInstance();
-                for (Map.Entry<String, Field> entry : columnFieldMap.entrySet()) {
-                    Field field = entry.getValue();
-                    field.set(o, resultSet.getObject(entry.getKey()));
+                Map<String, Object> values = new HashMap<>();
+                for (Map.Entry<String, String> entry : fields.entrySet()) {
+                    values.put(entry.getValue(), resultSet.getString(entry.getKey()));
                 }
+                setObjValues(o, values);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -330,29 +313,23 @@ public class DefaultRuleService<R, I> implements IRuleService<R, I> {
     public void updateRule(R rule, Class<?> ruleClazz, Class<?> ruleItemClazz) throws Exception {
         //更新主表
         EntityMetaInfo mainMetaInfo = getMetaInfo(ruleClazz);
-        Map<String, Object> mainUpdateParams = new HashMap<>();
-        Map<String, Field> columnFieldMap = mainMetaInfo.getColumnFieldMap();
-        Object idValue = columnFieldMap.get(mainMetaInfo.getIdColumn()).get(rule);
-        columnFieldMap.entrySet().forEach(entry -> {
-            if (!mainMetaInfo.getIdColumn().equals(entry.getKey())) {
-                try {
-                    mainUpdateParams.put(entry.getKey(), entry.getValue().get(rule));
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+        String idFileName = mainMetaInfo.getColumnFieldNameMap().get(mainMetaInfo.getIdColumn());
+        Object idValue = getObjValue(rule, idFileName);
+
+        Map<String, Object> mainUpdateParams = objectToMapNoNull(rule);
+
+        mainUpdateParams.remove(mainMetaInfo.getIdColumn());
 
         // 更新规则数据
         Map<String, Object> mainWhereParams = new HashMap<>();
-        mainWhereParams.put(mainMetaInfo.getIdColumn(), mainMetaInfo.getColumnFieldMap().get(mainMetaInfo.getIdColumn()).get(rule));
+        mainWhereParams.put(mainMetaInfo.getIdColumn(), idValue);
         String mainUpdateSql = SqlBuilder.buildUpdateSql(mainMetaInfo.getTable(), mainUpdateParams, mainWhereParams);
         mainUpdateParams.putAll(mainWhereParams);
         namedParameterJdbcTemplate.update(mainUpdateSql, mainUpdateParams);
 
         // 如果有子表处理子表：
-        Field itemField = mainMetaInfo.getItemField();
-        if (itemField != null) {
+        String itemFieldName = mainMetaInfo.getItemFieldName();
+        if (StringUtils.isNotEmpty(itemFieldName)) {
             // 删除子表旧数据
             EntityMetaInfo subMetaInfo = getMetaInfo(ruleItemClazz);
             Map<String, Object> deleteParams = new HashMap<>();
@@ -360,7 +337,7 @@ public class DefaultRuleService<R, I> implements IRuleService<R, I> {
             String deletSql = SqlBuilder.buildDeleteSql(subMetaInfo.getTable(), deleteParams);
             namedParameterJdbcTemplate.update(deletSql, deleteParams);
 
-            List data = BeanUtil.transObj2List(itemField.get(rule));
+            List data = BeanUtil.transObj2List(getObjValue(rule, itemFieldName));
             insertRuleItems(mainMetaInfo, subMetaInfo, data, idValue);
 
         }
@@ -393,13 +370,7 @@ public class DefaultRuleService<R, I> implements IRuleService<R, I> {
      * @throws IllegalAccessException
      */
     private Object insertAndReturnKey(EntityMetaInfo metaInfo, Object data, Object foreignValue) throws Exception {
-        Map<String, Object> m = new HashMap<>();
-        Map<String, Field> columnFieldMap = metaInfo.getColumnFieldMap();
-        for (Map.Entry<String, Field> entry : columnFieldMap.entrySet()) {
-            if (!StringUtils.equals(metaInfo.getIdColumn(), entry.getKey())) {
-                m.put(entry.getKey(), entry.getValue().get(data));
-            }
-        }
+        Map<String, Object> m = objectToMapNoNull(data);
         if (foreignValue != null) { // 如果有外键数据，设置外键数据
             m.put(metaInfo.getForeignKeyColumn(), foreignValue);
         }
@@ -428,18 +399,13 @@ public class DefaultRuleService<R, I> implements IRuleService<R, I> {
      * @param foreignValue 外键数据
      * @throws IllegalAccessException
      */
-    private void insertList(EntityMetaInfo metaInfo, List data, Object foreignValue) throws Exception {
+    private void insertList(EntityMetaInfo metaInfo, List data, Object foreignValue) {
         if (CollectionUtils.isEmpty(data))
             return;
         Map<String, Object>[] insertParams = new Map[data.size()];
         for (int i = 0; i < data.size(); i++) {
-            Map<String, Object> m = new HashMap<>();
-            Object o = data.get(i);
-            Map<String, Field> subColumnFieldMap = metaInfo.getColumnFieldMap();
-            subColumnFieldMap.remove(metaInfo.getIdColumn());
-            for (Map.Entry<String, Field> entry : subColumnFieldMap.entrySet()) {
-                m.put(entry.getKey(), entry.getValue().get(o));
-            }
+            Map<String, Object> m = objectToMapNoNull(data.get(i));
+            m.remove(metaInfo.getIdColumn());
             if (foreignValue != null) { // 如果有外键数据，设置外键数据
                 m.put(metaInfo.getForeignKeyColumn(), foreignValue);
             }

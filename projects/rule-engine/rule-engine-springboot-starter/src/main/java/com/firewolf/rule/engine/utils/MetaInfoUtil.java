@@ -55,7 +55,6 @@ public class MetaInfoUtil {
                     } else {
                         if (StringUtils.isEmpty(metaInfo.getItemFieldName())) {
                             metaInfo.setItemFieldName(fieldName);
-                            metaInfo.setItemField(field);
                         } else {
                             throw new RuntimeException("@Items can only write on one property");
                         }
@@ -138,9 +137,11 @@ public class MetaInfoUtil {
                 for (Field field : clazz.getDeclaredFields()) {
                     field.setAccessible(true);
                     String fieldName = field.getName();
-                    Object value = field.get(obj);
-                    if (withNull || value != null) {
-                        map.put(filedNameColumnMap.get(fieldName), value);
+                    if (filedNameColumnMap.containsKey(fieldName)) {
+                        Object value = field.get(obj);
+                        if (withNull || value != null) {
+                            map.put(filedNameColumnMap.get(fieldName), value);
+                        }
                     }
                 }
             }
@@ -190,4 +191,17 @@ public class MetaInfoUtil {
     }
 
 
+    public static void setObjValues(Object o, Map<String, Object> values) {
+        if (o == null)
+            return;
+        try {
+            for (Map.Entry<String, Object> entry : values.entrySet()) {
+                Field declaredField = o.getClass().getDeclaredField(entry.getKey());
+                declaredField.setAccessible(true);
+                declaredField.set(o, entry.getValue());
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("set object proeperty error !");
+        }
+    }
 }

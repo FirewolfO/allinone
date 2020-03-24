@@ -2,6 +2,7 @@ package com.firewolf.rule.engine.core.conflict.resolver;
 
 
 import com.firewolf.rule.engine.core.EntityMetaInfo;
+import com.firewolf.rule.engine.utils.MetaInfoUtil;
 import com.firewolf.rule.engine.utils.sql.SqlBuilder;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -25,12 +26,12 @@ public class CoverConflictResolver extends AbstractConflictResolver {
             // 删除旧的规则项数据
             Map<String, Object> params = new HashMap<>();
             for (String column : ruleProperties.getUniqueColumns()) {
-                Field field = subMetaInfo.getColumnFieldMap().get(column);
+                String filedName = subMetaInfo.getColumnFieldNameMap().get(column);
                 if (!params.containsKey(column)) {
                     params.put(column, new HashSet());
                 }
                 for (int i = 0; i < data.size(); i++) {
-                    ((Set) params.get(column)).add(field.get(data.get(i)));
+                    ((Set) params.get(column)).add(MetaInfoUtil.getObjValue(data.get(i), filedName));
                 }
             }
             String delSql = SqlBuilder.buildDeleteSql(subMetaInfo.getTable(), params);

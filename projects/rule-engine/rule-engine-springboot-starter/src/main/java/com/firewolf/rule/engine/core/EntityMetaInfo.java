@@ -30,11 +30,6 @@ public class EntityMetaInfo {
     private String itemFieldName;
 
     /**
-     * item字段
-     */
-    private Field itemField;
-
-    /**
      * 外键字段
      */
     private String foreignKeyColumn;
