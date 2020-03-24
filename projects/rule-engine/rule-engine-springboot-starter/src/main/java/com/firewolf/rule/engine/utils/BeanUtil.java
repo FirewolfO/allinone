@@ -76,25 +76,7 @@ public class BeanUtil {
         return datas;
     }
 
-    /**
-     * 将对象属性转成Map结构
-     *
-     * @param obj
-     * @return
-     * @throws IllegalAccessException
-     */
-    public static Map<String, Object> objectToMap(Object obj) throws IllegalAccessException {
-        Map<String, Object> map = new HashMap<>();
-        Class<?> clazz = obj.getClass();
-        for (Field field : clazz.getDeclaredFields()) {
-            field.setAccessible(true);
-            String fieldName = field.getName();
-            Object value = field.get(obj);
-            map.put(fieldName, value);
-        }
-        return map;
-    }
-
+    
     /**
      * 把集合转换成map
      * key-> 集合中元素的属性，value->属性对应值的合并

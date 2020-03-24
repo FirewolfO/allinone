@@ -111,7 +111,7 @@ public class SqlBuilder {
         for (String column : uniqueColumns) {
             sql += column + ",\",\",";
         }
-        sql = StringUtils.removeEnd(sql, ",");
+        sql = StringUtils.removeEnd(sql,  ",\",\",");
         sql += ") unikey FROM " + table;
         if (size > 0) {
             sql += " where ";

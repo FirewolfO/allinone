@@ -2,6 +2,7 @@ package com.firewolf.rule.engine.example;
 
 import com.firewolf.rule.engine.core.QueryVO;
 import com.firewolf.rule.engine.utils.BeanUtil;
+import com.firewolf.rule.engine.utils.MetaInfoUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,8 +104,8 @@ public class EventRuleController {
     public List<EventRule> list(EventQueryVO queryVO) throws Exception {
 
         QueryVO q = new QueryVO();
-        q.setMainParams(BeanUtil.objectToMap(queryVO.getMainParams()));
-        q.setSubParams(BeanUtil.objectToMap(queryVO.getSubParams()));
+        q.setMainParams(MetaInfoUtil.objectToMapNoNull(queryVO.getMainParams()));
+        q.setSubParams(MetaInfoUtil.objectToMapNoNull(queryVO.getSubParams()));
         return ruleEngine.findRules(q);
     }
 

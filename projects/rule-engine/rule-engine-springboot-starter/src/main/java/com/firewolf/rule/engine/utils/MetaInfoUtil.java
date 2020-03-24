@@ -99,4 +99,95 @@ public class MetaInfoUtil {
             return metaInfo;
         }
     }
+
+
+    /**
+     * 获取数据对象的属性值，去掉控制属性,把属性转成了数据库字段
+     *
+     * @param obj
+     * @return
+     */
+    public static Map<String, Object> objectToMapNoNull(Object obj) {
+        return getColumnFieldValueMap(obj, false);
+    }
+
+
+    /**
+     * 获取对象的属性值，保留空值属性,把属性转成了数据库字段
+     *
+     * @param obj
+     * @return
+     */
+    public static Map<String, Object> objectToMap(Object obj) {
+        return getColumnFieldValueMap(obj, true);
+    }
+
+    /**
+     * 获取某个对象的列->值的集合
+     *
+     * @param obj      数据对象
+     * @param withNull 是否要空值的数据
+     * @return
+     */
+    private static Map<String, Object> getColumnFieldValueMap(Object obj, boolean withNull) {
+        Map<String, Object> map = new HashMap<>();
+        try {
+            if (obj != null) {
+                Class<?> clazz = obj.getClass();
+                Map<String, String> filedNameColumnMap = getMetaInfo(clazz).getFiledNameColumnMap();
+                for (Field field : clazz.getDeclaredFields()) {
+                    field.setAccessible(true);
+                    String fieldName = field.getName();
+                    Object value = field.get(obj);
+                    if (withNull || value != null) {
+                        map.put(filedNameColumnMap.get(fieldName), value);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("get object field value error !");
+        }
+        return map;
+    }
+
+
+    /**
+     * 获取对象的某个属性值
+     *
+     * @param o
+     * @param property
+     * @return
+     */
+    public static Object getObjValue(Object o, String property) {
+        if (o == null)
+            return null;
+        try {
+            Field declaredField = o.getClass().getDeclaredField(property);
+            declaredField.setAccessible(true);
+            return declaredField.get(o);
+        } catch (Exception e) {
+            throw new RuntimeException("get object property error !");
+        }
+    }
+
+    /**
+     * 给对象的某个属性赋值
+     *
+     * @param o
+     * @param property
+     * @param value
+     */
+    public static void setObjValue(Object o, String property, Object value) {
+        if (o == null)
+            return;
+        try {
+            Field declaredField = o.getClass().getDeclaredField(property);
+            declaredField.setAccessible(true);
+            declaredField.set(o, value);
+        } catch (Exception e) {
+            throw new RuntimeException("set object proeperty error !");
+        }
+    }
+
+
 }
