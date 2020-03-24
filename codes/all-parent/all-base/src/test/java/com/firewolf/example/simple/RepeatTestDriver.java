@@ -1,4 +1,4 @@
-package com.firewolf.busi.example.simple;
+package com.firewolf.example.simple;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.RepeatedTest;

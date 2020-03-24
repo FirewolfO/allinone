@@ -1,4 +1,4 @@
-package com.firewolf.busi.example.simple;
+package com.firewolf.example.simple;
 
 import com.firewolf.busi.example.junit.HelloUtils;
 import org.junit.jupiter.api.AfterEach;

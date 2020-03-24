@@ -1,4 +1,4 @@
-package com.firewolf.busi.example.simple;
+package com.firewolf.example.simple;
 
 import com.firewolf.busi.example.junit.Person;
 import org.junit.jupiter.api.extension.ParameterContext;

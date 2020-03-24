@@ -1,4 +1,4 @@
-package com.firewolf.busi.example.springtest;
+package com.firewolf.example.springtest;
 
 import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.Test;

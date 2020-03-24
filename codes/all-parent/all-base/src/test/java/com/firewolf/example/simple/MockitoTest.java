@@ -1,4 +1,4 @@
-package com.firewolf.busi.example.simple;
+package com.firewolf.example.simple;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

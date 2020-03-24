@@ -1,4 +1,4 @@
-package com.firewolf.busi;
+package com.firewolf;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
