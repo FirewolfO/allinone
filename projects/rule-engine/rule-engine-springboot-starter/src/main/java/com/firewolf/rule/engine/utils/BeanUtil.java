@@ -2,6 +2,7 @@ package com.firewolf.rule.engine.utils;
 
 import java.lang.reflect.Array;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class BeanUtil {
 
@@ -77,14 +78,19 @@ public class BeanUtil {
     /**
      * 判断数据是不是数组或者Collection
      *
-     * @param o
+     * @param list  列表对象
+     * @param clazz 具体类型，这里支持支List,Set,Array
      * @return
      */
-    public static boolean isArrayOrCollection(Object o) {
-        if (o == null) {
-            return false;
+    public static Object transList2Obj(List list, Class<?> clazz) {
+        if (clazz == Set.class) {
+            return new HashSet<>(list);
+        } else if (clazz == List.class) {
+            return list;
+        } else if (clazz.isArray()) {
+            return list.toArray();
         }
-        return (o instanceof Collection) || o.getClass().isArray();
+        return list;
     }
 
 }

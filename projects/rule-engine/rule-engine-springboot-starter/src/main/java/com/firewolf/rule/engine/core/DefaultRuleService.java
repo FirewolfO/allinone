@@ -1,5 +1,6 @@
 package com.firewolf.rule.engine.core;
 
+import com.firewolf.rule.engine.config.RuleProperties;
 import com.firewolf.rule.engine.core.conflict.resolver.AbstractConflictResolver;
 import com.firewolf.rule.engine.utils.BeanUtil;
 import com.firewolf.rule.engine.utils.MetaInfoUtil;
@@ -16,10 +17,8 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.reflect.Field;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static com.firewolf.rule.engine.utils.MetaInfoUtil.*;
 
@@ -33,6 +32,9 @@ public class DefaultRuleService<R, I> implements IRuleService<R, I> {
 
     @Autowired
     private AbstractConflictResolver conflictStrategy;
+
+    @Autowired
+    private RuleProperties ruleProperties;
 
     @Override
     @Transactional
@@ -146,11 +148,11 @@ public class DefaultRuleService<R, I> implements IRuleService<R, I> {
                 return null;
             } else {
                 // 主子表结构，过滤子表
-                Object data = getObjValue(rule, metaInfo.getItemFieldName());
-                Object o = filterRuleItems(data, uniqueColumns, true);
+                Object orignalItemDatas = getObjValue(rule, metaInfo.getItemFieldName());
+                List conflictItems = getConflictItems(BeanUtil.transObj2List(orignalItemDatas), uniqueColumns);
                 // 有冲突的
-                if (o != null) {
-                    setObjValue(rule, metaInfo.getItemFieldName(), o);
+                if (conflictItems != null) {
+                    setObjValue(rule, metaInfo.getItemFieldName(), BeanUtil.transList2Obj(conflictItems, orignalItemDatas.getClass()));
                     return rule;
                 }
                 return null;
@@ -161,26 +163,47 @@ public class DefaultRuleService<R, I> implements IRuleService<R, I> {
     }
 
 
+    private final String EXISTS_ITEMS = "exist";
+    private final String NEW_ITEMS = "new";
+
     /**
-     * 过滤子表数据
+     * 获取冲突了的数据集合
+     *
+     * @return
+     */
+    private List getConflictItems(List orignalData, List<String> uniqueColumns) {
+        return groupItems(orignalData, uniqueColumns).get(EXISTS_ITEMS);
+    }
+
+    /**
+     * 获取没有冲突的数据
+     *
+     * @param orignalData
+     * @param uniqueColumns
+     * @return
+     */
+    private List getNotConflictItems(List orignalData, List<String> uniqueColumns) {
+        return groupItems(orignalData, uniqueColumns).get(NEW_ITEMS);
+    }
+
+    /**
+     * 对子项进行分组，分成已存在的和未存在的
      *
      * @param orignalData   原始数据
      * @param uniqueColumns 唯一字段
-     * @param exists        保留数据库中存在的
      * @return
      */
-    private Object filterRuleItems(Object orignalData, List<String> uniqueColumns, boolean exists) {
-
-
-        List items = BeanUtil.transObj2List(orignalData);
-        if (CollectionUtils.isEmpty(items)) {
-            return orignalData;
+    private Map<String, List> groupItems(List orignalData, List<String> uniqueColumns) {
+        Map<String, List> group = new HashMap<>();
+        if (CollectionUtils.isEmpty(orignalData)) {
+            group.put(NEW_ITEMS, orignalData);
+            return group;
         }
         //查询冲突项
-        String sql = SqlBuilder.buildUniqueQuerySql(MetaInfoUtil.getMetaInfo(items.get(0).getClass()).getTable(), uniqueColumns, items.size());
+        String sql = SqlBuilder.buildUniqueQuerySql(MetaInfoUtil.getMetaInfo(orignalData.get(0).getClass()).getTable(), uniqueColumns, orignalData.size());
         Map<String, Object> params = new HashMap<>();
-        for (int i = 0; i < items.size(); i++) {
-            Object item = items.get(i);
+        for (int i = 0; i < orignalData.size(); i++) {
+            Object item = orignalData.get(i);
             Map<String, Object> objValues = objectToMap(item);
             for (String column : uniqueColumns) {
                 params.put(column + i, objValues.get(column));
@@ -188,13 +211,17 @@ public class DefaultRuleService<R, I> implements IRuleService<R, I> {
         }
 
         // 默认认为所有的子表数据项都冲突了
-        Object conflictItems = orignalData;
-        List<Integer> conflictCounts = new ArrayList<>();
         List<String> conflictUniqueKeys = namedParameterJdbcTemplate.query(sql, params, (resultSet, i) -> resultSet.getString(1));
-        if (CollectionUtils.isNotEmpty(conflictUniqueKeys)) {
-            Stream stream = items.stream().filter(item -> {
+        List existItems = new ArrayList(); // 存在的规则项
+        List newItems = new ArrayList(); // 新的规则项目
+
+        // 数据库中没有数据，那就没有冲突的
+        if (CollectionUtils.isEmpty(conflictUniqueKeys)) {
+            group.put(EXISTS_ITEMS, orignalData);
+            return group;
+        } else {
+            for (Object item : orignalData) {
                 Map<String, Object> objectValues = objectToMap(item);
-                //计算唯一key
                 String key = uniqueColumns.stream().map(column -> {
                     try {
                         Object o = objectValues.get(column);
@@ -204,26 +231,24 @@ public class DefaultRuleService<R, I> implements IRuleService<R, I> {
                     }
                     return "";
                 }).collect(Collectors.joining(","));
-
                 boolean contains = conflictUniqueKeys.contains(key);
                 if (contains) {
-                    conflictCounts.add(1);
-                    return exists;
+                    existItems.add(item);
+                } else {
+                    newItems.add(item);
                 }
-                return !exists;
-            });
-            if (conflictCounts.size() == 0) {
-                return null;
-            }
-            if (orignalData instanceof Set) {
-                conflictItems = stream.collect(Collectors.toSet());
-            } else if (orignalData instanceof List) {
-                conflictItems = stream.collect(Collectors.toList());
-            } else {
-                conflictItems = stream.toArray();
             }
         }
-        return conflictItems;
+
+        if (CollectionUtils.isNotEmpty(existItems)) {
+            group.put(EXISTS_ITEMS, existItems);
+        }
+
+        if (CollectionUtils.isNotEmpty(newItems)) {
+            group.put(NEW_ITEMS, newItems);
+        }
+        return group;
+
     }
 
 
@@ -356,11 +381,20 @@ public class DefaultRuleService<R, I> implements IRuleService<R, I> {
      */
     private void insertRuleItems(EntityMetaInfo mainMetaInfo, EntityMetaInfo subMetaInfo, List data, Object foreignValue) throws Exception {
         // 插入前冲突处理
-        List toDealData = conflictStrategy.beforeSub(mainMetaInfo, subMetaInfo, data);
+        Map<String, List> items = groupItems(data, ruleProperties.getUniqueColumns());
+        List toDealData = data;
+        boolean hasConflict = CollectionUtils.isNotEmpty(items.get(EXISTS_ITEMS));
+        if (hasConflict) {
+            toDealData = conflictStrategy.beforeSub(mainMetaInfo, subMetaInfo, data, items.get(EXISTS_ITEMS), items.get(NEW_ITEMS));
+        }
         if (CollectionUtils.isNotEmpty(toDealData)) {
             insertList(subMetaInfo, data, foreignValue);
         }
-        conflictStrategy.afterSub(mainMetaInfo, subMetaInfo);
+
+        if (hasConflict) {
+            conflictStrategy.afterSub(mainMetaInfo, subMetaInfo);
+        }
+
     }
 
 

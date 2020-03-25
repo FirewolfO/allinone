@@ -19,9 +19,9 @@ import java.util.*;
 @Component
 public class CoverConflictResolver extends AbstractConflictResolver {
     @Override
-    public List beforeSub(EntityMetaInfo mainEntityMetaInfo, EntityMetaInfo subMetaInfo, List data) throws Exception {
+    public List beforeSub(EntityMetaInfo mainEntityMetaInfo, EntityMetaInfo subMetaInfo, List data, List conflictItem, List notConflictItem) throws Exception {
 
-        if (CollectionUtils.isNotEmpty(ruleProperties.getUniqueColumns())) {
+        if (CollectionUtils.isNotEmpty(conflictItem)) {
             // 只有存在规则唯一约束的时候，才有可能产生冲突
             // 删除旧的规则项数据
             Map<String, Object> params = new HashMap<>();
@@ -30,8 +30,8 @@ public class CoverConflictResolver extends AbstractConflictResolver {
                 if (!params.containsKey(column)) {
                     params.put(column, new HashSet());
                 }
-                for (int i = 0; i < data.size(); i++) {
-                    ((Set) params.get(column)).add(MetaInfoUtil.getObjValue(data.get(i), filedName));
+                for (int i = 0; i < conflictItem.size(); i++) {
+                    ((Set) params.get(column)).add(MetaInfoUtil.getObjValue(conflictItem.get(i), filedName));
                 }
             }
             String delSql = SqlBuilder.buildDeleteSql(subMetaInfo.getTable(), params);

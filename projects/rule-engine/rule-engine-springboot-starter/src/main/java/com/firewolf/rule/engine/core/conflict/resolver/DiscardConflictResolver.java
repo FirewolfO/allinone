@@ -16,51 +16,11 @@ import java.util.stream.Collectors;
  */
 public class DiscardConflictResolver extends AbstractConflictResolver {
     @Override
-    public List beforeSub(EntityMetaInfo mainEntityMetaInfo, EntityMetaInfo subMetaInfo, List data) throws Exception {
-        Class<?> aClass = data.get(0).getClass();
-        String sql = SqlBuilder.buildUniqueCountSql(subMetaInfo, ruleProperties.getUniqueColumns());
-        Map<String, Set> params = new HashMap<>();
-        List<Field> fields = new ArrayList<>();
-        try {
-            for (String column : ruleProperties.getUniqueColumns()) {
-                Field field = aClass.getDeclaredField(subMetaInfo.getColumnFieldNameMap().get(column));
-                field.setAccessible(true);
-                if (!params.containsKey(column)) {
-                    params.put(column, new HashSet());
-                }
-                for (int i = 0; i < data.size(); i++) {
-                    params.get(column).add(field.get(data.get(i)));
-                }
-                fields.add(field);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        List<String> countResult = namedParameterJdbcTemplate.query(sql, params, (resultSet, i) -> resultSet.getInt(1) > 0 ? resultSet.getString(2) : null);
-
-        List resultData = (List) data.stream().filter(x -> {
-            try {
-                String values = fields.stream().map(field -> {
-                    try {
-                        return field.get(x).toString();
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    }
-                    return null;
-                }).collect(Collectors.joining(","));
-                values += ",";
-                return !countResult.contains(values);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return false;
-        }).collect(Collectors.toList());
-        return resultData;
+    public List beforeSub(EntityMetaInfo mainEntityMetaInfo, EntityMetaInfo subMetaInfo, List data, List conflictItem, List notConflictItem) throws Exception {
+        return notConflictItem;
     }
 
     @Override
     public void afterSub(EntityMetaInfo mainMetaInfo, EntityMetaInfo subMetaInfo) throws Exception {
-
-
     }
 }

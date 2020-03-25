@@ -21,9 +21,11 @@ public abstract class AbstractConflictResolver {
      * @param mainEntityMetaInfo 主表元数据信息
      * @param subMetaInfo        子表元数据信息
      * @param data               子表要插入的数据
+     * @param conflictItem       冲突项
+     * @param notConflictItem    非冲突项
      * @return
      */
-    public abstract List beforeSub(EntityMetaInfo mainEntityMetaInfo, EntityMetaInfo subMetaInfo, List data) throws Exception;
+    public abstract List beforeSub(EntityMetaInfo mainEntityMetaInfo, EntityMetaInfo subMetaInfo, List data, List conflictItem, List notConflictItem) throws Exception;
 
     /**
      * 子表中插入数据之后
