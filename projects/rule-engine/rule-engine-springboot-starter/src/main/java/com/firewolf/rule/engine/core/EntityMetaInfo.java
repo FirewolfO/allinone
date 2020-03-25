@@ -44,12 +44,6 @@ public class EntityMetaInfo {
      */
     private Map<String, String> filedNameColumnMap = new HashMap<>();
 
-
-    /**
-     * 数据库列和字段的对应关系
-     */
-    private Map<String, Field> columnFieldMap = new HashMap<>();
-
     /**
      * 排序字段
      */

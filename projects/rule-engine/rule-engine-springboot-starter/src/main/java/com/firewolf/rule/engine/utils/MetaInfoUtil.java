@@ -34,7 +34,6 @@ public class MetaInfoUtil {
             // 插入主表数据
             Field[] declaredFields = c.getDeclaredFields();
             LinkedHashMap<String, String> columnFieldNameMap = new LinkedHashMap<>();
-            Map<String, Field> columnFieldMap = new HashMap<>();
             Map<String, String> filedNameColumnMap = new HashMap<>();
             Map<String, String> orderColumnMap = new HashMap<>();
             Map<String, LikeType> likeColumnMap = new HashMap<>();
@@ -50,7 +49,6 @@ public class MetaInfoUtil {
                             columnName = annotation.value();
                         }
                         columnFieldNameMap.put(columnName, fieldName);
-                        columnFieldMap.put(columnName, field);
                         filedNameColumnMap.put(fieldName, columnName);
                     } else {
                         if (StringUtils.isEmpty(metaInfo.getItemFieldName())) {
@@ -90,7 +88,6 @@ public class MetaInfoUtil {
                 }
             });
             metaInfo.setColumnFieldNameMap(columnFieldNameMap);
-            metaInfo.setColumnFieldMap(columnFieldMap);
             metaInfo.setFiledNameColumnMap(filedNameColumnMap);
             metaInfo.setOrderColumnMap(orderColumnMap);
             metaInfo.setLikeColumnMap(likeColumnMap);
