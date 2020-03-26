@@ -1,6 +1,7 @@
 package com.firewolf.rule.engine.utils.sql;
 
 import com.firewolf.rule.engine.enums.LikeType;
+import com.firewolf.rule.engine.enums.OrderType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,7 +28,7 @@ public class SqlBuildParam {
     /**
      * order by 字段
      */
-    private Map<String, String> orderBy;
+    private Map<String, OrderType> orderBy;
 
 
     /**

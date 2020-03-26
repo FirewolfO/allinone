@@ -1,6 +1,7 @@
 package com.firewolf.rule.engine.core;
 
 import com.firewolf.rule.engine.enums.LikeType;
+import com.firewolf.rule.engine.enums.OrderType;
 import lombok.Data;
 
 import java.lang.reflect.Field;
@@ -47,7 +48,7 @@ public class EntityMetaInfo {
     /**
      * 排序字段
      */
-    private Map<String, String> orderColumnMap = new HashMap<>();
+    private Map<String, OrderType> orderColumnMap = new HashMap<>();
 
     /**
      * 带有like语句的字段

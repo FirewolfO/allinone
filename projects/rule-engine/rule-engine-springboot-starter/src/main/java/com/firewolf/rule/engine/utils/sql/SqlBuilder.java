@@ -2,6 +2,7 @@ package com.firewolf.rule.engine.utils.sql;
 
 import com.firewolf.rule.engine.core.EntityMetaInfo;
 import com.firewolf.rule.engine.enums.LikeType;
+import com.firewolf.rule.engine.enums.OrderType;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -111,7 +112,7 @@ public class SqlBuilder {
         for (String column : uniqueColumns) {
             sql += column + ",\",\",";
         }
-        sql = StringUtils.removeEnd(sql,  ",\",\",");
+        sql = StringUtils.removeEnd(sql, ",\",\",");
         sql += ") unikey FROM " + table;
         if (size > 0) {
             sql += " where ";
@@ -192,10 +193,10 @@ public class SqlBuilder {
      * @param orderByMap
      * @return
      */
-    private static String buildOrderBy(Map<String, String> orderByMap) {
+    private static String buildOrderBy(Map<String, OrderType> orderByMap) {
         if (MapUtils.isEmpty(orderByMap))
             return "";
-        String sql = orderByMap.entrySet().stream().map(entry -> entry.getKey() + " " + entry.getValue()).collect(Collectors.joining(SEPARATOR_COMMA));
+        String sql = orderByMap.entrySet().stream().map(entry -> entry.getKey() + " " + entry.getValue().getDescription()).collect(Collectors.joining(SEPARATOR_COMMA));
         return ORDERBY + sql;
     }
 

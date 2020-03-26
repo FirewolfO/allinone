@@ -35,7 +35,7 @@ public class MetaInfoUtil {
             Field[] declaredFields = c.getDeclaredFields();
             LinkedHashMap<String, String> columnFieldNameMap = new LinkedHashMap<>();
             Map<String, String> filedNameColumnMap = new HashMap<>();
-            Map<String, String> orderColumnMap = new HashMap<>();
+            Map<String, OrderType> orderColumnMap = new HashMap<>();
             Map<String, LikeType> likeColumnMap = new HashMap<>();
             Stream.of(declaredFields).forEach(field -> {
                 try {
@@ -75,8 +75,7 @@ public class MetaInfoUtil {
 
                     if (field.getDeclaredAnnotation(OrderBy.class) != null) {
                         OrderBy orderBy = field.getDeclaredAnnotation(OrderBy.class);
-                        String orderType = orderBy.value() == OrderType.DESC ? "desc" : "asc";
-                        orderColumnMap.put(columnName, orderType);
+                        orderColumnMap.put(columnName, orderBy.value());
                     }
 
                     if (field.getDeclaredAnnotation(Like.class) != null) {

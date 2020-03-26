@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 @ConditionalOnProperty(prefix = "lx.rule", name = "conflict-strategy", havingValue = "discard")
 @Component
 /**
- * 丢弃策略，保留旧的
+ * 丢弃策略，丢弃要插入数据中已经存在的，只插入没存在的
  */
 public class DiscardConflictResolver extends AbstractConflictResolver {
     @Override
