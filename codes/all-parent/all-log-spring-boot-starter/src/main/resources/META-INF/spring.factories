@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.firewolf.common.config.LogAutoConfiguration
+com.firewolf.log.config.LogAutoConfiguration
