@@ -1,4 +1,4 @@
-package com.firewolf.rule.engine.core;
+package com.firewolf.rule.engine.entity;
 
 import com.firewolf.rule.engine.enums.LikeType;
 import com.firewolf.rule.engine.enums.OrderType;

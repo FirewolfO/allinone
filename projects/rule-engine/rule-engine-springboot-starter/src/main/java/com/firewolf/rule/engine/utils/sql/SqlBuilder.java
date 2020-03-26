@@ -1,9 +1,8 @@
 package com.firewolf.rule.engine.utils.sql;
 
-import com.firewolf.rule.engine.core.EntityMetaInfo;
+import com.firewolf.rule.engine.entity.EntityMetaInfo;
 import com.firewolf.rule.engine.enums.LikeType;
 import com.firewolf.rule.engine.enums.OrderType;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 

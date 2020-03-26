@@ -1,4 +1,4 @@
-package com.firewolf.rule.engine.core;
+package com.firewolf.rule.engine.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,7 +16,7 @@ import java.util.Map;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class QueryVO {
+public class RuleQuery {
 
     /**
      * 每页显示数量

@@ -1,4 +1,6 @@
-package com.firewolf.rule.engine.core;
+package com.firewolf.rule.engine.service;
+
+import com.firewolf.rule.engine.entity.RuleQuery;
 
 import java.util.List;
 
@@ -38,7 +40,7 @@ public interface IRuleService<R, I> {
      * @param subClazz  子表class
      * @return
      */
-    List<R> queryRules(QueryVO data, Class<?> mainClazz, Class<?> subClazz);
+    List<R> queryRules(RuleQuery data, Class<?> mainClazz, Class<?> subClazz);
 
     /**
      * 检测冲突了的规则,没有冲突返回null

@@ -1,13 +1,10 @@
 package com.firewolf.rule.engine.core.conflict.resolver;
 
-import com.firewolf.rule.engine.core.EntityMetaInfo;
-import com.firewolf.rule.engine.utils.sql.SqlBuilder;
+import com.firewolf.rule.engine.entity.EntityMetaInfo;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
-import java.lang.reflect.Field;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @ConditionalOnProperty(prefix = "lx.rule", name = "conflict-strategy", havingValue = "discard")
 @Component

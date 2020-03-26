@@ -1,14 +1,13 @@
 package com.firewolf.rule.engine.core.conflict.resolver;
 
 
-import com.firewolf.rule.engine.core.EntityMetaInfo;
+import com.firewolf.rule.engine.entity.EntityMetaInfo;
 import com.firewolf.rule.engine.utils.MetaInfoUtil;
 import com.firewolf.rule.engine.utils.sql.SqlBuilder;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
-import java.lang.reflect.Field;
 import java.util.*;
 
 

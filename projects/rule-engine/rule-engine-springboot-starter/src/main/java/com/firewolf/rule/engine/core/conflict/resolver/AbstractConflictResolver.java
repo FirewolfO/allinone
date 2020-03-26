@@ -1,7 +1,7 @@
 package com.firewolf.rule.engine.core.conflict.resolver;
 
-import com.firewolf.rule.engine.config.RuleProperties;
-import com.firewolf.rule.engine.core.EntityMetaInfo;
+import com.firewolf.rule.engine.config.properties.RuleProperties;
+import com.firewolf.rule.engine.entity.EntityMetaInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 

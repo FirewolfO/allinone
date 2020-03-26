@@ -1,4 +1,4 @@
-package com.firewolf.rule.engine.config;
+package com.firewolf.rule.engine.config.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

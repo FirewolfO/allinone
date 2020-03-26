@@ -1,4 +1,4 @@
-package com.firewolf.rule.engine.core;
+package com.firewolf.rule.engine.core.matcher;
 
 /**
  * 规则匹配接口

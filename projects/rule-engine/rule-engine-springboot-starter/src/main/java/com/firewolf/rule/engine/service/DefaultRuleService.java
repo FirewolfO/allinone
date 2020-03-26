@@ -1,7 +1,9 @@
-package com.firewolf.rule.engine.core;
+package com.firewolf.rule.engine.service;
 
-import com.firewolf.rule.engine.config.RuleProperties;
+import com.firewolf.rule.engine.config.properties.RuleProperties;
 import com.firewolf.rule.engine.core.conflict.resolver.AbstractConflictResolver;
+import com.firewolf.rule.engine.entity.EntityMetaInfo;
+import com.firewolf.rule.engine.entity.RuleQuery;
 import com.firewolf.rule.engine.utils.BeanUtil;
 import com.firewolf.rule.engine.utils.MetaInfoUtil;
 import com.firewolf.rule.engine.utils.sql.Limit;
@@ -57,7 +59,7 @@ public class DefaultRuleService<R, I> implements IRuleService<R, I> {
 
 
     @Override
-    public List<R> queryRules(QueryVO data, Class<?> mainClazz, Class<?> subClazz) {
+    public List<R> queryRules(RuleQuery data, Class<?> mainClazz, Class<?> subClazz) {
         Map<String, Object> mainParams = data.getMainParams();
         Map<String, Object> subParams = data.getSubParams();
 

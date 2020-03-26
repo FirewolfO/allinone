@@ -1,6 +1,6 @@
 package com.firewolf.rule.engine.core.conflict.resolver;
 
-import com.firewolf.rule.engine.core.EntityMetaInfo;
+import com.firewolf.rule.engine.entity.EntityMetaInfo;
 
 import java.util.List;
 

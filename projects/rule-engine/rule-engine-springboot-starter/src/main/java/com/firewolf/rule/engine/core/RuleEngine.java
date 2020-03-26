@@ -1,6 +1,9 @@
 package com.firewolf.rule.engine.core;
 
-import com.firewolf.rule.engine.config.RuleProperties;
+import com.firewolf.rule.engine.config.properties.RuleProperties;
+import com.firewolf.rule.engine.core.matcher.IRuleMatcher;
+import com.firewolf.rule.engine.entity.RuleQuery;
+import com.firewolf.rule.engine.service.IRuleService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -95,7 +98,7 @@ public class RuleEngine<R, I, D> {
      * @param data     要用来匹配的数据
      * @return
      */
-    public List<R> matchRules(QueryVO searcher, D data) {
+    public List<R> matchRules(RuleQuery searcher, D data) {
         return matchRules(searcher, getMainClazz(), getSubClazz(), data);
     }
 
@@ -103,23 +106,23 @@ public class RuleEngine<R, I, D> {
     /**
      * 查找规则,如果自己实现了RuleEngine，调用这个方法
      *
-     * @param queryVO 查询参数
+     * @param ruleQuery 查询参数
      * @return
      */
-    public List<R> findRules(QueryVO queryVO) {
-        return findRules(queryVO, getMainClazz(), getSubClazz());
+    public List<R> findRules(RuleQuery ruleQuery) {
+        return findRules(ruleQuery, getMainClazz(), getSubClazz());
     }
 
     /**
      * 查找规则,如果是直接注入了系统提供的RuleEngine，需要调用这个参数
      *
-     * @param queryVO   查询参数
+     * @param ruleQuery   查询参数
      * @param mainClazz 主表Class
      * @param subClazz  主表Class
      * @return
      */
-    public List<R> findRules(QueryVO queryVO, Class<?> mainClazz, Class<?> subClazz) {
-        return iRuleService.queryRules(queryVO, mainClazz, subClazz);
+    public List<R> findRules(RuleQuery ruleQuery, Class<?> mainClazz, Class<?> subClazz) {
+        return iRuleService.queryRules(ruleQuery, mainClazz, subClazz);
     }
 
     /**
@@ -131,7 +134,7 @@ public class RuleEngine<R, I, D> {
      * @param data      要用来匹配的数据
      * @return 返回满足条件的规则信息
      */
-    public List<R> matchRules(QueryVO searcher, Class<?> mainClazz, Class<?> subClazz, D data) {
+    public List<R> matchRules(RuleQuery searcher, Class<?> mainClazz, Class<?> subClazz, D data) {
         List<R> rules = iRuleService.queryRules(searcher, mainClazz, subClazz);
         if (CollectionUtils.isNotEmpty(rules)) {
             return rules.stream().filter(rule -> {

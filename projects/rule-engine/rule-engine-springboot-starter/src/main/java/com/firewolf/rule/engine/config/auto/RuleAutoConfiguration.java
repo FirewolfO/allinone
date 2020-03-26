@@ -1,8 +1,14 @@
-package com.firewolf.rule.engine.config;
+package com.firewolf.rule.engine.config.auto;
 
+import com.firewolf.rule.engine.config.properties.DataSourceProperties;
+import com.firewolf.rule.engine.config.properties.RuleProperties;
 import com.firewolf.rule.engine.core.*;
 import com.firewolf.rule.engine.core.conflict.resolver.AbstractConflictResolver;
 import com.firewolf.rule.engine.core.conflict.resolver.DefaultConflictResolver;
+import com.firewolf.rule.engine.core.matcher.DefaultRuleMatcher;
+import com.firewolf.rule.engine.core.matcher.IRuleMatcher;
+import com.firewolf.rule.engine.service.DefaultRuleService;
+import com.firewolf.rule.engine.service.IRuleService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

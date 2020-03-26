@@ -1,7 +1,7 @@
 package com.firewolf.rule.engine.utils;
 
 import com.firewolf.rule.engine.annotations.*;
-import com.firewolf.rule.engine.core.EntityMetaInfo;
+import com.firewolf.rule.engine.entity.EntityMetaInfo;
 import com.firewolf.rule.engine.enums.LikeType;
 import com.firewolf.rule.engine.enums.OrderType;
 import org.apache.commons.lang3.StringUtils;
