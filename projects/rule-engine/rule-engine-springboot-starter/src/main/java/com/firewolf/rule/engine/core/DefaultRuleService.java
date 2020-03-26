@@ -304,7 +304,7 @@ public class DefaultRuleService<R, I> implements IRuleService<R, I> {
                 o = clazz.newInstance();
                 Map<String, Object> values = new HashMap<>();
                 for (Map.Entry<String, String> entry : fields.entrySet()) {
-                    values.put(entry.getValue(), resultSet.getString(entry.getKey()));
+                    values.put(entry.getValue(), resultSet.getObject(entry.getKey()));
                 }
                 setObjValues(o, values);
             } catch (Exception e) {
