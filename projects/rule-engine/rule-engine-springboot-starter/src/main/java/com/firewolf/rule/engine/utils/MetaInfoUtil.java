@@ -197,7 +197,7 @@ public class MetaInfoUtil {
                 declaredField.set(o, entry.getValue());
             }
         } catch (Exception e) {
-            throw new RuntimeException("set object proeperty error !");
+            throw new RuntimeException("set object property error !");
         }
     }
 }
