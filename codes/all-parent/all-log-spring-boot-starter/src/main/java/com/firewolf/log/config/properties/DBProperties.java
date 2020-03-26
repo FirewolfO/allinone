@@ -8,7 +8,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * Date: 2020/2/28 16:27
  */
 @Data
-@ConfigurationProperties(prefix = "log.db")
+@ConfigurationProperties(prefix = "lx.log.db")
 public class DBProperties {
 
     private String host = "locahost";

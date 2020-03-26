@@ -2,6 +2,7 @@ package com.firewolf.log.config;
 
 import com.alibaba.ttl.threadpool.TtlExecutors;
 import com.firewolf.log.config.properties.ExecutorProperties;
+import com.firewolf.log.config.properties.LogProperties;
 import com.firewolf.log.core.LogProcessor;
 import com.firewolf.log.handler.DBLogHandler;
 import com.firewolf.log.handler.DefaultLogHandler;
@@ -33,7 +34,7 @@ import java.util.concurrent.ThreadPoolExecutor;
         havingValue = "true",
         matchIfMissing = true
 )
-@EnableConfigurationProperties({DBProperties.class, ExecutorProperties.class})
+@EnableConfigurationProperties({DBProperties.class, ExecutorProperties.class, LogProperties.class})
 public class LogAutoConfiguration {
     /**
      * 默认的获取日志操作者的Bean
@@ -62,7 +63,7 @@ public class LogAutoConfiguration {
      *
      * @return
      */
-    @ConditionalOnProperty(name = "log.handler", havingValue = "db")
+    @ConditionalOnProperty(name = "lx.log.handler", havingValue = "db")
     @Bean
     public LogHandler defaultDBLogHandler() {
         return new DBLogHandler();
@@ -82,7 +83,7 @@ public class LogAutoConfiguration {
 
 
     @Bean
-    @ConditionalOnProperty(name = "log.handler", havingValue = "db")
+    @ConditionalOnProperty(name = "lx.log.handler", havingValue = "db")
     public JdbcTemplate jdbcTemplate(DBProperties properties) {
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -95,7 +96,7 @@ public class LogAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnProperty(name = "log.handler", havingValue = "db")
+    @ConditionalOnProperty(name = "lx.log.handler", havingValue = "db")
     public DBLogService dblogService() {
         return new DBLogService();
     }
