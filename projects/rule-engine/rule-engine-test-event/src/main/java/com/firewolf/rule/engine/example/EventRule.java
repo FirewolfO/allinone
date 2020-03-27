@@ -35,6 +35,12 @@ public class EventRule {
     private List<EventRuleItem> ruleItems;
 
     /**
+     * 事件等级
+     */
+    @Column("event_level_id")
+    private Integer eventLevel;
+
+    /**
      * 联动
      */
     @Column("event_linkage_types")

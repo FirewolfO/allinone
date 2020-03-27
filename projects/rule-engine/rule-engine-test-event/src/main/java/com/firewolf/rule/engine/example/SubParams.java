@@ -6,5 +6,4 @@ import lombok.Data;
 public class SubParams {
     private Integer eventType;
     private Integer deviceId;
-    private Integer eventLevel;
 }

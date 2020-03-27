@@ -80,6 +80,9 @@ public class DefaultRuleService<R, I> implements IRuleService<R, I> {
             // 只有子表查询参数
             if (MapUtils.isEmpty(mainParams) && MapUtils.isNotEmpty(subParams)) {
                 List list = findList(subClazz, subParams, -1, 0);
+                if (CollectionUtils.isEmpty(list)) {
+                    return null;
+                }
                 String foreignKeyFieldName = subMetaInfo.getColumnFieldNameMap().get(subMetaInfo.getForeignKeyColumn());
                 // 根据外键分组，到时候放到规则主表的属性里面
                 Map maps = (Map) list.stream().collect(Collectors.groupingBy(x -> getObjValue(x, foreignKeyFieldName)));

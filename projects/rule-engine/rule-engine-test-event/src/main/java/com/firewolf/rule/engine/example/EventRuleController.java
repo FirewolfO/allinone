@@ -30,16 +30,15 @@ public class EventRuleController {
         eventRule.setTimePlan(exRuleVO.getTimePlan());
         eventRule.setLinkage(exRuleVO.getLinkage());
         eventRule.setIsEnable(exRuleVO.getIsEnable());
-
+        eventRule.setEventLevel(exRuleVO.getEventLevel());
         List<String> deviceIds = exRuleVO.getDeviceIds();
         List<Integer> eventTypes = exRuleVO.getEventTypes();
-        Integer eventLevel = exRuleVO.getEventLevel();
         List<EventRuleItem> ruleItems = new ArrayList<>();
         for (String deviceId : deviceIds) {
             for (Integer eventType : eventTypes) {
                 EventRuleItem eventRuleItem = new EventRuleItem();
                 eventRuleItem.setDeviceId(deviceId);
-                eventRuleItem.setEventLevel(eventLevel);
+
                 eventRuleItem.setEventType(eventType);
                 ruleItems.add(eventRuleItem);
             }
@@ -57,8 +56,8 @@ public class EventRuleController {
         RuleQuery queryVO = new RuleQuery();
         queryVO.getSubParams().put("deviceId", deviceId);
         queryVO.getSubParams().put("eventType", eventType);
-//        List<EventRule> eventRules = ruleEngine.matchRules(queryVO,EventRule.class,EventRuleItem.class, LocalDateTime.now());
-        List<EventRule> eventRules = ruleEngine.matchRules(queryVO,LocalDateTime.now());
+        List<EventRule> eventRules = ruleEngine.matchRules(queryVO,EventRule.class,EventRuleItem.class, LocalDateTime.now());
+//        List<EventRule> eventRules = ruleEngine.matchRules(queryVO,LocalDateTime.now());
         return eventRules;
     }
 
@@ -80,6 +79,7 @@ public class EventRuleController {
         eventRule.setTimePlan(exRuleVO.getTimePlan());
         eventRule.setLinkage(exRuleVO.getLinkage());
         eventRule.setIsEnable(exRuleVO.getIsEnable());
+        eventRule.setEventLevel(exRuleVO.getEventLevel());
 
         List<String> deviceIds = exRuleVO.getDeviceIds();
         List<Integer> eventTypes = exRuleVO.getEventTypes();
@@ -89,7 +89,6 @@ public class EventRuleController {
             for (Integer eventType : eventTypes) {
                 EventRuleItem eventRuleItem = new EventRuleItem();
                 eventRuleItem.setDeviceId(deviceId);
-                eventRuleItem.setEventLevel(eventLevel);
                 eventRuleItem.setEventType(eventType);
                 ruleItems.add(eventRuleItem);
             }
@@ -118,6 +117,7 @@ public class EventRuleController {
         eventRule.setTimePlan(exRuleVO.getTimePlan());
         eventRule.setLinkage(exRuleVO.getLinkage());
         eventRule.setIsEnable(exRuleVO.getIsEnable());
+        eventRule.setEventLevel(exRuleVO.getEventLevel());
         List<String> deviceIds = exRuleVO.getDeviceIds();
         List<Integer> eventTypes = exRuleVO.getEventTypes();
         Integer eventLevel = exRuleVO.getEventLevel();
@@ -126,7 +126,6 @@ public class EventRuleController {
             for (Integer eventType : eventTypes) {
                 EventRuleItem eventRuleItem = new EventRuleItem();
                 eventRuleItem.setDeviceId(deviceId);
-                eventRuleItem.setEventLevel(eventLevel);
                 eventRuleItem.setEventType(eventType);
                 ruleItems.add(eventRuleItem);
             }

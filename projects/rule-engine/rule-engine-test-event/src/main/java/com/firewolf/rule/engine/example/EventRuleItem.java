@@ -23,10 +23,5 @@ public class EventRuleItem {
      */
     private String deviceId;
 
-    /**
-     * 事件等级
-     */
-    @Column("event_level_id")
-    private Integer eventLevel;
 
 }

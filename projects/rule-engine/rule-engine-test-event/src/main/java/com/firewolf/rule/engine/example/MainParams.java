@@ -7,5 +7,6 @@ public class MainParams {
     private String name;
     private Integer isEnable;
     private String timePlan;
+    private Integer eventLevel;
     private Integer id;
 }
