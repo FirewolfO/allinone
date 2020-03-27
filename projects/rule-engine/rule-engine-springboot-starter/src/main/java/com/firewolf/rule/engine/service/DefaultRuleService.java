@@ -385,9 +385,10 @@ public class DefaultRuleService<R, I> implements IRuleService<R, I> {
         // 插入前冲突处理
         Map<String, List> items = groupItems(data, ruleProperties.getUniqueColumns());
         List toDealData = data;
-        boolean hasConflict = CollectionUtils.isNotEmpty(items.get(EXISTS_ITEMS));
+        List conflictItems = getConflictItems(data, ruleProperties.getUniqueColumns());
+        boolean hasConflict = CollectionUtils.isNotEmpty(conflictItems);
         if (hasConflict) {
-            toDealData = conflictStrategy.beforeSub(mainMetaInfo, subMetaInfo, data, items.get(EXISTS_ITEMS), items.get(NEW_ITEMS));
+            toDealData = conflictStrategy.beforeSub(mainMetaInfo, subMetaInfo, data, conflictItems, items.get(NEW_ITEMS));
         }
         if (CollectionUtils.isNotEmpty(toDealData)) {
             insertList(subMetaInfo, data, foreignValue);

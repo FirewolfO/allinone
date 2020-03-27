@@ -4,6 +4,7 @@ import com.firewolf.rule.engine.config.properties.DataSourceProperties;
 import com.firewolf.rule.engine.config.properties.RuleProperties;
 import com.firewolf.rule.engine.core.*;
 import com.firewolf.rule.engine.core.conflict.resolver.AbstractConflictResolver;
+import com.firewolf.rule.engine.core.conflict.resolver.CoverConflictResolver;
 import com.firewolf.rule.engine.core.conflict.resolver.DefaultConflictResolver;
 import com.firewolf.rule.engine.core.matcher.DefaultRuleMatcher;
 import com.firewolf.rule.engine.core.matcher.IRuleMatcher;
@@ -49,8 +50,14 @@ public class RuleAutoConfiguration {
     }
 
 
+    @ConditionalOnProperty(prefix = "lx.rule", name = "conflict-strategy", havingValue = "cover")
     @Bean
-    @ConditionalOnMissingBean(value = AbstractConflictResolver.class)
+    public AbstractConflictResolver coverConflictResolver() {
+        return new CoverConflictResolver();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(AbstractConflictResolver.class)
     public AbstractConflictResolver defaultConflictResolver() {
         return new DefaultConflictResolver();
     }

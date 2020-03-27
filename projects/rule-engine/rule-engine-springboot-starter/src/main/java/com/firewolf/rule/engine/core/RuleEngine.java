@@ -116,7 +116,7 @@ public class RuleEngine<R, I, D> {
     /**
      * 查找规则,如果是直接注入了系统提供的RuleEngine，需要调用这个参数
      *
-     * @param ruleQuery   查询参数
+     * @param ruleQuery 查询参数
      * @param mainClazz 主表Class
      * @param subClazz  主表Class
      * @return
@@ -137,14 +137,9 @@ public class RuleEngine<R, I, D> {
     public List<R> matchRules(RuleQuery searcher, Class<?> mainClazz, Class<?> subClazz, D data) {
         List<R> rules = iRuleService.queryRules(searcher, mainClazz, subClazz);
         if (CollectionUtils.isNotEmpty(rules)) {
-            return rules.stream().filter(rule -> {
-                        if ("or".equals(ruleProperties.getMatchType())) {
-                            return ruleMatchers.stream().anyMatch(ruleMatcher -> ruleMatcher.match(rule, data));
-                        } else {
-                            return ruleMatchers.stream().allMatch(ruleMatcher -> ruleMatcher.match(rule, data));
-                        }
-                    }
-            ).collect(Collectors.toList());
+            return rules.stream()
+                    .filter(rule -> "or".equals(ruleProperties.getMatchType()) ? ruleMatchers.stream().anyMatch(ruleMatcher -> ruleMatcher.match(rule, data)) : ruleMatchers.stream().allMatch(ruleMatcher -> ruleMatcher.match(rule, data)))
+                    .collect(Collectors.toList());
         }
         return new ArrayList<>();
     }

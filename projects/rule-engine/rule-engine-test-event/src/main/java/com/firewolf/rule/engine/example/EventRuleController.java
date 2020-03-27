@@ -57,7 +57,8 @@ public class EventRuleController {
         RuleQuery queryVO = new RuleQuery();
         queryVO.getSubParams().put("deviceId", deviceId);
         queryVO.getSubParams().put("eventType", eventType);
-        List<EventRule> eventRules = ruleEngine.matchRules(queryVO, LocalDateTime.now());
+//        List<EventRule> eventRules = ruleEngine.matchRules(queryVO,EventRule.class,EventRuleItem.class, LocalDateTime.now());
+        List<EventRule> eventRules = ruleEngine.matchRules(queryVO,LocalDateTime.now());
         return eventRules;
     }
 

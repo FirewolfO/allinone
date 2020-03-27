@@ -14,8 +14,6 @@ import java.util.*;
 /**
  * 覆盖策略，删除旧的，重新插入新的，所以新插入的数据不做任何变化
  */
-@ConditionalOnProperty(prefix = "lx.rule", name = "conflict-strategy", havingValue = "cover")
-@Component
 public class CoverConflictResolver extends AbstractConflictResolver {
     @Override
     public List beforeSub(EntityMetaInfo mainEntityMetaInfo, EntityMetaInfo subMetaInfo, List data, List conflictItem, List notConflictItem) throws Exception {
