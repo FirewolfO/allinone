@@ -1,6 +1,6 @@
 package com.firewolf.rule.engine.example;
 
-import com.firewolf.rule.engine.core.IRuleMatcher;
+import com.firewolf.rule.engine.core.matcher.IRuleMatcher;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;

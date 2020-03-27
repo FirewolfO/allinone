@@ -1,7 +1,6 @@
 package com.firewolf.rule.engine.example;
 
-import com.firewolf.rule.engine.core.QueryVO;
-import com.firewolf.rule.engine.utils.BeanUtil;
+import com.firewolf.rule.engine.entity.RuleQuery;
 import com.firewolf.rule.engine.utils.MetaInfoUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -55,7 +54,7 @@ public class EventRuleController {
     @PostMapping("/match")
     public List<EventRule> receive(Integer eventType, String deviceId) {
 
-        QueryVO queryVO = new QueryVO();
+        RuleQuery queryVO = new RuleQuery();
         queryVO.getSubParams().put("deviceId", deviceId);
         queryVO.getSubParams().put("eventType", eventType);
         List<EventRule> eventRules = ruleEngine.matchRules(queryVO, LocalDateTime.now());
@@ -101,9 +100,9 @@ public class EventRuleController {
 
     @ApiOperation("查询规则")
     @GetMapping
-    public List<EventRule> list(EventQueryVO queryVO) throws Exception {
+    public List<EventRule> list(EventRuleQuery queryVO) throws Exception {
 
-        QueryVO q = new QueryVO();
+        RuleQuery q = new RuleQuery();
         q.setMainParams(MetaInfoUtil.objectToMapNoNull(queryVO.getMainParams()));
         q.setSubParams(MetaInfoUtil.objectToMapNoNull(queryVO.getSubParams()));
         return ruleEngine.findRules(q);
