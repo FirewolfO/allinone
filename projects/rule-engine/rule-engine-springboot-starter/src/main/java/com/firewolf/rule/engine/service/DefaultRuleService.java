@@ -71,7 +71,7 @@ public class DefaultRuleService<R, I> implements IRuleService<R, I> {
         removeNullParams(subParams, subMetaInfo);
 
         // 没有主子表结构，直接从一张表查出即可
-        if (mainClazz == subClazz) {
+        if (mainClazz.toString().equals(subClazz.toString())) {
             mainParams.putAll(subParams);
             return findList(mainClazz, mainParams, data.getStart(), data.getPageSize());
         }
@@ -139,9 +139,9 @@ public class DefaultRuleService<R, I> implements IRuleService<R, I> {
         // 非主子表结构
         try {
             EntityMetaInfo metaInfo = getMetaInfo(mainClazz);
-            if (mainClazz == subClazz) {
+            if (mainClazz.toString().equals(subClazz.toString())) {
                 String mainSql = SqlBuilder.buildUniqueQuerySql(metaInfo.getTable(), uniqueColumns, 1);
-                Map<String, Object> objValues = objectToMap(rule);
+                Map<String, Object> objValues = objectToMapNoNull(rule);
                 Map<String, Object> params = new HashMap<>();
                 for (String column : uniqueColumns) {
                     params.put(column + 0, objValues.get(column));
@@ -150,7 +150,6 @@ public class DefaultRuleService<R, I> implements IRuleService<R, I> {
                 if (CollectionUtils.isNotEmpty(conflictUniqueKeys)) {
                     return rule;
                 }
-                return null;
             } else {
                 // 主子表结构，过滤子表
                 Object orignalItemDatas = getObjValue(rule, metaInfo.getItemFieldName());
@@ -160,8 +159,8 @@ public class DefaultRuleService<R, I> implements IRuleService<R, I> {
                     setObjValue(rule, metaInfo.getItemFieldName(), BeanUtil.transList2Obj(conflictItems, orignalItemDatas.getClass()));
                     return rule;
                 }
-                return null;
             }
+            return null;
         } catch (Exception e) {
             throw new RuntimeException(e.getCause());
         }

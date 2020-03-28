@@ -1,4 +1,4 @@
-package com.firewolf.rule.engine.example;
+package com.firewolf.rule.example;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

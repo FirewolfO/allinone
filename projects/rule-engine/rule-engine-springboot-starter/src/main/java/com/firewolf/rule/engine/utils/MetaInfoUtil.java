@@ -4,6 +4,7 @@ import com.firewolf.rule.engine.annotations.*;
 import com.firewolf.rule.engine.entity.EntityMetaInfo;
 import com.firewolf.rule.engine.enums.LikeType;
 import com.firewolf.rule.engine.enums.OrderType;
+import com.firewolf.rule.engine.enums.UniqueType;
 import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Field;
@@ -33,10 +34,6 @@ public class MetaInfoUtil {
             metaInfo.setTable(tableName);
             // 插入主表数据
             Field[] declaredFields = c.getDeclaredFields();
-            LinkedHashMap<String, String> columnFieldNameMap = new LinkedHashMap<>();
-            Map<String, String> filedNameColumnMap = new HashMap<>();
-            Map<String, OrderType> orderColumnMap = new HashMap<>();
-            Map<String, LikeType> likeColumnMap = new HashMap<>();
             Stream.of(declaredFields).forEach(field -> {
                 try {
                     field.setAccessible(true);
@@ -48,8 +45,8 @@ public class MetaInfoUtil {
                         if (annotation != null) {
                             columnName = annotation.value();
                         }
-                        columnFieldNameMap.put(columnName, fieldName);
-                        filedNameColumnMap.put(fieldName, columnName);
+                        metaInfo.getColumnFieldNameMap().put(columnName, fieldName);
+                        metaInfo.getFiledNameColumnMap().put(fieldName, columnName);
                     } else {
                         if (StringUtils.isEmpty(metaInfo.getItemFieldName())) {
                             metaInfo.setItemFieldName(fieldName);
@@ -75,21 +72,26 @@ public class MetaInfoUtil {
 
                     if (field.getDeclaredAnnotation(OrderBy.class) != null) {
                         OrderBy orderBy = field.getDeclaredAnnotation(OrderBy.class);
-                        orderColumnMap.put(columnName, orderBy.value());
+                        metaInfo.getOrderColumnMap().put(columnName, orderBy.value());
                     }
 
                     if (field.getDeclaredAnnotation(Like.class) != null) {
                         Like like = field.getDeclaredAnnotation(Like.class);
-                        likeColumnMap.put(columnName, like.value());
+                        metaInfo.getLikeColumnMap().put(columnName, like.value());
+                    }
+
+                    if (field.getDeclaredAnnotation(UniqueCheck.class) != null) {
+                        UniqueCheck like = field.getDeclaredAnnotation(UniqueCheck.class);
+                        if (like.value() == UniqueType.Union) {
+                            metaInfo.getUnionKeys().add(columnName);
+                        } else {
+                            metaInfo.getUniqueKeys().add(columnName);
+                        }
                     }
                 } catch (Exception e) {
                     System.err.println(e);
                 }
             });
-            metaInfo.setColumnFieldNameMap(columnFieldNameMap);
-            metaInfo.setFiledNameColumnMap(filedNameColumnMap);
-            metaInfo.setOrderColumnMap(orderColumnMap);
-            metaInfo.setLikeColumnMap(likeColumnMap);
             metaInfoMap.put(c.getName(), metaInfo);
             return metaInfo;
         }

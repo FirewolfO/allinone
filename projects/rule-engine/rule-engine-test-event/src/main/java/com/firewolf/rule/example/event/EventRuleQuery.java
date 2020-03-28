@@ -1,4 +1,4 @@
-package com.firewolf.rule.engine.example;
+package com.firewolf.rule.example.event;
 
 import lombok.Data;
 

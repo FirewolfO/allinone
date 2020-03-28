@@ -1,5 +1,6 @@
-package com.firewolf.rule.engine.example;
+package com.firewolf.rule.example.event;
 
+import com.firewolf.rule.engine.core.RuleEngine;
 import com.firewolf.rule.engine.entity.RuleQuery;
 import com.firewolf.rule.engine.utils.MetaInfoUtil;
 import io.swagger.annotations.Api;
@@ -13,13 +14,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/rule/ex")
+@RequestMapping("/example/rule")
 @Api(tags = "事件规则操作接口")
 public class EventRuleController {
 
     @Autowired
     @Qualifier("eventRuleEngine")
-    private EventRuleEngine ruleEngine;
+    private RuleEngine<EventRule, EventRuleItem, LocalDateTime> ruleEngine;
 
     @ApiOperation("添加规则")
     @PostMapping
@@ -56,8 +57,8 @@ public class EventRuleController {
         RuleQuery queryVO = new RuleQuery();
         queryVO.getSubParams().put("deviceId", deviceId);
         queryVO.getSubParams().put("eventType", eventType);
-        List<EventRule> eventRules = ruleEngine.matchRules(queryVO,EventRule.class,EventRuleItem.class, LocalDateTime.now());
-//        List<EventRule> eventRules = ruleEngine.matchRules(queryVO,LocalDateTime.now());
+//        List<EventRule> eventRules = ruleEngine.matchRules(queryVO, EventRule.class, EventRuleItem.class, LocalDateTime.now());
+        List<EventRule> eventRules = ruleEngine.matchRules(queryVO, LocalDateTime.now());
         return eventRules;
     }
 

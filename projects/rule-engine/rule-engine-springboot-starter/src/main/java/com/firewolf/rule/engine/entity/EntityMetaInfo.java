@@ -5,9 +5,7 @@ import com.firewolf.rule.engine.enums.OrderType;
 import lombok.Data;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 实体对象元数据属性
@@ -54,5 +52,15 @@ public class EntityMetaInfo {
      * 带有like语句的字段
      */
     private Map<String, LikeType> likeColumnMap = new HashMap<>();
+
+    /**
+     * 唯一约束，只要一个出现，就认为冲突了
+     */
+    private List<String> uniqueKeys = new ArrayList<>();
+
+    /**
+     * 组合主键，组合在一起入股出现了，就认为冲突了
+     */
+    private List<String> unionKeys = new ArrayList<>();
 
 }
