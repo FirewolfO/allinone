@@ -4,7 +4,6 @@ import com.firewolf.rule.engine.enums.LikeType;
 import com.firewolf.rule.engine.enums.OrderType;
 import lombok.Data;
 
-import java.lang.reflect.Field;
 import java.util.*;
 
 /**
@@ -56,11 +55,11 @@ public class EntityMetaInfo {
     /**
      * 唯一约束，只要一个出现，就认为冲突了
      */
-    private List<String> uniqueKeys = new ArrayList<>();
+    private List<String> uniqueKeyColumns = new ArrayList<>();
 
     /**
      * 组合主键，组合在一起入股出现了，就认为冲突了
      */
-    private List<String> unionKeys = new ArrayList<>();
+    private List<String> unionKeyColumns = new ArrayList<>();
 
 }

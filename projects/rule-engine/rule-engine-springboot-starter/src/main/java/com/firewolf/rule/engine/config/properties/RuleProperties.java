@@ -18,11 +18,6 @@ public class RuleProperties {
     private String matchType = "and";
 
     /**
-     * 规则的唯一性属性
-     */
-    private List<String> uniqueColumns = null;
-
-    /**
      * 冲突之后的解策略，可选值，cover覆盖，discard--丢弃，merge--合并
      */
     private String conflictStrategy = "cover";

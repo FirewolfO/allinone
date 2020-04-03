@@ -5,8 +5,6 @@ import com.firewolf.rule.engine.entity.EntityMetaInfo;
 import com.firewolf.rule.engine.utils.MetaInfoUtil;
 import com.firewolf.rule.engine.utils.sql.SqlBuilder;
 import org.apache.commons.collections4.CollectionUtils;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.stereotype.Component;
 
 import java.util.*;
 
@@ -21,17 +19,18 @@ public class CoverConflictResolver extends AbstractConflictResolver {
         if (CollectionUtils.isNotEmpty(conflictItem)) {
             // 只有存在规则唯一约束的时候，才有可能产生冲突
             // 删除旧的规则项数据
+            List<String> conflictColumns = new ArrayList<>();
+            conflictColumns.addAll(subMetaInfo.getUniqueKeyColumns());
+            conflictColumns.addAll(subMetaInfo.getUnionKeyColumns());
             Map<String, Object> params = new HashMap<>();
-            for (String column : ruleProperties.getUniqueColumns()) {
-                String filedName = subMetaInfo.getColumnFieldNameMap().get(column);
-                if (!params.containsKey(column)) {
-                    params.put(column, new HashSet());
-                }
+            for (String column : conflictColumns) {
                 for (int i = 0; i < conflictItem.size(); i++) {
-                    ((Set) params.get(column)).add(MetaInfoUtil.getObjValue(conflictItem.get(i), filedName));
+                    String filedName = subMetaInfo.getColumnFieldNameMap().get(column);
+                    params.put(column + i, MetaInfoUtil.getObjValue(conflictItem.get(i), filedName));
                 }
             }
-            String delSql = SqlBuilder.buildDeleteSql(subMetaInfo.getTable(), params);
+
+            String delSql = SqlBuilder.buildDeleteConflictSql(subMetaInfo.getTable(), subMetaInfo.getUniqueKeyColumns(), subMetaInfo.getUnionKeyColumns(), conflictItem.size());
             namedParameterJdbcTemplate.update(delSql, params);
         }
         return data;

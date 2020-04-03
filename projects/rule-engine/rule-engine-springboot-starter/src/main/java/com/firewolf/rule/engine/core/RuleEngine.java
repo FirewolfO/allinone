@@ -48,7 +48,7 @@ public class RuleEngine<R, I, D> {
      * @return 返回冲突的规则，没有冲突返回null
      */
     public R checkConflict(R rule, Class<?> subClazz) {
-        return iRuleService.checkConflictRule(rule, rule.getClass(), subClazz, ruleProperties.getUniqueColumns());
+        return iRuleService.checkConflictRule(rule, rule.getClass(), subClazz);
     }
 
     /**

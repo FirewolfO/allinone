@@ -3,6 +3,7 @@ package com.firewolf.rule.engine.utils.sql;
 import com.firewolf.rule.engine.entity.EntityMetaInfo;
 import com.firewolf.rule.engine.enums.LikeType;
 import com.firewolf.rule.engine.enums.OrderType;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -99,26 +100,51 @@ public class SqlBuilder {
     }
 
     /**
-     * 构建唯一性查询语句 SELECT CONCAT( event_type,",",device_id,",") unikey FROM event_rule_item where (event_type=:event_type0 and device_id=:device_id0) or (event_type=:event_type1 and device_id=:device_id1) or (event_type=:event_type2 and device_id=:device_id2)
+     * 构建唯一性查询语句 SELECT name,CONCAT( a,",",b,",",c) unikey FROM event_rule_item where (name=:name0 or (a=:a0 and b=:b0 and c=:c0)) or (name=:name1 or (a=:a1 and b=:b1 and c=:c1))
      *
-     * @param table         表名
-     * @param uniqueColumns 唯一性列
-     * @param size          参数数量
+     * @param table            表名
+     * @param uniqueKeyColumns 独立主键列
+     * @param unionKeyColumns  联合主键列
+     * @param size             参数数量
      * @return
      */
-    public static String buildUniqueQuerySql(String table, List<String> uniqueColumns, int size) {
-        String sql = "SELECT CONCAT( ";
-        for (String column : uniqueColumns) {
-            sql += column + ",\",\",";
+    public static String buildUniqueQuerySql(String table, List<String> uniqueKeyColumns, List<String> unionKeyColumns, int size) {
+        if (CollectionUtils.isEmpty(uniqueKeyColumns) && CollectionUtils.isEmpty(unionKeyColumns)) {
+            throw new RuntimeException("there is no unique key ! ");
         }
-        sql = StringUtils.removeEnd(sql, ",\",\",");
-        sql += ") unikey FROM " + table;
+        String sql = "SELECT ";
+        if (CollectionUtils.isNotEmpty(uniqueKeyColumns)) {
+            sql += uniqueKeyColumns.stream().collect(Collectors.joining(","));
+        }
+        if (CollectionUtils.isNotEmpty(unionKeyColumns)) {
+            if (CollectionUtils.isNotEmpty(uniqueKeyColumns)) {
+                sql += ",";
+            }
+            sql += "CONCAT( ";
+            for (String column : unionKeyColumns) {
+                sql += column + ",\",\",";
+            }
+            sql = StringUtils.removeEnd(sql, ",\",\",");
+            sql += ") unikey ";
+        }
+        sql = sql + "FROM " + table;
+
+
         if (size > 0) {
             sql += " where ";
             for (int i = 0; i < size; i++) {
                 final int index = i;
-                String oneItem = uniqueColumns.stream().map(column -> column + "=:" + (column + index)).collect(Collectors.joining(SEPARATOR_AND, "(", ")"));
-                sql = sql + oneItem + SEPARATOR_OR;
+                String oneItem = "(";
+                if (CollectionUtils.isNotEmpty(uniqueKeyColumns)) {
+                    oneItem = oneItem + uniqueKeyColumns.stream().map(column -> column + "=:" + (column + index)).collect(Collectors.joining(SEPARATOR_OR));
+                }
+                if (CollectionUtils.isNotEmpty(unionKeyColumns)) {
+                    if (CollectionUtils.isNotEmpty(uniqueKeyColumns)) {
+                        oneItem = oneItem + SEPARATOR_OR;
+                    }
+                    oneItem = oneItem + unionKeyColumns.stream().map(column -> column + "=:" + (column + index)).collect(Collectors.joining(SEPARATOR_AND, "(", ")"));
+                }
+                sql = sql + oneItem + ")" + SEPARATOR_OR;
             }
             sql = StringUtils.removeEnd(sql, SEPARATOR_OR);
         }
@@ -146,6 +172,41 @@ public class SqlBuilder {
     public static String buildDeleteSql(String table, Map<String, Object> params) {
         return DELETE_PREFIX + table + buildWhere(params, new HashMap<>());
     }
+
+
+    /**
+     * 构建删除冲突的SQL：delete from event_rule_item where rule_id=:rule_id or (event_type=:event_type and device_id=:device_id)
+     *
+     * @param table            表名
+     * @param uniqueKeyColumns 独立冲突字段
+     * @param unionKeyColumns  联合冲突字段
+     * @param size             数据条数
+     * @return
+     */
+    public static String buildDeleteConflictSql(String table, List<String> uniqueKeyColumns, List<String> unionKeyColumns, int size) {
+        if (CollectionUtils.isEmpty(uniqueKeyColumns) && CollectionUtils.isEmpty(unionKeyColumns)) {
+            throw new RuntimeException("no unique columns !");
+        }
+        String sql = DELETE_PREFIX + table + " where ";
+        for (int i = 0; i < size; i++) {
+            sql += "(";
+            final int index = i;
+            if (CollectionUtils.isNotEmpty(uniqueKeyColumns)) {
+                sql += uniqueKeyColumns.stream().map(column -> column + "= :" + (column + index)).collect(Collectors.joining(SEPARATOR_OR));
+            }
+            if (CollectionUtils.isNotEmpty(unionKeyColumns)) {
+                if (CollectionUtils.isNotEmpty(uniqueKeyColumns)) {
+                    sql += SEPARATOR_OR;
+                }
+                sql += unionKeyColumns.stream().map(column -> column + "= :" + (column + index)).collect(Collectors.joining(SEPARATOR_AND, "(", ")"));
+            }
+            sql = sql + ")" + SEPARATOR_OR;
+        }
+        sql = StringUtils.removeEnd(sql, SEPARATOR_OR);
+
+        return sql;
+    }
+
 
     /**
      * 构建更新语句: update event_rule set is_enable =:is_enable , time_plan =:time_plan , name =:name , event_linkage_types =:event_linkage_types where id =:id

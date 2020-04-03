@@ -2,14 +2,11 @@ package com.firewolf.rule.engine.utils;
 
 import com.firewolf.rule.engine.annotations.*;
 import com.firewolf.rule.engine.entity.EntityMetaInfo;
-import com.firewolf.rule.engine.enums.LikeType;
-import com.firewolf.rule.engine.enums.OrderType;
 import com.firewolf.rule.engine.enums.UniqueType;
 import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
@@ -83,9 +80,9 @@ public class MetaInfoUtil {
                     if (field.getDeclaredAnnotation(UniqueCheck.class) != null) {
                         UniqueCheck like = field.getDeclaredAnnotation(UniqueCheck.class);
                         if (like.value() == UniqueType.Union) {
-                            metaInfo.getUnionKeys().add(columnName);
+                            metaInfo.getUnionKeyColumns().add(columnName);
                         } else {
-                            metaInfo.getUniqueKeys().add(columnName);
+                            metaInfo.getUniqueKeyColumns().add(columnName);
                         }
                     }
                 } catch (Exception e) {

@@ -48,8 +48,7 @@ public interface IRuleService<R, I> {
      * @param rule
      * @param mainClazz     主表class
      * @param subClazz      子表Class
-     * @param uniqueColumns 规则唯一标志
      * @return 没有冲突返回null
      */
-    R checkConflictRule(R rule, Class<?> mainClazz, Class<?> subClazz, List<String> uniqueColumns);
+    R checkConflictRule(R rule, Class<?> mainClazz, Class<?> subClazz);
 }

@@ -5,7 +5,6 @@ import com.firewolf.rule.engine.core.conflict.resolver.AbstractConflictResolver;
 import com.firewolf.rule.engine.entity.EntityMetaInfo;
 import com.firewolf.rule.engine.entity.RuleQuery;
 import com.firewolf.rule.engine.utils.BeanUtil;
-import com.firewolf.rule.engine.utils.MetaInfoUtil;
 import com.firewolf.rule.engine.utils.sql.Limit;
 import com.firewolf.rule.engine.utils.sql.SqlBuildParam;
 import com.firewolf.rule.engine.utils.sql.SqlBuilder;
@@ -34,9 +33,6 @@ public class DefaultRuleService<R, I> implements IRuleService<R, I> {
 
     @Autowired
     private AbstractConflictResolver conflictStrategy;
-
-    @Autowired
-    private RuleProperties ruleProperties;
 
     @Override
     @Transactional
@@ -133,27 +129,30 @@ public class DefaultRuleService<R, I> implements IRuleService<R, I> {
     }
 
     @Override
-    public R checkConflictRule(R rule, Class<?> mainClazz, Class<?> subClazz, List<String> uniqueColumns) {
+    public R checkConflictRule(R rule, Class<?> mainClazz, Class<?> subClazz) {
         if (rule == null)
             return null;
         // 非主子表结构
         try {
             EntityMetaInfo metaInfo = getMetaInfo(mainClazz);
             if (mainClazz.toString().equals(subClazz.toString())) {
-                String mainSql = SqlBuilder.buildUniqueQuerySql(metaInfo.getTable(), uniqueColumns, 1);
+                String mainSql = SqlBuilder.buildUniqueQuerySql(metaInfo.getTable(), metaInfo.getUniqueKeyColumns(), metaInfo.getUnionKeyColumns(), 1);
                 Map<String, Object> objValues = objectToMapNoNull(rule);
                 Map<String, Object> params = new HashMap<>();
-                for (String column : uniqueColumns) {
+                for (String column : metaInfo.getUniqueKeyColumns()) {
                     params.put(column + 0, objValues.get(column));
                 }
-                List<String> conflictUniqueKeys = namedParameterJdbcTemplate.query(mainSql, params, (resultSet, i) -> resultSet.getString(1));
-                if (CollectionUtils.isNotEmpty(conflictUniqueKeys)) {
+                for (String column : metaInfo.getUnionKeyColumns()) {
+                    params.put(column + 0, objValues.get(column));
+                }
+                List<Map<String, Object>> datas = namedParameterJdbcTemplate.queryForList(mainSql, params);
+                if (CollectionUtils.isNotEmpty(datas)) {
                     return rule;
                 }
             } else {
                 // 主子表结构，过滤子表
                 Object orignalItemDatas = getObjValue(rule, metaInfo.getItemFieldName());
-                List conflictItems = getConflictItems(BeanUtil.transObj2List(orignalItemDatas), uniqueColumns);
+                List conflictItems = getConflictItems(BeanUtil.transObj2List(orignalItemDatas));
                 // 有冲突的
                 if (conflictItems != null) {
                     setObjValue(rule, metaInfo.getItemFieldName(), BeanUtil.transList2Obj(conflictItems, orignalItemDatas.getClass()));
@@ -175,58 +174,61 @@ public class DefaultRuleService<R, I> implements IRuleService<R, I> {
      *
      * @return
      */
-    private List getConflictItems(List orignalData, List<String> uniqueColumns) {
-        return groupItems(orignalData, uniqueColumns).get(EXISTS_ITEMS);
+    private List getConflictItems(List orignalData) {
+        return groupItems(orignalData).get(EXISTS_ITEMS);
     }
 
     /**
      * 获取没有冲突的数据
      *
      * @param orignalData
-     * @param uniqueColumns
      * @return
      */
-    private List getNotConflictItems(List orignalData, List<String> uniqueColumns) {
-        return groupItems(orignalData, uniqueColumns).get(NEW_ITEMS);
+    private List getNotConflictItems(List orignalData) {
+        return groupItems(orignalData).get(NEW_ITEMS);
     }
 
     /**
      * 对子项进行分组，分成已存在的和未存在的
      *
-     * @param orignalData   原始数据
-     * @param uniqueColumns 唯一字段
+     * @param orignalData 原始数据
      * @return
      */
-    private Map<String, List> groupItems(List orignalData, List<String> uniqueColumns) {
+    private Map<String, List> groupItems(List orignalData) {
         Map<String, List> group = new HashMap<>();
         if (CollectionUtils.isEmpty(orignalData)) {
             group.put(NEW_ITEMS, orignalData);
             return group;
         }
+        EntityMetaInfo metaInfo = getMetaInfo(orignalData.get(0).getClass());
         //查询冲突项
-        String sql = SqlBuilder.buildUniqueQuerySql(MetaInfoUtil.getMetaInfo(orignalData.get(0).getClass()).getTable(), uniqueColumns, orignalData.size());
+        String sql = SqlBuilder.buildUniqueQuerySql(metaInfo.getTable(), metaInfo.getUniqueKeyColumns(), metaInfo.getUnionKeyColumns(), orignalData.size());
         Map<String, Object> params = new HashMap<>();
         for (int i = 0; i < orignalData.size(); i++) {
             Object item = orignalData.get(i);
             Map<String, Object> objValues = objectToMap(item);
-            for (String column : uniqueColumns) {
+            for (String column : metaInfo.getUniqueKeyColumns()) {
+                params.put(column + i, objValues.get(column));
+            }
+            for (String column : metaInfo.getUnionKeyColumns()) {
                 params.put(column + i, objValues.get(column));
             }
         }
 
         // 默认认为所有的子表数据项都冲突了
-        List<String> conflictUniqueKeys = namedParameterJdbcTemplate.query(sql, params, (resultSet, i) -> resultSet.getString(1));
+        List<Map<String, Object>> resultList = namedParameterJdbcTemplate.queryForList(sql, params);
+
         List existItems = new ArrayList(); // 存在的规则项
         List newItems = new ArrayList(); // 新的规则项目
 
         // 数据库中没有数据，那就没有冲突的
-        if (CollectionUtils.isEmpty(conflictUniqueKeys)) {
-            group.put(EXISTS_ITEMS, orignalData);
+        if (CollectionUtils.isEmpty(resultList)) {
+            group.put(NEW_ITEMS, orignalData);
             return group;
         } else {
             for (Object item : orignalData) {
                 Map<String, Object> objectValues = objectToMap(item);
-                String key = uniqueColumns.stream().map(column -> {
+                String unionKey = metaInfo.getUnionKeyColumns().stream().map(column -> {
                     try {
                         Object o = objectValues.get(column);
                         return o == null ? "" : o.toString();
@@ -235,12 +237,15 @@ public class DefaultRuleService<R, I> implements IRuleService<R, I> {
                     }
                     return "";
                 }).collect(Collectors.joining(","));
-                boolean contains = conflictUniqueKeys.contains(key);
-                if (contains) {
-                    existItems.add(item);
-                } else {
-                    newItems.add(item);
-                }
+
+                resultList.stream().forEach(data -> {
+                    boolean contains = metaInfo.getUniqueKeyColumns().stream().anyMatch(column -> data.get(column).equals(objectValues.get(column))) || data.get("unikey").equals(unionKey);
+                    if (contains) {
+                        existItems.add(item);
+                    } else {
+                        newItems.add(item);
+                    }
+                });
             }
         }
 
@@ -385,9 +390,9 @@ public class DefaultRuleService<R, I> implements IRuleService<R, I> {
      */
     private void insertRuleItems(EntityMetaInfo mainMetaInfo, EntityMetaInfo subMetaInfo, List data, Object foreignValue) throws Exception {
         // 插入前冲突处理
-        Map<String, List> items = groupItems(data, ruleProperties.getUniqueColumns());
+        Map<String, List> items = groupItems(data);
         List toDealData = data;
-        List conflictItems = getConflictItems(data, ruleProperties.getUniqueColumns());
+        List conflictItems = getConflictItems(data);
         boolean hasConflict = CollectionUtils.isNotEmpty(conflictItems);
         if (hasConflict) {
             toDealData = conflictStrategy.beforeSub(mainMetaInfo, subMetaInfo, data, conflictItems, items.get(NEW_ITEMS));
