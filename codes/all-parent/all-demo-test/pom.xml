@@ -19,6 +19,18 @@
     </properties>
 
     <dependencies>
+
+        <dependency>
+            <groupId>com.firewolf.all.starters</groupId>
+            <artifactId>all-log-spring-boot-starter</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.firewolf.all.starters</groupId>
+            <artifactId>all-swagger-spring-boot-starter</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -48,14 +60,6 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>
             <scope>test</scope>
-        </dependency>
-
-
-        <!--        swagger-->
-        <dependency>
-            <groupId>com.spring4all</groupId>
-            <artifactId>swagger-spring-boot-starter</artifactId>
-            <version>1.9.0.RELEASE</version>
         </dependency>
 
         <!--        mybatis-->
@@ -94,6 +98,15 @@
         <!--            <artifactId>embedded-redis</artifactId>-->
         <!--            <version>0.6</version>-->
         <!--        </dependency>-->
+
+        <!--        testcontainer-mysql-->
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>mysql</artifactId>
+            <version>1.13.0</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>

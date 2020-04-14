@@ -1,14 +1,12 @@
 package com.firewolf.rule.engine.utils;
 
 import com.firewolf.rule.engine.annotations.*;
-import com.firewolf.rule.engine.core.EntityMetaInfo;
-import com.firewolf.rule.engine.enums.LikeType;
-import com.firewolf.rule.engine.enums.OrderType;
+import com.firewolf.rule.engine.entity.EntityMetaInfo;
+import com.firewolf.rule.engine.enums.UniqueType;
 import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
@@ -33,11 +31,6 @@ public class MetaInfoUtil {
             metaInfo.setTable(tableName);
             // 插入主表数据
             Field[] declaredFields = c.getDeclaredFields();
-            LinkedHashMap<String, String> columnFieldNameMap = new LinkedHashMap<>();
-            Map<String, Field> columnFieldMap = new HashMap<>();
-            Map<String, String> filedNameColumnMap = new HashMap<>();
-            Map<String, String> orderColumnMap = new HashMap<>();
-            Map<String, LikeType> likeColumnMap = new HashMap<>();
             Stream.of(declaredFields).forEach(field -> {
                 try {
                     field.setAccessible(true);
@@ -49,9 +42,8 @@ public class MetaInfoUtil {
                         if (annotation != null) {
                             columnName = annotation.value();
                         }
-                        columnFieldNameMap.put(columnName, fieldName);
-                        columnFieldMap.put(columnName, field);
-                        filedNameColumnMap.put(fieldName, columnName);
+                        metaInfo.getColumnFieldNameMap().put(columnName, fieldName);
+                        metaInfo.getFiledNameColumnMap().put(fieldName, columnName);
                     } else {
                         if (StringUtils.isEmpty(metaInfo.getItemFieldName())) {
                             metaInfo.setItemFieldName(fieldName);
@@ -77,23 +69,26 @@ public class MetaInfoUtil {
 
                     if (field.getDeclaredAnnotation(OrderBy.class) != null) {
                         OrderBy orderBy = field.getDeclaredAnnotation(OrderBy.class);
-                        String orderType = orderBy.value() == OrderType.DESC ? "desc" : "asc";
-                        orderColumnMap.put(columnName, orderType);
+                        metaInfo.getOrderColumnMap().put(columnName, orderBy.value());
                     }
 
                     if (field.getDeclaredAnnotation(Like.class) != null) {
                         Like like = field.getDeclaredAnnotation(Like.class);
-                        likeColumnMap.put(columnName, like.value());
+                        metaInfo.getLikeColumnMap().put(columnName, like.value());
+                    }
+
+                    if (field.getDeclaredAnnotation(UniqueCheck.class) != null) {
+                        UniqueCheck like = field.getDeclaredAnnotation(UniqueCheck.class);
+                        if (like.value() == UniqueType.Union) {
+                            metaInfo.getUnionKeyColumns().add(columnName);
+                        } else {
+                            metaInfo.getUniqueKeyColumns().add(columnName);
+                        }
                     }
                 } catch (Exception e) {
                     System.err.println(e);
                 }
             });
-            metaInfo.setColumnFieldNameMap(columnFieldNameMap);
-            metaInfo.setColumnFieldMap(columnFieldMap);
-            metaInfo.setFiledNameColumnMap(filedNameColumnMap);
-            metaInfo.setOrderColumnMap(orderColumnMap);
-            metaInfo.setLikeColumnMap(likeColumnMap);
             metaInfoMap.put(c.getName(), metaInfo);
             return metaInfo;
         }
@@ -201,7 +196,7 @@ public class MetaInfoUtil {
                 declaredField.set(o, entry.getValue());
             }
         } catch (Exception e) {
-            throw new RuntimeException("set object proeperty error !");
+            throw new RuntimeException("set object property error !");
         }
     }
 }

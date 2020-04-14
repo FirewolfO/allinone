@@ -1,40 +1,36 @@
 package com.firewolf.rule.engine.core.conflict.resolver;
 
 
-import com.firewolf.rule.engine.core.EntityMetaInfo;
+import com.firewolf.rule.engine.entity.EntityMetaInfo;
 import com.firewolf.rule.engine.utils.MetaInfoUtil;
 import com.firewolf.rule.engine.utils.sql.SqlBuilder;
 import org.apache.commons.collections4.CollectionUtils;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.stereotype.Component;
 
-import java.lang.reflect.Field;
 import java.util.*;
 
 
 /**
  * 覆盖策略，删除旧的，重新插入新的，所以新插入的数据不做任何变化
  */
-@ConditionalOnProperty(prefix = "lx.rule", name = "conflict-strategy", havingValue = "cover")
-@Component
 public class CoverConflictResolver extends AbstractConflictResolver {
     @Override
-    public List beforeSub(EntityMetaInfo mainEntityMetaInfo, EntityMetaInfo subMetaInfo, List data) throws Exception {
+    public List beforeSub(EntityMetaInfo mainEntityMetaInfo, EntityMetaInfo subMetaInfo, List data, List conflictItem, List notConflictItem) throws Exception {
 
-        if (CollectionUtils.isNotEmpty(ruleProperties.getUniqueColumns())) {
+        if (CollectionUtils.isNotEmpty(conflictItem)) {
             // 只有存在规则唯一约束的时候，才有可能产生冲突
             // 删除旧的规则项数据
+            List<String> conflictColumns = new ArrayList<>();
+            conflictColumns.addAll(subMetaInfo.getUniqueKeyColumns());
+            conflictColumns.addAll(subMetaInfo.getUnionKeyColumns());
             Map<String, Object> params = new HashMap<>();
-            for (String column : ruleProperties.getUniqueColumns()) {
-                String filedName = subMetaInfo.getColumnFieldNameMap().get(column);
-                if (!params.containsKey(column)) {
-                    params.put(column, new HashSet());
-                }
-                for (int i = 0; i < data.size(); i++) {
-                    ((Set) params.get(column)).add(MetaInfoUtil.getObjValue(data.get(i), filedName));
+            for (String column : conflictColumns) {
+                for (int i = 0; i < conflictItem.size(); i++) {
+                    String filedName = subMetaInfo.getColumnFieldNameMap().get(column);
+                    params.put(column + i, MetaInfoUtil.getObjValue(conflictItem.get(i), filedName));
                 }
             }
-            String delSql = SqlBuilder.buildDeleteSql(subMetaInfo.getTable(), params);
+
+            String delSql = SqlBuilder.buildDeleteConflictSql(subMetaInfo.getTable(), subMetaInfo.getUniqueKeyColumns(), subMetaInfo.getUnionKeyColumns(), conflictItem.size());
             namedParameterJdbcTemplate.update(delSql, params);
         }
         return data;
