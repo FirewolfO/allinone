@@ -11,10 +11,8 @@
         <relativePath/>
     </parent>
 
-
-    <artifactId>firewolf-service-parent</artifactId>
+    <artifactId>firewolf-common</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <description>所有服务的Parent</description>
-
+    <description>公共包</description>
 
 </project>

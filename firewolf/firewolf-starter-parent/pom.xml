@@ -4,13 +4,25 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.firewolf</groupId>
-    <artifactId>firewolf-starter-parent</artifactId>
-    <version>1.0-SNAPSHOT</version>
-
     <parent>
         <groupId>com.firewolf</groupId>
         <artifactId>firewolf-parent</artifactId>
         <version>1.0-SNAPSHOT</version>
+        <relativePath/>
     </parent>
+
+    <artifactId>firewolf-starter-parent</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <description>Starter的Parent</description>
+
+
+    <dependencies>
+        <!--        所有starter公共依赖-->
+        <!--        属性自动提示-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
 </project>
