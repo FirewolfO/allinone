@@ -1,4 +1,4 @@
-package com.firwolf.log;
+package com.firewolf.log;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

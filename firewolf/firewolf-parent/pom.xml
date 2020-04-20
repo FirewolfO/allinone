@@ -21,6 +21,11 @@
         <spring.boot.version>2.2.6.RELEASE</spring.boot.version>
         <lombok.version>1.18.12</lombok.version>
         <swagger.version>2.9.2</swagger.version>
+        <ali.transmittable.version>2.10.2</ali.transmittable.version>
+        <apache.commons.collections>4.4</apache.commons.collections>
+        <apache.commons.lang>3.9</apache.commons.lang>
+        <apache.commons.beanutils>1.9.3</apache.commons.beanutils>
+        <guava.version>28.1-jre</guava.version>
     </properties>
 
     <!--    集中管理依赖版本-->
@@ -60,6 +65,35 @@
                 <version>${swagger.version}</version>
             </dependency>
 
+            <!--            线程池-->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>transmittable-thread-local</artifactId>
+                <version>${ali.transmittable.version}</version>
+            </dependency>
+
+            <!-- 工具包-->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-collections4</artifactId>
+                <version>${apache.commons.collections}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${apache.commons.lang}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-beanutils</groupId>
+                <artifactId>commons-beanutils</artifactId>
+                <version>${apache.commons.beanutils}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+
         </dependencies>
 
     </dependencyManagement>
@@ -74,6 +108,22 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
         </dependency>
     </dependencies>
 
