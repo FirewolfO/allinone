@@ -4,6 +4,7 @@ import com.alibaba.ttl.threadpool.TtlExecutors;
 import com.firewolf.log.config.properties.ExecutorProperties;
 import com.firewolf.log.config.properties.LogProperties;
 import com.firewolf.log.core.LogProcessor;
+import com.firewolf.log.core.ParamParser;
 import com.firewolf.log.handler.DBLogHandler;
 import com.firewolf.log.handler.DefaultLogHandler;
 import com.firewolf.log.handler.LogHandler;
@@ -17,6 +18,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.DefaultParameterNameDiscoverer;
+import org.springframework.core.ParameterNameDiscoverer;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -77,7 +80,7 @@ public class LogAutoConfiguration {
      */
     @Bean
     @ConditionalOnBean(value = {LogHandler.class, LogOperator.class})
-    public LogProcessor enableLog() {
+    public LogProcessor logProcessor() {
         return new LogProcessor();
     }
 
@@ -99,6 +102,16 @@ public class LogAutoConfiguration {
     @ConditionalOnProperty(name = "lx.log.handler", havingValue = "db")
     public DBLogService dblogService() {
         return new DBLogService();
+    }
+
+    @Bean
+    public ParamParser paramParser(){
+        return new ParamParser();
+    }
+
+    @Bean
+    public ParameterNameDiscoverer parameterNameDiscoverer(){
+        return new DefaultParameterNameDiscoverer();
     }
 
     /**

@@ -23,6 +23,12 @@
 
         <dependency>
             <groupId>com.firewolf</groupId>
+            <artifactId>firewolf-starter-log</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.firewolf</groupId>
             <artifactId>firewolf-starter-swagger</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>

@@ -21,4 +21,7 @@ public class PageQuery {
      */
     private Integer pageNum = 1;
 
+    public Integer getStart() {
+        return (pageNum - 1) * pageSize;
+    }
 }

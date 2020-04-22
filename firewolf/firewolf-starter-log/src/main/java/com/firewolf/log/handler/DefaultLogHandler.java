@@ -12,6 +12,6 @@ public class DefaultLogHandler implements LogHandler<Log> {
 
     @Override
     public void handle(Log opLog) {
-        log.info("do nothing");
+        log.info(opLog.toString());
     }
 }

@@ -1,4 +1,4 @@
-package com.firewolf.test.controller.swagger;
+package com.firewolf.test.swagger.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
