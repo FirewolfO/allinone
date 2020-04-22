@@ -32,7 +32,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  */
 @Configuration
 @ConditionalOnProperty(
-        prefix = "lx.log",
+        prefix = "firewolf.log",
         name = "auto",
         havingValue = "true",
         matchIfMissing = true
@@ -66,7 +66,7 @@ public class LogAutoConfiguration {
      *
      * @return
      */
-    @ConditionalOnProperty(name = "lx.log.handler", havingValue = "db")
+    @ConditionalOnProperty(name = "firewolf.log.handler", havingValue = "db")
     @Bean
     public LogHandler defaultDBLogHandler() {
         return new DBLogHandler();
@@ -86,7 +86,7 @@ public class LogAutoConfiguration {
 
 
     @Bean
-    @ConditionalOnProperty(name = "lx.log.handler", havingValue = "db")
+    @ConditionalOnProperty(name = "firewolf.log.handler", havingValue = "db")
     public JdbcTemplate jdbcTemplate(DBProperties properties) {
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -99,7 +99,7 @@ public class LogAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnProperty(name = "lx.log.handler", havingValue = "db")
+    @ConditionalOnProperty(name = "firewolf.log.handler", havingValue = "db")
     public DBLogService dblogService() {
         return new DBLogService();
     }
