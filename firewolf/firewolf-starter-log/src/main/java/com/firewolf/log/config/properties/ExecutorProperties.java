@@ -7,7 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * Date: 2020/2/28 9:57
  * 线程池配置
  */
-@ConfigurationProperties(prefix = "lx.log.thread.pool")
+@ConfigurationProperties(prefix = "firewolf.log.thread.pool")
 public class ExecutorProperties {
     /**
      * 核心线程数
