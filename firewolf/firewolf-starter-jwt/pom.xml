@@ -16,5 +16,19 @@
     <description>JWT组件</description>
 
     <!--    https://blog.csdn.net/weixin_42873937/article/details/82460997-->
+    <!--    https://www.jianshu.com/p/fe67b4bb6f2c-->
 
+    <dependencies>
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+            <version>3.10.2</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.1</version>
+        </dependency>
+
+    </dependencies>
 </project>

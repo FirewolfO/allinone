@@ -1,4 +1,4 @@
-package com.firewolf.test.swagger.controller;
+package com.firewolf.test.swagger;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/test/swagger")
 @Api(tags = "Swagger测试接口")
-public class SwaggerController {
+public class SwaggerTestController {
 
     @GetMapping
     @ApiOperation("Hello入口")
