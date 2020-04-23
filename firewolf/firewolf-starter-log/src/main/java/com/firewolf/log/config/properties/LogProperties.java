@@ -9,11 +9,11 @@ public class LogProperties {
     /**
      * 可以通过设置为db来激活默认的数据库存储方式
      */
-    private String handler;
+    private String out;
     /**
      * 取值true,false
      */
-    private String auto;
+    private String enable;
 
     /**
      * 是否在没有指定记录参数的时候记录所有参数

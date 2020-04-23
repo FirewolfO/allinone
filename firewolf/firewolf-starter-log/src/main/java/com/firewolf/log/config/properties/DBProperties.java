@@ -1,6 +1,7 @@
 package com.firewolf.log.config.properties;
 
 import lombok.Data;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
@@ -8,26 +9,18 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * Date: 2020/2/28 16:27
  */
 @Data
-@ConfigurationProperties(prefix = "firewolf.log.db")
+@ConditionalOnProperty(prefix = "firewolf.log", name = "out", value = "mysql")
+@ConfigurationProperties(prefix = "spring.datasource")
 public class DBProperties {
 
-    private String host = "locahost";
+    private String url;
 
-    private int post = 3306;
+    private String username;
+    
+    private String password;
 
-    private String datasoure = "firewolf-log";
+    private String logTable;
 
-    private String username = "root";
-
-    private String password = "root";
-
-    private String table = "firewolf_log";
-
-    private String driver = "com.mysql.cj.jdbc.Driver";
-
-    public String getUrl() {
-        String s = "jdbc:mysql://%s:%s/%s?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC&useSSL=false";
-        return String.format(s, host, post, datasoure);
-    }
+    private String driverClassName = "com.mysql.cj.jdbc.Driver";
 
 }

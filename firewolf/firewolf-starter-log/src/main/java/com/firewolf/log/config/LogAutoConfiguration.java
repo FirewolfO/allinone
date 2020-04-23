@@ -33,7 +33,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 @Configuration
 @ConditionalOnProperty(
         prefix = "firewolf.log",
-        name = "auto",
+        name = "enable",
         havingValue = "true",
         matchIfMissing = true
 )
@@ -66,7 +66,7 @@ public class LogAutoConfiguration {
      *
      * @return
      */
-    @ConditionalOnProperty(name = "firewolf.log.handler", havingValue = "db")
+    @ConditionalOnProperty(name = "firewolf.log.out", havingValue = "mysql")
     @Bean
     public LogHandler defaultDBLogHandler() {
         return new DBLogHandler();
@@ -86,11 +86,11 @@ public class LogAutoConfiguration {
 
 
     @Bean
-    @ConditionalOnProperty(name = "firewolf.log.handler", havingValue = "db")
+    @ConditionalOnProperty(name = "firewolf.log.out", havingValue = "mysql")
     public JdbcTemplate jdbcTemplate(DBProperties properties) {
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(properties.getDriver());
+        dataSource.setDriverClassName(properties.getDriverClassName());
         dataSource.setUrl(properties.getUrl());
         dataSource.setUsername(properties.getUsername());
         dataSource.setPassword(properties.getPassword());
@@ -99,18 +99,18 @@ public class LogAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnProperty(name = "firewolf.log.handler", havingValue = "db")
+    @ConditionalOnProperty(name = "firewolf.log.out", havingValue = "mysql")
     public DBLogService dblogService() {
         return new DBLogService();
     }
 
     @Bean
-    public ParamParser paramParser(){
+    public ParamParser paramParser() {
         return new ParamParser();
     }
 
     @Bean
-    public ParameterNameDiscoverer parameterNameDiscoverer(){
+    public ParameterNameDiscoverer parameterNameDiscoverer() {
         return new DefaultParameterNameDiscoverer();
     }
 

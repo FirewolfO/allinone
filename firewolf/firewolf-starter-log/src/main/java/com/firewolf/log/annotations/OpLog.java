@@ -57,10 +57,5 @@ public @interface OpLog {
      */
     String result() default "";
 
-    @Deprecated
-    String start() default ""; // 方法开始执行前日志
-
-    @Deprecated
-    String end() default ""; // 方法结束执行日志
 
 }

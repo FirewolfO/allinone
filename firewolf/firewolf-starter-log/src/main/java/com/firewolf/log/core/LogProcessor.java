@@ -116,6 +116,7 @@ public class LogProcessor {
             if (result != null) {
                 String resultSpEL = operateLog.result();
                 if (StringUtils.isNotEmpty(resultSpEL)) {
+                    context.setVariable("res",result);
                     resultStr = paramParser.parseStrWithSpEL(resultSpEL, context);
                 } else if (logProperties.isResAll()) {
                     resultStr = result.toString();

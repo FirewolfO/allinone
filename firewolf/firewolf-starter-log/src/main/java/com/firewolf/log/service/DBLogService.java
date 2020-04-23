@@ -31,7 +31,7 @@ public class DBLogService implements LogService {
      * @return
      */
     public List<Object> list() {
-        String sql = "select * from " + DBProperties.getTable();
+        String sql = "select * from " + DBProperties.getLogTable();
         List<Map<String, Object>> maps = jdbcTemplate.queryForList(sql);
         List<Object> collect = maps.stream().map(x -> (Object) x).collect(Collectors.toList());
         return collect;
@@ -41,7 +41,7 @@ public class DBLogService implements LogService {
     public void save(Object log) {
 
         try {
-            String insertSql = "insert into " + DBProperties.getTable() + " (";
+            String insertSql = "insert into " + DBProperties.getLogTable() + " (";
             Map<String, Object> columnsMap = getValues(log);
             List<String> columnNames = new ArrayList<>(columnsMap.keySet());
             for (String columnName : columnNames) {
