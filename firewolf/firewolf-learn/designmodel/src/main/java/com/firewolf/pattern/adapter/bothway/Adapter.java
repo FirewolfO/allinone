@@ -1,0 +1,30 @@
+package com.firewolf.pattern.adapter.bothway;
+
+/**
+ * Description: 适配器
+ * Author: liuxing
+ * Email: 1483345163@qq.com
+ * Time: 2020/5/13 10:51 下午
+ */
+public class Adapter implements Target,Adaptee {
+    private Adaptee adaptee;
+    private Target target;
+
+    public Adapter(Adaptee adaptee) {
+        this.adaptee = adaptee;
+    }
+
+    public Adapter(Target target) {
+        this.target = target;
+    }
+
+    @Override
+    public String sayHello(String name) {
+        return target.sayHelloUpCase(name).toLowerCase();
+    }
+
+    @Override
+    public String sayHelloUpCase(String name) {
+        return adaptee.sayHello(name).toUpperCase();
+    }
+}
