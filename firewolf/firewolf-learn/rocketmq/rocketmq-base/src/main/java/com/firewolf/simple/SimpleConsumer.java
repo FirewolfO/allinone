@@ -25,7 +25,7 @@ public class SimpleConsumer {
         mqPushConsumer.setNamesrvAddr(nameServer);
 
         // 订阅消息，topic 和 tag
-        mqPushConsumer.subscribe(topic, "*");
+        mqPushConsumer.subscribe(topic, "tagA");
 
         // 注册监听，用于接收到消息之后回调
         mqPushConsumer.registerMessageListener((MessageListenerConcurrently) (list, consumeConcurrentlyContext) -> {
@@ -39,6 +39,8 @@ public class SimpleConsumer {
             return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
         });
 
-        Thread.sleep(Long.MAX_VALUE);
+        // 启动消费者
+        mqPushConsumer.start();
+
     }
 }

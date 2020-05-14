@@ -1,0 +1,23 @@
+package com.firewolf.pattern.abstract_factory;
+
+/**
+ * 描述：
+ * Author：liuxing
+ * Date：2020/5/14
+ */
+public class SpringSkinFactory implements SkinFactory {
+    @Override
+    public Button createButton() {
+        return null;
+    }
+
+    @Override
+    public TextField createTextField() {
+        return null;
+    }
+
+    @Override
+    public ComboBox createComboBox() {
+        return null;
+    }
+}

@@ -15,12 +15,12 @@ public interface MQConstant {
     /**
      * name server
      */
-    String nameServer = "10.122.130.25:19876";
+    String nameServer = "localhost:9876";
 
     /**
      * Topic
      */
-    String topic = "test_ttt_topic";
+    String topic = "test_ttt_topic1";
 
     /**
      * 生产者组

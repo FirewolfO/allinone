@@ -26,6 +26,12 @@
         <apache.commons.lang>3.9</apache.commons.lang>
         <apache.commons.beanutils>1.9.3</apache.commons.beanutils>
         <guava.version>28.1-jre</guava.version>
+
+        <!--        sonar相关配置-->
+        <sonar.exclusions>
+            src/main/java/com/**/entity/**
+        </sonar.exclusions>
+        <sonar.login>3d6c973435a763f53d0d82b8b132db78cfca5943</sonar.login>
     </properties>
 
     <!--    集中管理依赖版本-->
