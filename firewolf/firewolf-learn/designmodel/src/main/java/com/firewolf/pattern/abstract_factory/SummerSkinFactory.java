@@ -3,21 +3,21 @@ package com.firewolf.pattern.abstract_factory;
 /**
  * 描述：
  * Author：liuxing
- * Date：2020/5/14
+ * Date：2020/5/15
  */
-public class SpringSkinFactory implements SkinFactory {
+public class SummerSkinFactory implements SkinFactory {
     @Override
     public Button createButton() {
-        return new SpringButton();
+        return new SummerButton();
     }
 
     @Override
     public TextField createTextField() {
-        return new SpringTextField();
+        return new SummerTextField();
     }
 
     @Override
     public ComboBox createComboBox() {
-        return new SpringComboBox();
+        return new SummerComboBox();
     }
 }

@@ -1,4 +1,4 @@
-package com.firewolf.test.desinpattern.prototype;
+package com.firewolf.pattern.prototype;
 
 import lombok.Data;
 

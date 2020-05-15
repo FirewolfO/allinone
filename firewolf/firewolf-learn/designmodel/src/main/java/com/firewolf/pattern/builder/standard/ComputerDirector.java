@@ -1,4 +1,4 @@
-package com.firewolf.pattern.builder.whole;
+package com.firewolf.pattern.builder.standard;
 
 import com.firewolf.pattern.builder.Computer;
 

@@ -1,4 +1,4 @@
-package com.firewolf.test.desinpattern.prototype;
+package com.firewolf.pattern.prototype;
 
 import lombok.Data;
 
@@ -25,5 +25,18 @@ public class Son implements Serializable, Cloneable {
             e.printStackTrace();
         }
         return (Son) clone;
+    }
+
+
+    public Son deepClone1() {
+        Object clone = null;
+        try {
+            clone = super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        Son son = (Son) clone;
+        son.setDog(son.getDog().clone());
+        return son;
     }
 }

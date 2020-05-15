@@ -1,4 +1,5 @@
-package com.firewolf.test.desinpattern.prototype;
+package com.firewolf.pattern.prototype;
+
 
 import lombok.Data;
 
@@ -34,12 +35,17 @@ public class Person implements Serializable, Cloneable {
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
+
+        // 克隆Son，需要调用它的深克隆方法
         Person result = (Person) clone;
-        result.setSon(result.getSon().clone()); // 拷贝子对象
+        Son clonePerson = result.getSon().deepClone1();
+
+
+        result.setSon(clonePerson); // 拷贝子对象
         return result;
     }
 
-    public Person deepClone() {
+    public Person deepClone2() {
         try {
             //将对象写入到流中
             ByteArrayOutputStream bao = new ByteArrayOutputStream();
@@ -56,4 +62,5 @@ public class Person implements Serializable, Cloneable {
         }
         return null;
     }
+
 }
