@@ -19,6 +19,7 @@ public class SyncProducer {
 
         // 创建生产者
         DefaultMQProducer mqProducer = new DefaultMQProducer();
+        mqProducer.setSendMsgTimeout(10000);
 
         // 设置NameServer
         mqProducer.setNamesrvAddr(nameServer);

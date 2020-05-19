@@ -26,6 +26,7 @@
         <apache.commons.lang>3.9</apache.commons.lang>
         <apache.commons.beanutils>1.9.3</apache.commons.beanutils>
         <guava.version>28.1-jre</guava.version>
+        <commons-io-version>2.6</commons-io-version>
 
         <!--        sonar相关配置-->
         <sonar.exclusions>
@@ -99,6 +100,11 @@
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
             </dependency>
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons-io-version}</version>
+            </dependency>
 
         </dependencies>
 
@@ -130,6 +136,10 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
         </dependency>
     </dependencies>
 
