@@ -304,4 +304,37 @@ public class FileUtils {
         }
     }
 
+
+    /**
+     * 把字符串写入到文件中
+     *
+     * @param content
+     * @param filePath
+     */
+    public static void writeContent2File(String content, String filePath) {
+        FileWriter fw = null;
+        BufferedWriter wb = null;
+        try {
+            fw = new FileWriter(filePath);
+            wb = new BufferedWriter(fw);
+            wb.write(content);
+            wb.flush();
+
+        } catch (Exception e) {
+            Logger.consoleErr("log: write log error ! {} ", e);
+        } finally {
+            try {
+                if (fw != null) {
+                    fw.close();
+                }
+                if (wb != null) {
+                    wb.close();
+                }
+            } catch (Exception e) {
+                Logger.consoleErr("close stream error!, {} ", e);
+            }
+        }
+
+    }
+
 }

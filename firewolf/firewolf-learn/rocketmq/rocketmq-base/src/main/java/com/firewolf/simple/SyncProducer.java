@@ -28,6 +28,7 @@ public class SyncProducer {
         mqProducer.setProducerGroup(produceGroup);
 
         // 启动生产者
+        mqProducer.setVipChannelEnabled(false);
         mqProducer.start();
 
         // 发送100条消息
