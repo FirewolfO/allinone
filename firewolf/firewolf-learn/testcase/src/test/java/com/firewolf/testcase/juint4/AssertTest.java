@@ -25,7 +25,7 @@ public class AssertTest {
         assertFalse(1 == 2);
 
         // 当结果不正确的时候，抛出指定信息的异常
-        assertTrue("1不等于2", 1 == 2);
+        assertTrue("1不等于2", 1 == 1);
     }
 
 

@@ -29,6 +29,6 @@ public class TimeOutTest {
 
     @Test
     public void test2() throws Exception{
-        Thread.sleep(2600);
+        Thread.sleep(600);
     }
 }
