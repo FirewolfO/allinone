@@ -1,4 +1,4 @@
-package com.firewolf.testcase.juint4;
+package com.firewolf.testcase.juint4.s02_order;
 
 import org.junit.FixMethodOrder;
 import org.junit.Test;

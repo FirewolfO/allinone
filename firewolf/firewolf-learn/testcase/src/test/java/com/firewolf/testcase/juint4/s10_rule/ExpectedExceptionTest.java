@@ -1,4 +1,4 @@
-package com.firewolf.testcase.juint4.rule;
+package com.firewolf.testcase.juint4.s10_rule;
 
 import org.junit.Rule;
 import org.junit.Test;

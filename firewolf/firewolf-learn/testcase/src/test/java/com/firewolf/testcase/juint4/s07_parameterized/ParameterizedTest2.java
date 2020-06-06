@@ -1,5 +1,6 @@
-package com.firewolf.testcase.juint4;
+package com.firewolf.testcase.juint4.s07_parameterized;
 
+import com.firewolf.testcase.juint4.StringUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,7 +21,7 @@ public class ParameterizedTest2 {
 
     /**
      * 注意，这个方法要求是public static修饰的
-     * 可以通过name属性给测试方法取名，里面可以使用如下占位符：
+     * 可以通过name属性给测试方法取名，里面可以使用如下占位符：Theories
      * {idnex}：第几组测试
      * {0}: 第一个参数
      * {1}: 第二个参数
@@ -48,6 +49,7 @@ public class ParameterizedTest2 {
 
     @Test
     public void test1() {
+        System.out.println(expected+","+original);
         Assert.assertEquals(expected, StringUtils.firstChar2UpCase(original));
     }
 

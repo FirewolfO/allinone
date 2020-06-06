@@ -1,4 +1,4 @@
-package com.firewolf.testcase.juint4.rule;
+package com.firewolf.testcase.juint4.s10_rule;
 
 import org.junit.AssumptionViolatedException;
 import org.junit.Rule;

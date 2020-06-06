@@ -1,4 +1,4 @@
-package com.firewolf.testcase.juint4;
+package com.firewolf.testcase.juint4.s04_ignore;
 
 import org.junit.Ignore;
 import org.junit.Test;

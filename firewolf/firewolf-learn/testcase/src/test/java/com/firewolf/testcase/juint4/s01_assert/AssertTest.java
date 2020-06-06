@@ -1,4 +1,4 @@
-package com.firewolf.testcase.juint4;
+package com.firewolf.testcase.juint4.s01_assert;
 
 import org.junit.Test;
 

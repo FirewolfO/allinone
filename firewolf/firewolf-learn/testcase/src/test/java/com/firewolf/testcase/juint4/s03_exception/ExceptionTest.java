@@ -1,4 +1,4 @@
-package com.firewolf.testcase.juint4;
+package com.firewolf.testcase.juint4.s03_exception;
 
 import org.junit.Test;
 

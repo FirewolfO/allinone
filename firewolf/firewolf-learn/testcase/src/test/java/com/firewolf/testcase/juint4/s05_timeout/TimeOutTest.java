@@ -1,4 +1,4 @@
-package com.firewolf.testcase.juint4.rule;
+package com.firewolf.testcase.juint4.s05_timeout;
 
 import org.junit.Rule;
 import org.junit.Test;

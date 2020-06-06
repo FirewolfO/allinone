@@ -1,4 +1,4 @@
-package com.firewolf.testcase.juint4;
+package com.firewolf.testcase.juint4.s09_matcher;
 
 
 import org.hamcrest.BaseMatcher;

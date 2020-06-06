@@ -1,5 +1,7 @@
-package com.firewolf.testcase.juint4;
+package com.firewolf.testcase.juint4.s06_multi;
 
+import com.firewolf.testcase.juint4.s07_parameterized.ParameterizedTest;
+import com.firewolf.testcase.juint4.s01_assert.AssertTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
