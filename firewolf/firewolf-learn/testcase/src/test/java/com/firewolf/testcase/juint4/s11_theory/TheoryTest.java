@@ -59,5 +59,4 @@ public class TheoryTest {
         Assert.assertTrue((first / second) >= 0);
         passedCount += 1;
     }
-
 }
