@@ -1,4 +1,4 @@
-## offlineVideo
+## offlineVideo 离线任务
 
 - 创建离线任务
 
@@ -72,4 +72,11 @@
   ```
 
   
+
+## objectStorage 对象存储
+
+知识点：
+
+- 每一个monitor类型的底库会自动创建一个 bucket，这个bucket和底库的id一致，且是永久有效的。
+- 
 
