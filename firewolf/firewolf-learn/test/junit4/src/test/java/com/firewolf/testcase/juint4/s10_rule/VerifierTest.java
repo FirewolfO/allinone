@@ -18,7 +18,8 @@ public class VerifierTest {
         @Override
         protected void verify() throws Throwable {
             if (!"success".equals(result)) {
-                throw new RuntimeException("result is failed!");
+                System.out.println("结果不正确");
+                // 这里可以抛出异常
             }
         }
     };
