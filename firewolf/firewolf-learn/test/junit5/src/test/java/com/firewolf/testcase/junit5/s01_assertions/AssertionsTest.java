@@ -92,7 +92,7 @@ public class AssertionsTest {
     @Test
     public void testAssertAll() {
         assertAll(
-                () -> assertEquals(1, 2),
+                () -> assertEquals(1, 1),
                 () -> assertNull(null)
         );
     }
