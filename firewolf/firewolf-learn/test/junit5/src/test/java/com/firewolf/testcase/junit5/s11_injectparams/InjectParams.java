@@ -2,7 +2,8 @@ package com.firewolf.testcase.junit5.s11_injectparams;
 
 import org.junit.jupiter.api.*;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * 描述：为测试类注入信息
@@ -12,11 +13,12 @@ import static org.junit.jupiter.api.Assertions.*;
 public class InjectParams {
 
     InjectParams(TestInfo testInfo) {
-        System.out.println("构造器："+testInfo.getDisplayName());
+        System.out.println("构造器：" + testInfo.getDisplayName());
     }
 
     /**
      * 测试信息TestInfo：
+     *
      * @param testInfo
      */
     @Test
@@ -29,6 +31,7 @@ public class InjectParams {
 
     /**
      * 注入测试报告对象，允许我们对测试报告进行更改
+     *
      * @param testReporter
      */
     @Test
@@ -38,6 +41,7 @@ public class InjectParams {
 
     /**
      * 重复测试参数
+     *
      * @param repetitionInfo
      */
     @RepeatedTest(5)
@@ -45,3 +49,5 @@ public class InjectParams {
         assertEquals(5, repetitionInfo.getTotalRepetitions());
     }
 }
+
+

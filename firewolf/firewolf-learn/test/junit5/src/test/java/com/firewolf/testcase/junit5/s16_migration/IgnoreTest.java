@@ -1,7 +1,7 @@
-package com.firewolf.testcase.junit5.s15_migration;
+package com.firewolf.testcase.junit5.s16_migration;
 
 import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.migrationsupport.EnableJUnit4MigrationSupport;
 
 /**
