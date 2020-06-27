@@ -5,28 +5,37 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.firewolf.learn.test</groupId>
-    <artifactId>junit5</artifactId>
+    <artifactId>mockito</artifactId>
     <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <junit5.version>5.6.2</junit5.version>
+    </properties>
     <dependencies>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.6.2</version>
+            <version>${junit5.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>
-            <version>5.6.2</version>
+            <version>${junit5.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-migrationsupport</artifactId>
-            <version>5.6.2</version>
+            <version>${junit5.version}</version>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>3.3.3</version>
+            <scope>test</scope>
+        </dependency>
 
     </dependencies>
 
@@ -37,11 +46,13 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M3</version>
                 <configuration>
+                    <!-- 分组测试，可以根据需要选择需要进行测试的测试组， -->
                     <!-- include tags -->
                     <groups>dev</groups>
                     <!-- exclude tags -->
                     <excludedGroups>test</excludedGroups>
                     <properties>
+                        <!--禁用超时处理-->
                         <configurationParameters>
                             junit.jupiter.execution.timeout.mode=disabled
                         </configurationParameters>
