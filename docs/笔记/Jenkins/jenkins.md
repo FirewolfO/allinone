@@ -1,10 +1,10 @@
 ## 常用插件
 
 - maven 
-
 - gitee
-
 - localization
+- SonarQube Generic Coverage Plugin
+- SonarQube Scanner for Jenkins
 
 
 
@@ -78,16 +78,12 @@ https://mirrors.tuna.tsinghua.edu.cn/jenkins/updates/update-center.json
 
 
 
+### sonarqube参数
 
-
-```xml
-sonar.projectKey=ttt5
-sonar.sources=firewolf/firewolf-learn/test/springboot/src/main/java
-sonar.tests=firewolf/firewolf-learn/test/springboot/src/test/java
-sonar.java.binaries=firewolf/firewolf-learn/test/springboot/target/classes
-sonar.jacoco.reportPaths=firewolf/firewolf-learn/test/springboot/target/jacoco.exec
-sonar.junit.reportsPath=firewolf/firewolf-learn/test/springboot/target/surefire-reports
-sonar.java.coveragePlugin=jacoco
+```properties
+sonar.projectKey=testabc
+sonar.projectBaseDir=firewolf/firewolf-learn/test/springboot
+sonar.java.binaries=target/classes
 ```
 
 
