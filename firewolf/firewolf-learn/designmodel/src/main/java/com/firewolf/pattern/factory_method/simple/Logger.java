@@ -1,4 +1,4 @@
-package com.firewolf.pattern.factory_method;
+package com.firewolf.pattern.factory_method.simple;
 
 /**
  * 描述：产品类抽象

@@ -1,4 +1,4 @@
-package com.firewolf.pattern.factory_method;
+package com.firewolf.pattern.factory_method.standard;
 
 /**
  * 描述：工厂类抽象

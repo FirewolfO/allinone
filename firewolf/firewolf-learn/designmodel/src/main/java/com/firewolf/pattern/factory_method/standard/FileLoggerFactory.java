@@ -1,7 +1,7 @@
-package com.firewolf.pattern.factory_method;
+package com.firewolf.pattern.factory_method.standard;
 
 /**
- * 描述：
+ * 描述：具体工厂
  * Author：liuxing
  * Date：2020/5/14
  */
