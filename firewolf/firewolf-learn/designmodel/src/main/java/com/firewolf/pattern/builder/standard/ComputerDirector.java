@@ -18,7 +18,7 @@ public class ComputerDirector {
     }
 
     // 构建出产品
-    public Computer buildComputer() {
+    public Computer construct() {
         computerBuilder.buildCpu();
         computerBuilder.buildDisplayer();
         computerBuilder.buildHardDisk();

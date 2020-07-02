@@ -1,5 +1,7 @@
 package com.firewolf.pattern.builder.standard;
 
+import com.firewolf.pattern.builder.Computer;
+
 /**
  * Description:
  * Author: liuxing
@@ -7,6 +9,8 @@ package com.firewolf.pattern.builder.standard;
  * Time: 2020/5/12 11:16 下午
  */
 public class LOLComputerBuilder extends ComputerBuilder {
+
+    private Computer computer = new Computer();
 
     @Override
     public void buildCpu() {
@@ -26,5 +30,10 @@ public class LOLComputerBuilder extends ComputerBuilder {
     @Override
     public void buildDisplayer() {
         computer.setDisplayer("三星32英寸");
+    }
+
+    @Override
+    public Computer getResult() {
+        return computer;
     }
 }

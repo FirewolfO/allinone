@@ -13,7 +13,7 @@ public class Client {
     public static void main(String[] args) {
         ComputerDirectorBuilder directorBuilder = new LOLComputerDirectorBuilder();
 
-        Computer computer = directorBuilder.builderComputer(directorBuilder);
+        Computer computer = directorBuilder.construct();
 
         System.out.println(computer);
 

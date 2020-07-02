@@ -10,9 +10,6 @@ import com.firewolf.pattern.builder.Computer;
  */
 public abstract class ComputerBuilder {
 
-    protected Computer computer = new Computer();
-
-
     // 下面是各个组成部分的构建方法
     public abstract void buildCpu();
 
@@ -23,7 +20,5 @@ public abstract class ComputerBuilder {
     public abstract void buildDisplayer();
 
     // 返回构建的结果
-    public Computer getResult() {
-        return computer;
-    }
+    public abstract Computer getResult();
 }

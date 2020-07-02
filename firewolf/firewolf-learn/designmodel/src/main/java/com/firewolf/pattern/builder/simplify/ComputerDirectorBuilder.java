@@ -10,8 +10,6 @@ import com.firewolf.pattern.builder.Computer;
  */
 public abstract class ComputerDirectorBuilder {
 
-    protected Computer computer = new Computer();
-
     // 下面是各个组成部分的构建方法
     public abstract void buildCpu();
 
@@ -21,13 +19,15 @@ public abstract class ComputerDirectorBuilder {
 
     public abstract void buildDisplayer();
 
+    public abstract Computer getResult();
+
     // 构建并返回结果
-    public Computer builderComputer(ComputerDirectorBuilder actorBuilder) {
-        actorBuilder.buildCpu();
-        actorBuilder.buildDisplayer();
-        actorBuilder.buildHardDisk();
-        actorBuilder.buildMemory();
-        return computer;
+    public final Computer construct() {
+        this.buildCpu();
+        this.buildDisplayer();
+        this.buildHardDisk();
+        this.buildMemory();
+        return this.getResult();
     }
 
 }

@@ -16,7 +16,7 @@ public class Client {
 
         ComputerDirector director = new ComputerDirector(builder);
 
-        Computer computer = director.buildComputer();
+        Computer computer = director.construct();
 
         System.out.println(computer);
 

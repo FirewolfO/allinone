@@ -1,5 +1,7 @@
 package com.firewolf.pattern.builder.hook;
 
+import com.firewolf.pattern.builder.Computer;
+
 /**
  * Description:
  * Author: liuxing
@@ -7,6 +9,8 @@ package com.firewolf.pattern.builder.hook;
  * Time: 2020/5/13 12:03 上午
  */
 public class LOLComputerDirectorBuilder extends ComputerDirectorBuilder {
+
+    protected Computer computer = new Computer();
 
     @Override
     public void buildCpu() {
@@ -36,4 +40,10 @@ public class LOLComputerDirectorBuilder extends ComputerDirectorBuilder {
     public boolean needCpu() {
         return false;
     }
+
+    @Override
+    public Computer getResult() {
+        return computer;
+    }
+
 }
