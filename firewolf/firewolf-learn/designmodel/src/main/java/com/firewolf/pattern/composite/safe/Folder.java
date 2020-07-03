@@ -32,6 +32,4 @@ public class Folder extends AbstractFile {
             file.display();
         }
     }
-
-
 }
