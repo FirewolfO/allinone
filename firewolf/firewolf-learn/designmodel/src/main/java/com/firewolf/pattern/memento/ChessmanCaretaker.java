@@ -1,4 +1,4 @@
-package memento;
+package com.firewolf.pattern.memento;
 
 import java.util.ArrayList;
 import java.util.HashMap;

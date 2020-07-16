@@ -1,4 +1,4 @@
-package memento;
+package com.firewolf.pattern.memento;
 
 /**
  * 描述： 客户端

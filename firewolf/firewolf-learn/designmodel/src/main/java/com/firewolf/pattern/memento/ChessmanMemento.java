@@ -1,4 +1,4 @@
-package memento;
+package com.firewolf.pattern.memento;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
