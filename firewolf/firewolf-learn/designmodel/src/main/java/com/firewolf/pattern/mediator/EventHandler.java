@@ -7,6 +7,11 @@ public abstract class EventHandler {
 
     private EventBus eventBus;
 
+
+    public EventBus getEventBus() {
+        return eventBus;
+    }
+    
     public EventHandler(EventBus eventBus) {
         this.eventBus = eventBus;
     }
@@ -16,4 +21,5 @@ public abstract class EventHandler {
      * 消息对象
      */
     public abstract void handle(Object message);
+
 }
