@@ -1,8 +1,8 @@
 package com.firewolf.learn.test;
 
-import org.springframework.stereotype.Service;
+        import org.springframework.stereotype.Service;
 
-import java.util.Random;
+        import java.util.Random;
 
 /**
  * 描述：
