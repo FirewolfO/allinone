@@ -1,14 +1,10 @@
-package com.firewolf.pattern.facade;
+package com.firewolf.learn.regular;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
-/**
- * Description:
- * Author: liuxing
- * Email: 1483345163@qq.com
- * Time: 2020/8/2 10:17 上午
- */
 public class ConnectionUtils {
 
     private ThreadLocal<Connection> t1 = new ThreadLocal<>();
@@ -25,3 +21,4 @@ public class ConnectionUtils {
         return t1.get();
     }
 }
+
