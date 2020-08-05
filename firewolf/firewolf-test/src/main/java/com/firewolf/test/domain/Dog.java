@@ -1,4 +1,4 @@
-package com.firewolf.test.log;
+package com.firewolf.test.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

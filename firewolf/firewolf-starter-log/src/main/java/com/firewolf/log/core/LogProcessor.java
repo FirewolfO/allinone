@@ -1,10 +1,10 @@
 package com.firewolf.log.core;
 
+import com.firewolf.log.annotations.OpLog;
 import com.firewolf.log.config.properties.LogProperties;
 import com.firewolf.log.entity.Log;
 import com.firewolf.log.handler.LogHandler;
 import com.firewolf.log.operator.LogOperator;
-import com.firewolf.log.annotations.OpLog;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -124,7 +124,7 @@ public class LogProcessor {
             }
 
             String operator = operateLog.operator();
-            if (!StringUtils.isEmpty(operate)) {
+            if (!StringUtils.isEmpty(operator)) {
                 paramParser.parseStrWithSpEL(operator, context);
             } else {
                 operator = logOperator.getOperator();
