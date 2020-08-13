@@ -1,5 +1,6 @@
 package com.firewolf.test.domain;
 
+import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ApiModel("用户")
 public class User {
     private String name;
     private Integer age;
