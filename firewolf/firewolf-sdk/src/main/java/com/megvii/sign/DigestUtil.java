@@ -1,4 +1,4 @@
-package com.megvii.sign.sdk;
+package com.megvii.sign;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;

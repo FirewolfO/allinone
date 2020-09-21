@@ -1,4 +1,4 @@
-package com.megvii.sign.sdk;
+package com.megvii.sign;
 
 /**
  * 字符串工具类

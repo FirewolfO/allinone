@@ -1,10 +1,7 @@
 package test;
 
-import com.alibaba.fastjson.JSONObject;
-import com.megvii.sign.sdk.SignUtlis;
-import okhttp3.*;
-
-import java.util.concurrent.TimeUnit;
+import com.megvii.sign.SignUtlis;
+import com.megvii.utils.OKHttpUtils;
 
 /**
  * 描述： 模拟一次请求的过程
@@ -35,32 +32,10 @@ public class SignUtilTest {
 
 
     private static void postJson(String ctimestamp, String cnonce, String cappKey, String csign, Object reqeustData, String url) {
-        String bodyJson = JSONObject.toJSONString(reqeustData);
-        OkHttpClient httpClient = new OkHttpClient.Builder()
-                .connectTimeout(3000, TimeUnit.SECONDS)
-                .readTimeout(30000, TimeUnit.SECONDS)
-                .writeTimeout(30000, TimeUnit.SECONDS)
-                .build();
-
-        MediaType mediaType = MediaType.parse("application/json;charset=UTF-8");
-        RequestBody requestBody = RequestBody.create(mediaType, bodyJson);
-
-        Request request = new Request.Builder()
-                .url(url)
-                .addHeader("cnonce", cnonce)
-                .addHeader("ctimestamp", ctimestamp)
-                .addHeader("cappKey", cappKey)
-                .addHeader("csign", csign)
-                .post(requestBody)
-                .build();
-        Call call = httpClient.newCall(request);
-        try {
-            Response response = call.execute();
-            System.out.println("请求结果：" + response.body().string());
-            System.out.println(response);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+        OKHttpUtils.postJson(url, reqeustData, requestBuilder ->
+                requestBuilder.addHeader("cnonce", cnonce)
+                        .addHeader("ctimestamp", ctimestamp)
+                        .addHeader("cappKey", cappKey)
+                        .addHeader("csign", csign));
     }
 }
