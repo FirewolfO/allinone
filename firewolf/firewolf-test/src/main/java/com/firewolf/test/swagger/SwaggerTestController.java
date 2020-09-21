@@ -1,10 +1,8 @@
 package com.firewolf.test.swagger;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.firewolf.test.domain.Dog;
+import io.swagger.annotations.*;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Description:
@@ -15,12 +13,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/test/swagger")
-@Api(tags = "Swagger测试接口")
+@Api(tags = "安防模块")
 public class SwaggerTestController {
 
-    @GetMapping
+    @PostMapping
     @ApiOperation("Hello入口")
-    public String hello(){
+    @ApiImplicitParam(name = "dog", examples = @Example({
+            @ExampleProperty(value = "{1321323123}", mediaType = "application/json")
+    }))
+    public String hello(@RequestBody Dog dog) {
         return "hello, swagger !!!";
     }
 }
