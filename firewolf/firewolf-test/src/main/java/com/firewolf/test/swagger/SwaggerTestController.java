@@ -18,9 +18,10 @@ public class SwaggerTestController {
 
     @PostMapping
     @ApiOperation("Hello入口")
-    @ApiImplicitParam(name = "dog", examples = @Example({
-            @ExampleProperty(value = "{1321323123}", mediaType = "application/json")
-    }))
+
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "dog", example = "aadadasd")
+    })
     public String hello(@RequestBody Dog dog) {
         return "hello, swagger !!!";
     }
