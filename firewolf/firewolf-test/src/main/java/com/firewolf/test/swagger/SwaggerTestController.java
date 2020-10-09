@@ -3,6 +3,9 @@ package com.firewolf.test.swagger;
 import com.firewolf.test.domain.Dog;
 import io.swagger.annotations.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
 
 /**
  * Description:
@@ -17,12 +20,11 @@ import org.springframework.web.bind.annotation.*;
 public class SwaggerTestController {
 
     @PostMapping
-    @ApiOperation("Hello入口")
-
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "dog", example = "aadadasd")
-    })
-    public String hello(@RequestBody Dog dog) {
+    @ApiOperation(value = "Hello入口")
+    public String hello(@RequestParam("file")
+                            @ApiParam(name = "file",
+                                    value = "上传图片文件, 最大10m,支持格式:jpg|jpeg|bmp|png|JPG|JPEG|BMP|PNG",
+                                    required = true) MultipartFile file) {
         return "hello, swagger !!!";
     }
 }
