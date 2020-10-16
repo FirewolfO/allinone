@@ -1,0 +1,4010 @@
+<!doctype html>
+<html>
+ <head> 
+  <title>盘古openAPI wiki页</title> 
+  <meta charset="utf-8"> 
+  <style>@charset "UTF-8";
+html,
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote {
+  margin: 0;
+  padding: 0;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 设置滚动条的样式 */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+/* 外层轨道 */
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset006pxrgba(255, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.1);
+}
+
+/* 滚动条滑块 */
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: inset006pxrgba(0, 0, 0, 0.5);
+}
+
+::-webkit-scrollbar-thumb:window-inactive {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimSun, sans-serif;
+  font-size: 13px;
+  line-height: 25px;
+  color: #393838;
+  position: relative;
+}
+
+table {
+  margin: 10px 0 15px 0;
+  border-collapse: collapse;
+}
+
+td,
+th {
+  border: 1px solid #ddd;
+  padding: 3px 10px;
+}
+
+th {
+  padding: 5px 10px;
+}
+
+a, a:link, a:visited {
+  color: #34495e;
+  text-decoration: none;
+}
+
+a:hover, a:focus {
+  color: #59d69d;
+  text-decoration: none;
+}
+
+a img {
+  border: none;
+}
+
+p {
+  padding-left: 10px;
+  margin-bottom: 9px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: #404040;
+  line-height: 36px;
+}
+
+h1 {
+  color: #2c3e50;
+  font-weight: 600;
+  margin-bottom: 16px;
+  font-size: 32px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #ddd;
+  line-height: 50px;
+}
+
+h2 {
+  font-size: 28px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+h3 {
+  clear: both;
+  font-weight: 400;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-left: 3px solid #59d69d;
+  padding-left: 8px;
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  font-size: 13px;
+}
+
+hr {
+  margin: 0 0 19px;
+  border: 0;
+  border-bottom: 1px solid #ccc;
+}
+
+blockquote {
+  padding: 13px 13px 21px 15px;
+  margin-bottom: 18px;
+  font-family: georgia, serif;
+  font-style: italic;
+}
+
+blockquote:before {
+  font-size: 40px;
+  margin-left: -10px;
+  font-family: georgia, serif;
+  color: #eee;
+}
+
+blockquote p {
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 18px;
+  margin-bottom: 0;
+  font-style: italic;
+}
+
+code,
+pre {
+  font-family: Monaco, Andale Mono, Courier New, monospace;
+}
+
+code {
+  background-color: #fee9cc;
+  color: rgba(0, 0, 0, 0.75);
+  padding: 1px 3px;
+  font-size: 12px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+
+pre {
+  display: block;
+  padding: 14px;
+  margin: 0 0 18px;
+  line-height: 16px;
+  font-size: 11px;
+  border: 1px solid #d9d9d9;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  background: #f6f6f6;
+}
+
+pre code {
+  background-color: #f6f6f6;
+  color: #737373;
+  font-size: 11px;
+  padding: 0;
+}
+
+sup {
+  font-size: 0.83em;
+  vertical-align: super;
+  line-height: 0;
+}
+
+* {
+  -webkit-print-color-adjust: exact;
+}
+
+@media print {
+  body,
+  code,
+  pre code,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: black;
+  }
+
+  table,
+  pre {
+    page-break-inside: avoid;
+  }
+}
+html,
+body {
+  height: 100%;
+}
+
+.table-of-contents {
+  position: fixed;
+  top: 61px;
+  left: 0;
+  bottom: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  width: 260px;
+}
+
+.table-of-contents > ul > li > a {
+  font-size: 20px;
+  margin-bottom: 16px;
+  margin-top: 16px;
+}
+
+.table-of-contents ul {
+  overflow: auto;
+  margin: 0px;
+  height: 100%;
+  padding: 0px 0px;
+  box-sizing: border-box;
+  list-style-type: none;
+}
+
+.table-of-contents ul li {
+  padding-left: 20px;
+}
+
+.table-of-contents a {
+  padding: 2px 0px;
+  display: block;
+  text-decoration: none;
+}
+
+.content-right {
+  max-width: 700px;
+  margin-left: 290px;
+  padding-left: 70px;
+  flex-grow: 1;
+}
+.content-right h2:target {
+  padding-top: 80px;
+}
+
+body > p {
+  margin-left: 30px;
+}
+
+body > table {
+  margin-left: 30px;
+}
+
+body > pre {
+  margin-left: 30px;
+}
+
+.curProject {
+  position: fixed;
+  top: 20px;
+  font-size: 25px;
+  color: black;
+  margin-left: -240px;
+  width: 240px;
+  padding: 5px;
+  line-height: 25px;
+  box-sizing: border-box;
+}
+
+.g-doc {
+  margin-top: 56px;
+  padding-top: 24px;
+  display: flex;
+}
+
+.curproject-name {
+  font-size: 42px;
+}
+
+.m-header {
+  background: #32363a;
+  height: 56px;
+  line-height: 56px;
+  padding-left: 60px;
+  display: flex;
+  align-items: center;
+  position: fixed;
+  z-index: 9;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+.m-header .title {
+  font-size: 22px;
+  color: #fff;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  margin: 0;
+  margin-left: 16px;
+  padding: 0;
+  line-height: 56px;
+  border: none;
+}
+.m-header .nav {
+  color: #fff;
+  font-size: 16px;
+  position: absolute;
+  right: 32px;
+  top: 0;
+}
+.m-header .nav a {
+  color: #fff;
+  margin-left: 16px;
+  padding: 8px;
+  transition: color .2s;
+}
+.m-header .nav a:hover {
+  color: #59d69d;
+}
+
+.m-footer {
+  border-top: 1px solid #ddd;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+/*# sourceMappingURL=defaultTheme.css.map */
+</style> 
+ </head> 
+ <body> 
+  <div class="m-header"> 
+   <a href="#" style="display: inherit;">
+    <svg class="svg" width="32px" height="32px" viewbox="0 0 64 64" version="1.1">
+     <title>Icon</title>
+     <desc>
+      Created with Sketch.
+     </desc>
+     <defs>
+      <lineargradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+       <stop stop-color="#FFFFFF" offset="0%"></stop>
+       <stop stop-color="#F2F2F2" offset="100%"></stop>
+      </lineargradient>
+      <circle id="path-2" cx="31.9988602" cy="31.9988602" r="2.92886048"></circle>
+      <filter x="-85.4%" y="-68.3%" width="270.7%" height="270.7%" filterunits="objectBoundingBox" id="filter-3">
+       <feoffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetOuter1"></feoffset>
+       <fegaussianblur stddeviation="1.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></fegaussianblur>
+       <fecolormatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.159703351 0" type="matrix" in="shadowBlurOuter1"></fecolormatrix>
+      </filter>
+     </defs>
+     <g id="首页" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+      <g id="大屏幕">
+       <g id="Icon">
+        <circle id="Oval-1" fill="url(#linearGradient-1)" cx="32" cy="32" r="32"></circle>
+        <path d="M36.7078009,31.8054514 L36.7078009,51.7110548 C36.7078009,54.2844537 34.6258634,56.3695395 32.0579205,56.3695395 C29.4899777,56.3695395 27.4099998,54.0704461 27.4099998,51.7941246 L27.4099998,31.8061972 C27.4099998,29.528395 29.4909575,27.218453 32.0589004,27.230043 C34.6268432,27.241633 36.7078009,29.528395 36.7078009,31.8054514 Z" id="blue" fill="#2359F1" fill-rule="nonzero"></path>
+        <path d="M45.2586091,17.1026914 C45.2586091,17.1026914 45.5657231,34.0524383 45.2345291,37.01141 C44.9033351,39.9703817 43.1767091,41.6667796 40.6088126,41.6667796 C38.040916,41.6667796 35.9609757,39.3676862 35.9609757,37.0913646 L35.9609757,17.1034372 C35.9609757,14.825635 38.0418959,12.515693 40.6097924,12.527283 C43.177689,12.538873 45.2586091,14.825635 45.2586091,17.1026914 Z" id="green" fill="#57CF27" fill-rule="nonzero" transform="translate(40.674608, 27.097010) rotate(60.000000) translate(-40.674608, -27.097010) "></path>
+        <path d="M28.0410158,17.0465598 L28.0410158,36.9521632 C28.0410158,39.525562 25.9591158,41.6106479 23.3912193,41.6106479 C20.8233227,41.6106479 18.7433824,39.3115545 18.7433824,37.035233 L18.7433824,17.0473055 C18.7433824,14.7695034 20.8243026,12.4595614 23.3921991,12.4711513 C25.9600956,12.4827413 28.0410158,14.7695034 28.0410158,17.0465598 Z" id="red" fill="#FF561B" fill-rule="nonzero" transform="translate(23.392199, 27.040878) rotate(-60.000000) translate(-23.392199, -27.040878) "></path>
+        <g id="inner-round">
+         <use fill="black" fill-opacity="1" filter="url(#filter-3)" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#path-2"></use>
+         <use fill="#F7F7F7" fill-rule="evenodd" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#path-2"></use>
+        </g>
+       </g>
+      </g>
+     </g>
+    </svg></a> 
+   <a href="#"><h1 class="title">YAPI 接口文档</h1></a> 
+   <div class="nav"> 
+    <a href="https://hellosean1025.github.io/yapi/">YApi</a> 
+   </div> 
+  </div> 
+  <div class="g-doc"> 
+   <div class="table-of-contents">
+    <ul>
+     <li><a href="#ea24a9b5-ef22-44fa-99ba-b07600df9c21">基本说明</a>
+      <ul>
+       <li><a href="#51e4550f-08b3-40a4-9add-2c33a345d176">接口地址</a></li>
+       <li><a href="#0aa0ae4b-5317-4eeb-9253-b5546315d563">返回数据</a></li>
+      </ul></li>
+     <li><a href="#1cd056a9-f5a7-42f7-8a76-3db7be9fed1f">接口鉴权</a>
+      <ul>
+       <li><a href="#bc105494-6782-4805-835d-a953324264d2">鉴权方式</a></li>
+       <li><a href="#82422b14-1c3e-4c69-a1d5-65064e31b17e">签名计算方式</a></li>
+       <li><a href="#dc03e897-9b51-423d-bb50-eb1d74517214">签名示例</a></li>
+       <li><a href="#68b52df4-85e9-4931-97b4-a673d9bc68a1">可用签名及秘钥</a></li>
+       <li><a href="#38c79c07-679a-4a52-92bf-8c23fc835c51">签名SDK</a>
+        <ul>
+         <li><a href="#fc996d35-09b0-46c1-a7d9-eee8fbfc65ea">Java版本</a>
+          <ul>
+           <li><a href="#3869c342-e350-48bb-b984-ff814a6f9b51">SDK</a></li>
+           <li><a href="#5151a101-e36d-4516-9fb0-e0f1e6fa3d24">请求示例</a></li>
+          </ul></li>
+        </ul></li>
+      </ul></li>
+     <li><a href="#e2c73e68-de7a-4e6e-aaf1-456705798d78">接口流程</a>
+      <ul>
+       <li><a href="#db02d405-e0ba-404b-b7dd-b4ded36534e9">通行</a></li>
+       <li><a href="#a4300265-5ab7-4080-ac95-8f97e816ad8c">考勤</a></li>
+       <li><a href="#9cdbbe1d-cd3b-4270-9f71-fce740765e0b">人员识别</a></li>
+       <li><a href="#e05d99ce-618f-4b2e-951d-35f793a3e664">人员聚类</a></li>
+       <li><a href="#dcb57371-03d0-494f-8ff5-e27c762d7549">车辆识别</a></li>
+       <li><a href="#1f412e9e-de16-4aac-96ff-768d09c00e61">结构化</a></li>
+       <li><a href="#a6566f34-53af-4bba-b005-7a0c676f19c6">以图搜图</a></li>
+       <li><a href="#3cdad53c-7b94-42cb-90a6-0789da3475c4">识别结果实时推送</a></li>
+      </ul></li>
+     <li><a href="#0a8faef5-a8c7-4a4f-a2a0-4694bd52f11f">错误码</a>
+      <ul>
+       <li><a href="#37603ea5-64f5-4bdc-b143-a371372b03fe">公共状态码</a></li>
+       <li><a href="#1e377888-e912-4a0b-bd1e-3e24bf904951">通行业务错误码</a></li>
+       <li><a href="#2a5cd1c7-07da-460f-8d2a-33783c216ad1">考勤异常错误码</a></li>
+       <li><a href="#4394a2b7-f03a-466e-8e54-e7696d468696">通行记录错误码</a></li>
+       <li><a href="#bfc83511-7b55-4e7a-9a3d-7985ca2999ad">事件业务状态码</a></li>
+       <li><a href="#e92fdf58-387c-4009-9fd3-6061c5cbccf5">人员错误状态码</a></li>
+       <li><a href="#244e04e2-663c-4f90-8b1b-d77679134085">结构化业务状态码</a></li>
+       <li><a href="#9c288d3c-44ad-4287-b0df-acb8cb2e4d72">警戒业务状态码</a>
+        <ul>
+         <li><a href="#0c3769b2-28a8-4973-8dae-af381c739b83">业务数据以json格式推送到第三方，结构如下：</a></li>
+         <li><a href="#5c4d2e7f-e04f-4cc0-a5a1-19ab6fa13082">busiType=1的时候：</a></li>
+         <li><a href="#3aabf8a5-02bc-40e2-a5bc-941b6b248d4e">当busiType==2的时候，数据是车辆相关的，有两类，机动车和非机动车，</a></li>
+         <li><a href="#f1b8e6c0-8e37-4c35-8749-7827a32cf126">busyType==3的时候，是警戒数据</a></li>
+         <li><a href="#127725ec-aedf-4ca8-9369-b31f1f347fed">busyType==5的时候，是通行数据</a></li>
+         <li><a href="#953338ad-db8e-4d9b-ab2a-f1794273fd7f">当busiType==12的时候，描述的是结构化数据，分为两种</a></li>
+        </ul></li>
+      </ul></li>
+     <li><a href="#1ce06e2e-1ab3-404f-89a1-ecd20c44c7a0">业务数据推送的数据结构</a></li>
+    </ul>
+   </div> 
+   <div id="right" class="content-right"> 
+    <h1 class="curproject-name"> 盘古openAPI wiki页 </h1> 
+    <h3 id="">公共信息</h3> 
+    <h1 id="ea24a9b5-ef22-44fa-99ba-b07600df9c21">基本说明</h1> 
+    <h2 id="51e4550f-08b3-40a4-9add-2c33a345d176">接口地址</h2> 
+    <p>所有的接口请求格式都是：<a href="http://[ip:port">http://[ip:port</a>] + 接口路径的方式进行请求<br> 具体的ip和port以现场部署为准</p> 
+    <h2 id="0aa0ae4b-5317-4eeb-9253-b5546315d563">返回数据</h2> 
+    <p>所有接口的返回数据都遵循如下结构：<br> <span class="colour" style="color:rgb(0, 0, 0)"><code data-backticks="1">{</code></span><br> <span class="colour" style="color:rgb(163, 21, 21)"><code data-backticks="1">"code"</code></span><span class="colour" style="color:rgb(0, 0, 0)"><code data-backticks="1">: 状态码</code></span><span class="colour" style="color:rgb(0, 0, 0)"><code data-backticks="1">,</code></span><br> <span class="colour" style="color:rgb(163, 21, 21)"><code data-backticks="1">"data"</code></span><span class="colour" style="color:rgb(0, 0, 0)"><code data-backticks="1">: 结果数据json串,</code></span><br> <span class="colour" style="color:rgb(163, 21, 21)"><code data-backticks="1">"msg"</code></span><span class="colour" style="color:rgb(0, 0, 0)"><code data-backticks="1">:</code></span><span class="colour" style="color:rgb(4, 81, 165)"><code data-backticks="1">"状态描述"</code></span><br> <span class="colour" style="color:rgb(0, 0, 0)"><code data-backticks="1">}</code></span></p> 
+    <p><br data-tomark-pass=""><br> <br data-tomark-pass=""><br> <br data-tomark-pass=""><br> <span class="colour" style="color:rgb(0, 0, 0)">各个接口只会描述data部分的数据结构</span></p> 
+    <h1 id="1cd056a9-f5a7-42f7-8a76-3db7be9fed1f">接口鉴权</h1> 
+    <h2 id="bc105494-6782-4805-835d-a953324264d2">鉴权方式</h2> 
+    <p>openApi中的接口请求鉴权不是采用登录的方式处理，而是采用签名方式，接口请求的时候，都需要在请求头加入以下请求头：</p> 
+    <table> 
+     <thead> 
+      <tr> 
+       <th>序号</th> 
+       <th>header名</th> 
+       <th>值</th> 
+       <th>说明</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td>1</td> 
+       <td>ctimestamp</td> 
+       <td>123456789</td> 
+       <td>客户端本地unix毫秒时间戳</td> 
+      </tr> 
+      <tr> 
+       <td>2</td> 
+       <td>cnonce</td> 
+       <td>xxxxxx</td> 
+       <td>6位随机字符串，可含字母，客户端自行生成</td> 
+      </tr> 
+      <tr> 
+       <td>3</td> 
+       <td>cappkey</td> 
+       <td>xxxx</td> 
+       <td>标识第三方系统身份，由盘古分配</td> 
+      </tr> 
+      <tr> 
+       <td>4</td> 
+       <td>csign</td> 
+       <td>签名</td> 
+       <td>按签名方案计算的签名</td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h2 id="82422b14-1c3e-4c69-a1d5-65064e31b17e">签名计算方式</h2> 
+    <p>签名算法<br> &nbsp; &nbsp; &nbsp; &nbsp;MD5，32位小写<br> 通过以下几部分组合计算：</p> 
+    <ul> 
+     <li>A：请求URI，以/开头，如<span class="colour" style="color:rgb(80, 80, 80)">/v1/api/device/list</span></li> 
+     <li>B：request的请求method，大写，如GET、POST、PUT、DELETE</li> 
+     <li>C：请求参数按照参数key正序排序后连接的字符串：如请求参数中有akey=1,ckey=2,bkey=3,则连接的参数字符串为：akey=1&amp;bkey=3&amp;ckey=2(<span class="colour" style="color:rgb(255, 0, 0)">注意：参数值采用url编码前的原值</span>)，目前，我们大部分接口都是是有body传参，所以这里是""</li> 
+     <li>D：请求的requestbody中的内容的MD5(32位小写，下同)，如无内容，则为""【<span class="colour" style="color:rgb(255, 0, 0)">注，对于文件上传类url，该字段用空字符串替代</span>】</li> 
+     <li>E：&nbsp;cappkey对应的秘钥，如：<span class="colour" style="color:rgb(80, 80, 80)">appkey1</span></li> 
+     <li>F：header中的ctimestamp、cnonce、cappkey</li> 
+    </ul> 
+    <p>sign计算公式：<br> &nbsp; &nbsp; &nbsp; csign = MD5(A-B-C-D-E-ctimestamp-cnonce-cappkey)</p> 
+    <h2 id="dc03e897-9b51-423d-bb50-eb1d74517214">签名示例</h2> 
+    <p>这里以查询设备列表为例：</p> 
+    <ul> 
+     <li>A="<span class="colour" style="color:rgb(80, 80, 80)">/v1/api/device/list</span>"</li> 
+     <li>B="POST"</li> 
+     <li>C=""</li> 
+     <li>请求体数据是：</li> 
+    </ul> 
+    <p><span class="colour" style="color:rgb(0, 0, 0)"><code data-backticks="1">{</code></span><br> <span class="colour" style="color:rgb(163, 21, 21)"><code data-backticks="1">"pageNum"</code></span><span class="colour" style="color:rgb(0, 0, 0)"><code data-backticks="1">:</code></span><span class="colour" style="color:rgb(9, 134, 88)"><code data-backticks="1">1</code></span><span class="colour" style="color:rgb(0, 0, 0)"><code data-backticks="1">,</code></span><br> <span class="colour" style="color:rgb(163, 21, 21)"><code data-backticks="1">"pageSize"</code></span><span class="colour" style="color:rgb(0, 0, 0)"><code data-backticks="1">:</code></span><span class="colour" style="color:rgb(9, 134, 88)"><code data-backticks="1">10</code></span><br> <span class="colour" style="color:rgb(0, 0, 0)"><code data-backticks="1">}</code></span><br> <span class="colour" style="color:rgb(0, 0, 0)"><code data-backticks="1">则D为：</code></span>1e673403a5bda635cea1b76fcc6755e2</p> 
+    <ul> 
+     <li>E="sdfajk3242324fa!djq7"</li> 
+     <li>ctimestamp="<span class="colour" style="color:rgb(80, 80, 80)">1599648837833</span>"</li> 
+     <li>cnonce="123456"</li> 
+     <li>cappkey="appkey1"</li> 
+     <li>则csign=MD5("/v1/api/device/list-POST--1e673403a5bda635cea1b76fcc6755e2-sdfajk3242324fa!djq7-1599648837833-123456-appkey1")，结果为：<span class="colour" style="color:rgb(4, 81, 165)">e81594ae56fd710065e2718c3350cb4f</span></li> 
+    </ul> 
+    <p>那么，我们可以如下请求： <img src="data:image/png;base64,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0Y9+lF555ZWiTBR2SlOeTvHER6eBPnmTbZ22KW/16tWF6PTJ20svvVTYVp5OAX/3u9/1bOtkTzY1ntiuxzooLuNMGgQgAAEIQAACEIAABCCwkMDExJsEUf7y37xt2LAhnXPOOek3v/lNIZaeeuqpdPbZZ6enn3666N0LL7yQNm7cWOT96le/SitWrEhbt25NL774YiG2JIK2bNmS7rvvviSRpr+n27t3b/r+979fCB2JBZW/6KKL0k033VTYlOCRaLv++uuT2tdjgeeff3766U9/mvbv318IHdkcFAYJEedL4ERx5tO2O+64I7388svFiZvzVdb18lgiTYL04YcfLh57vOeee4pxSmjFshJosvP888+n119/vRByaktlLN4kZMVDDMTn2WefLWxJvOlewk8nezrV04ngpZdeWohc3avOQw89VNhbu3ZtIfo0R/3ajf3rdz2IOfkQgAAEIAABCEAAAhCAQEoTE28SWDoJ80v3Fm8SIrmw073SJaQkCM4666ziNEwnb9/85jcLO8pX+qZNm4q50w+WSKBJvKkdlcvtSrQpKNapkUSeg9qR+FP673//+4GnbqpX97HJZ555pifedDIl8aLTOL10rTSLt/hIZZnIuf/++9Nll11WiCmJL52WlZ28Kc/1Ldh072uJU9V99NFHi3Lbt28vRJnEm+yJ0bp164o8l9XJm/KiGFW/1R8JSNmuatd96Rfz2KRXIzEEIAABCEAAAhCAAAT6E5iYeOv3a5O5CItdlFBZvnx50umOgspG8aYTOp+QxV+btHjTaVxZkDCxkIv5+tEQiQ89iqmTp0G/fjjMD5bohE1iSWJHok1t6eVHKpWnMv3ETZ6nHy9RPzXemGeB5rR472sLMos3ncTp5LFMvMm+Hqu0eNPjlDoZtX3Htl117/SqmB8siauRawhAAAIQgAAEIAABCFQTmIl400mO/s5Nf38mkaC/B9OjkxJjd999d5GnRyf1KJ/+rs3izY9N6m/TVE/CTqLLj02qrB6x1OmRhIlOtHxKl4s3ncDptE1t67RPjwV+97vfLU7WqnGN9h906xROAklCyWJJaVWCJk/XWJSm8Wgc995772F1+4ko5/mxSfVBj0KKpx7JjI9N6lFL/Sql/iZRPCXe/Nik7IiX7OiRScW27T7n906vigeJ5X5zQR4EIAABCEAAAhCAAATmicBMxJsA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rdopDpciAQIECBAgQIAAgRMlILwVh7tVAGnVTgytVVut2ikOlyIBAgQIECBAgACBEyUgvBWHu1UAadVODK1VW63aKQ6XIgECBAgQIECAAIETJSC8FYe7VQBp1U4MrVVbrdopDpciAQIECBAgQIAAgRMlILydqMNtsAQIECBAgAABAgQIjFVAeBvrkdNvAgQIECBAgAABAgROlIDwdqIOt8ESIECAAAECBAgQIDBWAeFtrEdOvwkQIECAAAECBAgQOFECwtuJOtwGS4AAAQIECBAgQIDAWAWEt7EeOf0mQIAAAQIECBAgQOBECQhvJ+pwGywBAgQIECBAgAABAmMVEN7GeuT0mwABAgQIECBAgACBEyUgvJ2ow22wBAgQIECAAAECBAiMVWDjzTffTB4MnAPOAeeAc8A54BxwDjgHnAPOAefAsM+BPTNvY02g+k2AAAECBAgQIECAAIHjLiC8HfcjbHwECBAgQIAAAQIECBwLAeHtWBxGgyBAgAABAgQIECBA4LgLCG/H/QgbHwECBAgQIECAAAECx0JAeDsWh9EgCBAgQIAAgeMu8ODBg/TOO++kra0tDwaDPQfiHI1z1d9qBIS31bjaKwECBAgQIECgN4G4GBbahNYxnQMCXG///PfsSHjbw+EFAQIECBAgQGB4AuWM29///vf0j3/8Y3idHFGPwi8cxxSGxtbXOGf99S8gvPVvao8ECBAgQIAAgV4F8oV7BA5//QkIcKudzezvSNlTFvh/510H4sBkm7sAAAAASUVORK5CYII=" alt="image.png"></p> 
+    <h2 id="68b52df4-85e9-4931-97b4-a673d9bc68a1">可用签名及秘钥</h2> 
+    <p>目前，盘古里面有两组cappkey和秘钥，如下：</p> 
+    <table> 
+     <thead> 
+      <tr> 
+       <th>cappKey</th> 
+       <th>secret</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td>appkey1</td> 
+       <td>sdfajk3242324fa!djq7</td> 
+      </tr> 
+      <tr> 
+       <td>appkey2</td> 
+       <td>zxcv&amp;jlkfd234adf#xi9</td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h2 id="38c79c07-679a-4a52-92bf-8c23fc835c51">签名SDK</h2> 
+    <h3 id="fc996d35-09b0-46c1-a7d9-eee8fbfc65ea"><code data-backticks="1">Java版本</code></h3> 
+    <h4 id="3869c342-e350-48bb-b984-ff814a6f9b51">SDK</h4> 
+    <pre><code>
+package com.megvii.sign.sdk;
+<p>import com.alibaba.fastjson.JSONObject;</p>
+<p>import org.apache.commons.lang3.StringUtils;</p>
+<p>/**</p>
+<p>描述：</p>
+<p>Author：liuxing</p>
+<p>Date：2020-09-11</p>
+<p>*/</p>
+<p>public class SignUtlis {</p>
+<p>private static final String SIGN_FORMAT = "%s-%s-%s-%s-%s-%s-%s-%s";</p>
+<p>/**</p>
+<p>签名算法生成卡密昂</p>
+<p>@param ctimestamp</p>
+<p>@param cnonce</p>
+<p>@param requestBody 请求体对象</p>
+<p>@param requestParam</p>
+<p>@param url</p>
+<p>@param method</p>
+<p>@param cappKey</p>
+<p>@param secret</p>
+<p>@return</p>
+<p>*/</p>
+<p>public static String sign(String ctimestamp, String cnonce, Object requestBody, String requestParam, String url, String method, String cappKey, String secret) {</p>
+<p>String requestBodyMd5 = "";</p>
+<p>if (requestBody != null) {</p>
+<p>String requestBodyJson = JSONObject.toJSONString(requestBody);</p>
+<p>if (StringUtils.isNotEmpty(requestBodyJson)) {</p>
+<p>requestBodyMd5 = DigestUtil.encryptMd5(requestBodyJson);</p>
+<p>}</p>
+<p>}</p>
+<p>String signStr = String.format(SIGN_FORMAT, url, method, requestParam, requestBodyMd5, secret, ctimestamp, cnonce, cappKey);</p>
+<p>String sign = DigestUtil.encryptMd5(signStr);</p>
+<p>return sign;</p>
+<p>}</p>
+</code><p><code>}<br> </code></p></pre>
+    <p></p> 
+    <pre><code>
+package com.megvii.sign.sdk;
+
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.DESedeKeySpec;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
+public class DigestUtil {
+
+    /** 算法名称 */
+    private static final String ALGORITHM = "DESede";
+    /** 16进制字母 */
+    private static final char[] HEX_DIGITS={'0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f'};
+
+    /**
+     * @param decript 要加密的字符串
+     * @return 加密的字符串
+     * SHA1加密
+     */
+    public final static String SHA1(String decript) {
+        try {
+            MessageDigest digest = java.security.MessageDigest
+                    .getInstance("SHA-1");
+            digest.update(decript.getBytes());
+            byte messageDigest[] = digest.digest();
+            // Create Hex String
+            StringBuffer hexString = new StringBuffer();
+            // 字节数组转换为 十六进制 数
+            for (int i = 0; i &lt; messageDigest.length; i++) {
+                String shaHex = Integer.toHexString(messageDigest[i] &amp; 0xFF);
+                if (shaHex.length() &lt; 2) {
+                    hexString.append(0);
+                }
+                hexString.append(shaHex);
+            }
+            return hexString.toString();
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+
+    /**
+     * ３DES加密,key必须是长度大于等于 3*8 = 24 位
+     * @param src
+     * @param key
+     * @return
+     * @throws Exception
+     */
+    public static String encrypt3DES(String src, String key) {
+        byte[] keyBytes = key.getBytes();
+        try {
+            DESedeKeySpec dks = new DESedeKeySpec(keyBytes);
+            SecretKeyFactory keyFactory = SecretKeyFactory.getInstance(ALGORITHM);
+            SecretKey securekey = keyFactory.generateSecret(dks);
+
+            Cipher cipher = Cipher.getInstance("DESede/ECB/PKCS5Padding");
+            cipher.init(Cipher.ENCRYPT_MODE, securekey);
+            byte[] b=cipher.doFinal(src.getBytes());
+            return StringUtil.byte2hex(b);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
+     * 3DESECB解密,key必须是长度大于等于 3*8 = 24 位
+     * @param src
+     * @param key
+     * @return
+     * @throws Exception
+     */
+    public static String decrypt3DES(String src, String key) {
+
+        byte[] keyBytes = key.getBytes();
+        try {
+            //--通过base64,将字符串转成byte数组
+            byte[] bytesrc = StringUtil.hex2byte(src);
+            //--解密的key
+            DESedeKeySpec dks = new DESedeKeySpec(keyBytes);
+            SecretKeyFactory keyFactory = SecretKeyFactory.getInstance(ALGORITHM);
+            SecretKey securekey = keyFactory.generateSecret(dks);
+
+            //--Chipher对象解密
+            Cipher cipher = Cipher.getInstance("DESede/ECB/PKCS5Padding");
+            cipher.init(Cipher.DECRYPT_MODE, securekey);
+            byte[] retByte = cipher.doFinal(bytesrc);
+            return new String(retByte);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
+     *
+     * Description:md5加密
+     * @Create_by:JH
+     * @Create_date:2014-9-9
+     * @Last_Edit_By:
+     * @Edit_Description
+     * @Create_Version:exinhua 1.0
+     */
+    public static String encryptMd5(String src) {
+        if(StringUtil.isEmpty(src)) {
+            return src;
+        }
+        try {
+            byte[] btInput = src.getBytes();
+            // 获得MD5摘要算法的 MessageDigest 对象
+            MessageDigest mdInst = MessageDigest.getInstance("MD5");
+            // 使用指定的字节更新摘要
+            mdInst.update(btInput);
+            // 获得密文
+            byte[] md = mdInst.digest();
+            // 把密文转换成十六进制的字符串形式
+            return byteToHexString(md);
+        } catch (Exception e) {
+            throw new RuntimeException("error occurated when encrypt", e);
+        }
+    }
+
+    /**
+     * 对输入进行sha1加密后，在进行16进制转换
+     * @param value
+     * @return
+     */
+    public static String hexSHA1(String value) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-1");
+            md.update(value.getBytes("utf-8"));
+            byte[] digest = md.digest();
+            return byteToHexString(digest);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    /**
+     * 字节数组转换成16进制表示
+     * @param bytes
+     * @return
+     */
+    public static String byteToHexString(byte[] bytes) {
+        int j = bytes.length;
+        char[] str = new char[j * 2];
+        int k = 0;
+        for (int i = 0; i &lt; j; i++) {
+            byte byte0 = bytes[i];
+            str[k++] = HEX_DIGITS[byte0 &gt;&gt;&gt; 4 &amp; 0xf];
+            str[k++] = HEX_DIGITS[byte0 &amp; 0xf];
+        }
+        return new String(str);
+    }
+}
+</code></pre> 
+    <pre><code>
+package com.megvii.sign.sdk;
+
+/**
+ * 字符串工具类
+ *
+ */
+public class StringUtil {
+
+    public static final String[] HEX_ARRAYS = { "0", "1", "2", "3", "4", "5",
+            "6", "7", "8", "9", "a", "b", "c", "d", "e", "f" };
+
+    /**
+     * 　判断value是否是null或者其length为0
+     *
+     * @param value
+     * @return
+     */
+    public static boolean isEmpty(String value) {
+        return value == null || value.length() == 0;
+    }
+
+    /**
+     * 判断value是否不是null且其length&gt;0
+     *
+     * @param value
+     * @return
+     */
+    public static boolean isNotEmpty(String value) {
+        return !isEmpty(value);
+    }
+
+    /**
+     * trim操作
+     *
+     * @param value
+     * @return
+     */
+    public static String trim(String value) {
+        if (value == null) {
+            return null;
+        }
+        return value.trim();
+    }
+
+    /**
+     * byte string to hex string
+     *
+     * @param b
+     * @return
+     */
+    public static String byte2hex(byte[] b) {
+        if (b == null) {
+            return null;
+        }
+        if (b.length == 0) {
+            return "";
+        }
+        StringBuilder retBuilder = new StringBuilder();
+        for (int n = 0; n &lt; b.length; ++n) {
+            retBuilder.append(HEX_ARRAYS[(b[n] &amp; 0xF0) &gt;&gt; 4]);
+            retBuilder.append(HEX_ARRAYS[b[n] &amp; 0x0F]);
+        }
+        return retBuilder.toString();
+    }
+
+    /**
+     * hex string to byte string
+     *
+     * @param str
+     * @return
+     */
+    public static byte[] hex2byte(String str) {
+        if (str == null)
+            return null;
+        str = str.trim();
+        int len = str.length();
+        if ((len == 0) || (len % 2 == 1))
+            return null;
+        byte[] b = new byte[len / 2];
+        byte tmp = 0;
+        char[] strs = str.toCharArray();
+        for (int i = 0; i &lt; len; i++) {
+            byte t = 0;
+            if (strs[i] &gt;= '0' &amp;&amp; strs[i] &lt;= '9') {
+                t = (byte) (strs[i] - '0');
+            } else if (strs[i] &gt;= 'A' &amp;&amp; strs[i] &lt;= 'F') {
+                t = (byte) (strs[i] - 'A' + 10);
+            } else if (strs[i] &gt;= 'a' &amp;&amp; strs[i] &lt;= 'f') {
+                t = (byte) (strs[i] - 'a' + 10);
+            }
+            if ((i &amp; 0x1) == 1) {
+                tmp &lt;&lt;= 4;
+                tmp += t;
+                b[i / 2] = tmp;
+                tmp = 0;
+            } else {
+                tmp = t;
+            }
+        }
+        return b;
+    }
+
+    /**
+     * 判断一个字符串是否只包含数字(10进制)字符
+     *
+     * @param str
+     * @return
+     */
+    public static boolean isNumeric(String str) {
+        if (isEmpty(str)) {
+            return false;
+        }
+        char[] arr = str.toCharArray();
+        for (char c : arr) {
+            if (!Character.isDigit(c)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 混淆字串串(显示前pn个字符和后tn个字符，其余全部用*填充)
+     *
+     * @param source
+     * @param pn
+     * @param tn
+     * @return
+     */
+    public static String mix(String source, int pn, int tn) {
+        return mix(source, pn, tn, '*');
+    }
+
+    /**
+     * 混淆字串串(显示前pn个字符和后tn个字符，其余前部用mixChar填充)
+     *
+     * @param source
+     * @param pn
+     * @param tn
+     * @param mixChar
+     * @return
+     */
+    public static String mix(String source, int pn, int tn, char mixChar) {
+        if (source == null || source.length() &lt;= pn + tn) {
+            return source;
+        }
+        int len = source.length();
+        StringBuilder tmp = new StringBuilder(source.length());
+        char[] mobileAs = source.toCharArray();
+        for (int i = 0; i &lt; pn; i++) {
+            tmp.append(mobileAs[i]);
+        }
+        for (int i = 0; i &lt; len - (pn + tn); i++) {
+            tmp.append(mixChar);
+        }
+        for (int i = len - tn; i &lt; len; i++) {
+            tmp.append(mobileAs[i]);
+        }
+
+        return tmp.toString();
+    }
+
+    /**
+     * 获取字符串长度(全角2,半角1)
+     * @param value
+     * @return
+     */
+    public static final int getLength(String value) {
+        if(StringUtil.isEmpty(value)) {
+            return 0;
+        }
+        int len = 0;
+        for(char c : value.toCharArray()) {
+            len++;
+            if(isSbcCase(c)) {
+                len++;
+            }
+        }
+        return len;
+    }
+
+    /**
+     * 判断字符是否是半角
+     * @param c
+     * @return
+     */
+    public static final boolean isDbcCase(char c) {
+        int k = 0x80;
+        return c / k == 0 ? true : false;
+    }
+    /**
+     * 判断是否时全角
+     * @param c
+     * @return
+     */
+    public static final boolean isSbcCase(char c) {
+        return isDbcCase(c);
+    }
+    /**
+     * 判断是否都是数字
+     * @param value
+     * @return
+     */
+    public static final boolean isAllDigits(String value) {
+        if(StringUtil.isEmpty(value)) {
+            return true;
+        }
+        for(char c : value.toCharArray()) {
+            if(c &lt; '0' ||  c &gt; '9') {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 在指定的字符串前面填充0，直到字段串的长度达到指定的长度
+     * 示例：输入6, 2 ---&gt; 返回06
+     * @param data 需要被填充的字符串
+     * @param fillStr 需要填充得字符串
+     * @param length 目标字符串的长度
+     * @return 返回填充后的字符串
+     */
+    public static String frontFillStr(String data, String fillStr, int length) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i &lt; length-data.length(); i++) {
+            sb.append(fillStr);
+        }
+        return sb.append(data).toString();
+    }
+
+}
+</code></pre> 
+    <h4 id="5151a101-e36d-4516-9fb0-e0f1e6fa3d24">请求示例</h4> 
+    <pre><code>
+package test;
+<p>import lombok.AllArgsConstructor;<br> import lombok.Builder;<br> import lombok.Data;<br> import lombok.NoArgsConstructor;</p>
+<p>/**</p>
+</code>
+     <ul>
+      <code> <li>描述：</li> <li>Author：liuxing</li> <li>Date：2020-09-14<br> */<br> @Data<br> @AllArgsConstructor<br> @NoArgsConstructor<br> @Builder<br> public class DeviceReq {<br> private String name;<br> private Integer pageNum;<br> private Integer deviceType;<br> private Integer pageSize;<br> }<br> </li></code>
+     </ul></pre>  
+    <pre><code>
+package test;
+
+import com.alibaba.fastjson.JSONObject;
+import com.megvii.sign.sdk.SignUtlis;
+import okhttp3.*;
+
+import java.util.concurrent.TimeUnit;
+
+/**
+ * 描述： 模拟一次请求的过程
+ * Author：liuxing
+ * Date：2020-09-14
+ */
+public class SignUtilTest {
+
+    public static void main(String[] args) {
+        String ctimestamp = "1599648837833"; // 时间戳，用户自己生成
+        String cnonce = "123456"; // 6位随机码，用户自己生成
+        String requestParam = ""; //请求参数，form表单方式，盘古大部分接口都是body传参，故这里大部分都是""，如果有参数，查看文档说明
+        String url = "/v1/api/device/list"; // 要请求的url,看要请求的接口说明
+        String method = "POST"; // 请求方式,看要请求的接口说明
+        String cappKey = "appkey1"; // appkey,固定，
+        String secret = "sdfajk3242324fa!djq7"; // 秘钥，固定
+
+        DeviceReq deviceReq = DeviceReq.builder().name("core").build(); // 构建请求体，看要请求的接口说明
+
+        // 计算签名
+        String csign = SignUtlis.sign(ctimestamp, cnonce, deviceReq, requestParam, url, method, cappKey, secret);
+
+        // 发起请求
+        String realUrl = "http://10.122.101.181:18082" + url;
+        postJson(ctimestamp, cnonce, cappKey, csign, deviceReq, realUrl);
+
+    }
+
+
+    private static void postJson(String ctimestamp, String cnonce, String cappKey, String csign, Object reqeustData, String url) {
+        String bodyJson = JSONObject.toJSONString(reqeustData);
+        OkHttpClient httpClient = new OkHttpClient.Builder()
+                .connectTimeout(3000, TimeUnit.SECONDS)
+                .readTimeout(30000, TimeUnit.SECONDS)
+                .writeTimeout(30000, TimeUnit.SECONDS)
+                .build();
+
+        MediaType mediaType = MediaType.parse("application/json;charset=UTF-8");
+        RequestBody requestBody = RequestBody.create(mediaType, bodyJson);
+
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader("cnonce", cnonce)
+                .addHeader("ctimestamp", ctimestamp)
+                .addHeader("cappKey", cappKey)
+                .addHeader("csign", csign)
+                .post(requestBody)
+                .build();
+        Call call = httpClient.newCall(request);
+        try {
+            Response response = call.execute();
+            System.out.println("请求结果：" + response.body().string());
+            System.out.println(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+}
+</code></pre> 
+    <h1 id="e2c73e68-de7a-4e6e-aaf1-456705798d78">接口流程</h1> 
+    <p>下面会列出各个业务场景相关的步骤与使用到的接口</p> 
+    <h2 id="db02d405-e0ba-404b-b7dd-b4ded36534e9">通行</h2> 
+    <table> 
+     <thead> 
+      <tr> 
+       <th>步骤</th> 
+       <th>接口</th> 
+       <th>备注</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td>新建员工、访客、重点人员</td> 
+       <td>批量添加人员：<span class="colour" style="color:rgb(57, 56, 56)">/v1/api/person/batchAdd</span></td> 
+       <td>添加人员需要头像的时候通过“上传人员图片”进行上传。</td> 
+      </tr> 
+      <tr> 
+       <td>新建员工组、访客组、重点人员组</td> 
+       <td>批量添加组：<span class="colour" style="color:rgb(57, 56, 56)">/v1/api/pass/group/batchAdd</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>添加员工到员工组、访客到访客组、重点人员到重点人员组</td> 
+       <td>编辑组内人员：<span class="colour" style="color:rgb(57, 56, 56)">&nbsp;/v1/api/pass/group/batchUpdatePerson</span></td> 
+       <td>这个接口只会保留最后一次调用的pesonId，所以如果是新加人到组的话，需要先查询一遍已经存在的person</td> 
+      </tr> 
+      <tr> 
+       <td>添加边设备（接入算力服务器）</td> 
+       <td>设备添加：<span class="colour" style="color:rgb(57, 56, 56)">/v1/api/device/add</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>添加端设备，添加端设备有以下两种类型：</td> 
+       <td></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>1. 视频流、抓拍机的添加</td> 
+       <td>设备添加：<span class="colour" style="color:rgb(57, 56, 56)">&nbsp;/v1/api/device/add</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>2.面板机的接入</td> 
+       <td>发现设备查询：<span class="colour" style="color:rgb(57, 56, 56)">&nbsp;/v1/api/device/queryReportDevice</span><br data-tomark-pass="">设备导入：<span class="colour" style="color:rgb(57, 56, 56)">&nbsp;/v1/api/device/importDevice</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>绑定端设备到边设备</td> 
+       <td>设备绑定：<span class="colour" style="color:rgb(57, 56, 56)">/v1/api/device/bind</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>添加设备到门禁点</td> 
+       <td>添加门禁点：<span class="colour" style="color:rgb(57, 56, 56)">/v1/api/door/add</span></td> 
+       <td>可以添加的设备，通过“分页查询设备列表信息”查询</td> 
+      </tr> 
+      <tr> 
+       <td>添加通行时间</td> 
+       <td>时间计划管理：可添加，查询列表等</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>添加门禁权限</td> 
+       <td>添加通行权限：<span class="colour" style="color:rgb(57, 56, 56)">/v1/api/pass/authority/add</span></td> 
+       <td>时间计划通过“时间计划列表”查询出来</td> 
+      </tr> 
+      <tr> 
+       <td>运行....产生记录.....</td> 
+       <td></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>查看通行记录</td> 
+       <td>分页查询通行记录：<span class="colour" style="color:rgb(57, 56, 56)">/v1/api/pass_record/list</span></td> 
+       <td></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h2 id="a4300265-5ab7-4080-ac95-8f97e816ad8c">考勤</h2> 
+    <table> 
+     <thead> 
+      <tr> 
+       <th>步骤</th> 
+       <th>接口</th> 
+       <th>备注</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td>新建员工</td> 
+       <td>批量添加人员：<span class="colour" style="color:rgb(57, 56, 56)">/v1/api/person/batchAdd</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>新建员工组</td> 
+       <td>批量添加组：<span class="colour" style="color:rgb(57, 56, 56)">/v1/api/pass/group/batchAdd</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>添加员工到员工组</td> 
+       <td>编辑组内人员：<span class="colour" style="color:rgb(57, 56, 56)">&nbsp;/v1/api/pass/group/batchUpdatePerson</span></td> 
+       <td>这个接口只会保留最后一次调用的pesonId，所以如果是新加人到组的话，需要先查询一遍已经存在的person</td> 
+      </tr> 
+      <tr> 
+       <td>添加边设备（接入算力服务器）</td> 
+       <td>设备添加：<span class="colour" style="color:rgb(57, 56, 56)">/v1/api/device/add</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>添加端设备，添加端设备有以下两种类型：</td> 
+       <td></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>1. 视频流、抓拍机的添加</td> 
+       <td>设备添加：<span class="colour" style="color:rgb(57, 56, 56)">&nbsp;/v1/api/device/add</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>2. 面板机的接入</td> 
+       <td>发现设备查询：<span class="colour" style="color:rgb(57, 56, 56)">&nbsp;/v1/api/device/queryReportDevice</span><br data-tomark-pass="">设备导入：<span class="colour" style="color:rgb(57, 56, 56)">&nbsp;/v1/api/device/importDevice</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>绑定端设备到边设备</td> 
+       <td>设备绑定：<span class="colour" style="color:rgb(57, 56, 56)">/v1/api/device/bind</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>添加设备到门禁点</td> 
+       <td>添加门禁点：<span class="colour" style="color:rgb(57, 56, 56)">/v1/api/door/add</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>添加通行时间</td> 
+       <td>时间计划管理：可添加，查询列表等</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>添加门禁权限</td> 
+       <td>添加通行权限：<span class="colour" style="color:rgb(57, 56, 56)">/v1/api/pass/authority/add</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>添加考勤设备</td> 
+       <td>批量添加考勤设备：<span class="colour" style="color:rgb(57, 56, 56)">&nbsp;/v1/api/attendance/device/batchAdd</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>添加考勤组</td> 
+       <td>创建考勤组：<span class="colour" style="color:rgb(57, 56, 56)">&nbsp;/v1/api/attendance/group/add</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>选择人员到考勤组</td> 
+       <td>考勤员工分页列表查询：<span class="colour" style="color:rgb(57, 56, 56)">&nbsp;/v1/api/attendance/group/person/list</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>运行....产生考勤记录....</td> 
+       <td></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>查看考勤记录</td> 
+       <td>考勤记录分页列表查询：<span class="colour" style="color:rgb(57, 56, 56)">/v1/api/attendance/record/list</span></td> 
+       <td></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <p>对于产生的考勤结果，我们可以做很多的操作，如：查看考勤详情、考勤调整等，通过“考勤统计管理”和“考勤记录管理”进行处理，具体不做赘述。</p> 
+    <h2 id="9cdbbe1d-cd3b-4270-9f71-fce740765e0b">人员识别</h2> 
+    <p>人员识别用于识别重点人员和陌生人</p> 
+    <table> 
+     <thead> 
+      <tr> 
+       <th>步骤</th> 
+       <th>接口</th> 
+       <th>备注</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td>新建重点人员</td> 
+       <td>批量添加人员：<span class="colour" style="color:rgb(57, 56, 56)">/v1/api/person/batchAdd</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>新建重点人员组</td> 
+       <td>批量添加组：<span class="colour" style="color:rgb(57, 56, 56)">/v1/api/pass/group/batchAdd</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>添加重点人员到重点人员组</td> 
+       <td>编辑组内人员：<span class="colour" style="color:rgb(57, 56, 56)">&nbsp;/v1/api/pass/group/batchUpdatePerson</span></td> 
+       <td>这个接口只会保留最后一次调用的pesonId，所以如果是新加人到组的话，需要先查询一遍已经存在的person</td> 
+      </tr> 
+      <tr> 
+       <td>添加边设备（接入算力服务器）</td> 
+       <td>设备添加：<span class="colour" style="color:rgb(57, 56, 56)">/v1/api/device/add</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>添加端设备，添加端设备有以下两种类型：</td> 
+       <td></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>1. 视频流、抓拍机的添加</td> 
+       <td>设备添加：<span class="colour" style="color:rgb(57, 56, 56)">&nbsp;/v1/api/device/add</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>2. 面板机的接入</td> 
+       <td>发现设备查询：<span class="colour" style="color:rgb(57, 56, 56)">&nbsp;/v1/api/device/queryReportDevice</span><br data-tomark-pass="">设备导入：<span class="colour" style="color:rgb(57, 56, 56)">&nbsp;/v1/api/device/importDevice</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>绑定端设备到边设备</td> 
+       <td>设备绑定：<span class="colour" style="color:rgb(57, 56, 56)">/v1/api/device/bind</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>新建重点人员规则<br data-tomark-pass="">新建陌生人员规则</td> 
+       <td>添加规则：<span class="colour" style="color:rgb(57, 56, 56)">/v1/api/pass/rule/addBatch</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>运行.... 产生记录.....</td> 
+       <td></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>结果查看：</td> 
+       <td></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>1.查看重点人员、陌生人员识别记录</td> 
+       <td>重点&amp;陌生人员列表：<span class="colour" style="color:rgb(57, 56, 56)">&nbsp;/v1/api/person/record/list</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>2.查看识别记录详情</td> 
+       <td>重点&amp;陌生人员详情：<span class="colour" style="color:rgb(57, 56, 56)">/v1/api/person/record/detail</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>3.人员轨迹查看</td> 
+       <td>人员轨迹：<span class="colour" style="color:rgb(57, 56, 56)">/v1/api/person/track/query</span></td> 
+       <td>重点人员通过<span class="colour" style="color:rgb(57, 56, 56)">personUuid来获取</span>，可以通过人员查询到后直接指定，也可以通过“以图搜图”来查询到，陌生人的轨迹通过<span class="colour" style="color:rgb(57, 56, 56)">profileUuid来获取，profileUuid是通过“以图搜图”得到的</span></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h2 id="e05d99ce-618f-4b2e-951d-35f793a3e664">人员聚类</h2> 
+    <table> 
+     <thead> 
+      <tr> 
+       <th>步骤</th> 
+       <th>接口</th> 
+       <th>备注</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td>新建重点人员</td> 
+       <td>批量添加人员：<span class="colour" style="color:rgb(57, 56, 56)">/v1/api/person/batchAdd</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>新建重点人员组</td> 
+       <td>批量添加组：<span class="colour" style="color:rgb(57, 56, 56)">/v1/api/pass/group/batchAdd</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>添加重点人员到重点人员组</td> 
+       <td>编辑组内人员：<span class="colour" style="color:rgb(57, 56, 56)">&nbsp;/v1/api/pass/group/batchUpdatePerson</span></td> 
+       <td>这个接口只会保留最后一次调用的pesonId，所以如果是新加人到组的话，需要先查询一遍已经存在的person</td> 
+      </tr> 
+      <tr> 
+       <td>添加边设备（接入算力服务器）</td> 
+       <td>设备添加：<span class="colour" style="color:rgb(57, 56, 56)">/v1/api/device/add</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>添加端设备，添加端设备有以下两种类型：</td> 
+       <td></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>1. 视频流、抓拍机的添加</td> 
+       <td>设备添加：<span class="colour" style="color:rgb(57, 56, 56)">&nbsp;/v1/api/device/add</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>2. 面板机的接入</td> 
+       <td>发现设备查询：<span class="colour" style="color:rgb(57, 56, 56)">&nbsp;/v1/api/device/queryReportDevice</span><br data-tomark-pass="">设备导入：<span class="colour" style="color:rgb(57, 56, 56)">&nbsp;/v1/api/device/importDevice</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>绑定端设备到边设备</td> 
+       <td>设备绑定：<span class="colour" style="color:rgb(57, 56, 56)">/v1/api/device/bind</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>新建陌生人员规则</td> 
+       <td>添加规则：<span class="colour" style="color:rgb(57, 56, 56)">/v1/api/pass/rule/addBatch</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>运行.... 产生记录.....</td> 
+       <td></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>添加陌生人员聚类任务</td> 
+       <td>人员聚类任务添加：<span class="colour" style="color:rgb(57, 56, 56)">/v1/api/cluster/task/add</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>查看聚类任务状态</td> 
+       <td>人员聚类任务状态查询：<span class="colour" style="color:rgb(57, 56, 56)">&nbsp;/v1/api/cluster/task/status</span></td> 
+       <td>当任务状态是已完成之后，就可以通过后面的接口查看聚类的结果</td> 
+      </tr> 
+      <tr> 
+       <td>查看某个任务的结果</td> 
+       <td>人员聚类任务详情查看：<span class="colour" style="color:rgb(57, 56, 56)">/v1/api/cluster/task/detail/query</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>查看聚类结果中某个人员的详情</td> 
+       <td>人员聚类人员详情查看：<span class="colour" style="color:rgb(57, 56, 56)">/v1/api/cluster/person/detail/query</span></td> 
+       <td></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h2 id="dcb57371-03d0-494f-8ff5-e27c762d7549">车辆识别</h2> 
+    <table> 
+     <thead> 
+      <tr> 
+       <th>步骤</th> 
+       <th>接口</th> 
+       <th>备注</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td>添加车辆信息</td> 
+       <td>车辆基础信息批量新增：<span class="colour" style="color:rgb(57, 56, 56)">/v1/api/vehicle/batchAdd</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>添加边设备（接入算力服务器）</td> 
+       <td>设备添加：<span class="colour" style="color:rgb(57, 56, 56)">/v1/api/device/add</span></td> 
+       <td>采用视频流做结构化才需要</td> 
+      </tr> 
+      <tr> 
+       <td>添加端设备（只能用结构化相机或者视频流相机）</td> 
+       <td>设备添加：<span class="colour" style="color:rgb(57, 56, 56)">&nbsp;/v1/api/device/add</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>绑定端设备到边设备</td> 
+       <td>设备绑定：<span class="colour" style="color:rgb(57, 56, 56)">/v1/api/device/bind</span></td> 
+       <td>视频流需要和算力绑定，结构化相机不需要</td> 
+      </tr> 
+      <tr> 
+       <td>车辆布控</td> 
+       <td>结构化&amp;车辆管控布控新增：<span class="colour" style="color:rgb(57, 56, 56)">/v1/api/vehicle/rule/add</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>运行.... 产生记录.....</td> 
+       <td></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>查看车辆识别记录</td> 
+       <td>车辆识别列表：<span class="colour" style="color:rgb(57, 56, 56)">&nbsp;/v1/api/vehicle/record/list</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>车辆记录详情</td> 
+       <td>车辆识别记录详情：<span class="colour" style="color:rgb(57, 56, 56)">/v1/api/vehicle/record/query</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>查看车辆轨迹</td> 
+       <td>车辆轨迹查询：<span class="colour" style="color:rgb(57, 56, 56)">&nbsp;/v1/api/vehicle/record/track/query</span></td> 
+       <td></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h2 id="1f412e9e-de16-4aac-96ff-768d09c00e61">结构化</h2> 
+    <table> 
+     <thead> 
+      <tr> 
+       <th>步骤</th> 
+       <th>接口</th> 
+       <th>备注</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td>添加边设备（接入算力服务器）</td> 
+       <td>设备添加：<span class="colour" style="color:rgb(57, 56, 56)">/v1/api/device/add</span></td> 
+       <td>采用视频流做结构化才需要</td> 
+      </tr> 
+      <tr> 
+       <td>添加端设备（只能用结构化相机或者视频流相机）</td> 
+       <td>设备添加：<span class="colour" style="color:rgb(57, 56, 56)">&nbsp;/v1/api/device/add</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>绑定端设备到边设备</td> 
+       <td>设备绑定：<span class="colour" style="color:rgb(57, 56, 56)">/v1/api/device/bind</span></td> 
+       <td>视频流需要和算力绑定，结构化相机不需要</td> 
+      </tr> 
+      <tr> 
+       <td>结构化布控</td> 
+       <td>结构化&amp;车辆管控布控新增：<span class="colour" style="color:rgb(57, 56, 56)">/v1/api/vehicle/rule/add</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>运行.... 产生记录.....</td> 
+       <td></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>结构化数据检索</td> 
+       <td>这里检索的结构比较多，具体见“结构化检索模块”部分</td> 
+       <td></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h2 id="a6566f34-53af-4bba-b005-7a0c676f19c6">以图搜图</h2> 
+    <table> 
+     <thead> 
+      <tr> 
+       <th>步骤</th> 
+       <th>接口</th> 
+       <th>备注</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td><span class="colour" style="color:rgb(0, 0, 0)">上传头像</span></td> 
+       <td><span class="colour" style="color:rgb(0, 0, 0)">/v1/api/person/uploadImage</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td><span class="colour" style="color:rgb(0, 0, 0)">以图搜图</span></td> 
+       <td><span class="colour" style="color:rgb(0, 0, 0)">/v1/api/photo/search</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td><span class="colour" style="color:rgb(0, 0, 0)">图像详情</span></td> 
+       <td><span class="colour" style="color:rgb(0, 0, 0)">/v1/api/photo/search/query/detail</span></td> 
+       <td></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h2 id="3cdad53c-7b94-42cb-90a6-0789da3475c4">识别结果实时推送</h2> 
+    <p>对于识别的员工、访客、重点人员、陌生人、车辆等信息，用户可以自己接受进行处理</p> 
+    <table> 
+     <thead> 
+      <tr> 
+       <th>步骤</th> 
+       <th>接口</th> 
+       <th>备注</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td>客户开发接受数据的接口</td> 
+       <td></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>在盘古订阅数据</td> 
+       <td><span class="colour" style="color:rgb(0, 0, 0)">/v1/api/pubsub/busi/record/add</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>用户接受到的数据类型</td> 
+       <td></td> 
+       <td>参看openApi文档“业务数据推送的数据结构”部分</td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h1 id="0a8faef5-a8c7-4a4f-a2a0-4694bd52f11f">错误码</h1> 
+    <h2 id="37603ea5-64f5-4bdc-b143-a371372b03fe">公共状态码</h2> 
+    <table> 
+     <thead> 
+      <tr> 
+       <th>状态码</th> 
+       <th>描述</th> 
+       <th>备注</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td>0</td> 
+       <td>成功</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>-1</td> 
+       <td>系统异常</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>100001</td> 
+       <td>未登录</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>100002</td> 
+       <td>无访问权限</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>100003</td> 
+       <td>参数不合法</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>100004</td> 
+       <td>转化异常</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>100005</td> 
+       <td>导出异常</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>100006</td> 
+       <td>需要重定向</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>100007</td> 
+       <td>没有可以导出的数据</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>100008</td> 
+       <td>签名错误</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>100009</td> 
+       <td>未找到记录</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>100010</td> 
+       <td>CORE Exception</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>100011</td> 
+       <td>AIOT Exception</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>999999</td> 
+       <td>extra</td> 
+       <td></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h2 id="1e377888-e912-4a0b-bd1e-3e24bf904951">通行业务错误码</h2> 
+    <table> 
+     <thead> 
+      <tr> 
+       <th>状态码</th> 
+       <th>描述</th> 
+       <th>备注</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td>103000</td> 
+       <td>读取文件出错误</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>103001</td> 
+       <td>imageuri为空</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>103002</td> 
+       <td>设备未绑定</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>103003</td> 
+       <td>验证码不存在</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>103004</td> 
+       <td>主题不存在</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>103005</td> 
+       <td>参数异常</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>103006</td> 
+       <td>迎宾设备不存在</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>103007</td> 
+       <td>视频流设备不存在,请刷新后重新选择</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>103008</td> 
+       <td>展示的视频流设备不存在,请刷新后重新选择</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>103009</td> 
+       <td>没有找到相应的迎宾记录</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>103010</td> 
+       <td>迎宾设备已绑定</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>103011</td> 
+       <td>绑定失败,设备已绑定</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>103012</td> 
+       <td>设备不存在</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td><strong>103011</strong></td> 
+       <td><strong>导出文件异常</strong></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>103012</td> 
+       <td>设备不存在</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>103013</td> 
+       <td>区域不存在</td> 
+       <td></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h2 id="2a5cd1c7-07da-460f-8d2a-33783c216ad1">考勤异常错误码</h2> 
+    <table> 
+     <thead> 
+      <tr> 
+       <th>状态码</th> 
+       <th>描述</th> 
+       <th>备注</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td>104401</td> 
+       <td>请选择要添加的考勤设备</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>104402</td> 
+       <td>不允许跨区域添加考勤设备</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>104403</td> 
+       <td>不允许批量添加同一个设备</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>104404</td> 
+       <td>删除设备失败，参数为空</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>104405</td> 
+       <td>出勤调整失败，非考勤组人员</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>104406</td> 
+       <td>获取人员信息失败</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>104407</td> 
+       <td>考勤记录不存在</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>104408</td> 
+       <td>考勤时段不存在</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>104409</td> 
+       <td>人员信息不存在</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>104410</td> 
+       <td>人员信息不存在</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>104411</td> 
+       <td>考勤组不存在</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>104412</td> 
+       <td>考勤组名字重复</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>104413</td> 
+       <td>未设置考勤时段</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>104414</td> 
+       <td>考勤时段编号设置错误</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>104415</td> 
+       <td>最多允许设置3个考勤时段</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>104416</td> 
+       <td>跨天时段不能超过次日12时</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>104417</td> 
+       <td>考勤时段累计不能超过24小时</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>104418</td> 
+       <td>考勤时段间隔必须大于1分钟</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>104419</td> 
+       <td>考勤时段的起始时间不能晚于结束时间</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>104420</td> 
+       <td>考勤时段不支持重合</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>104421</td> 
+       <td>最多可设置32个特殊日期</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>104022</td> 
+       <td>特殊日期不能重复</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>104023</td> 
+       <td>特殊日期不可选择历史日期</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>104024</td> 
+       <td>不存在跨天时段，不允许设置跨天统计</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>104025</td> 
+       <td>只允许一个时间段跨天</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>104026</td> 
+       <td>考勤周计划重复</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>104027</td> 
+       <td>设备不存在</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>104028</td> 
+       <td>添加出勤调整记录失败，考勤记录ID为空</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>104029</td> 
+       <td>出勤调整失败，不符合调整规定</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>104030</td> 
+       <td>开始时间不能大于结束时间</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>104031</td> 
+       <td>开始时间不能等于结束时间</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>104032</td> 
+       <td>起止时间跨度不能超过3个月</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>104033</td> 
+       <td>权限不足</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>104034</td> 
+       <td>参数无效</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>104035</td> 
+       <td>参数有重复，请仔细核对！</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>104036</td> 
+       <td>重复添加！</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>104037</td> 
+       <td>本月5号前只能调整上一个自然月及其以后的考勤记录</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>104038</td> 
+       <td>本月5号以后只能调整本月及本月以后的考勤记录</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>104039</td> 
+       <td>不支持服务器类设备的添加</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>104040</td> 
+       <td>名字包含非法字符</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>104041</td> 
+       <td>导出文件异常</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>104042</td> 
+       <td>考勤时间段为空</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>104043</td> 
+       <td>考勤时间段长度大于三个月</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>104044</td> 
+       <td>考勤周期枚举类型设置错误，请检查！</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>104045</td> 
+       <td>非门禁点设备！</td> 
+       <td></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h2 id="4394a2b7-f03a-466e-8e54-e7696d468696">通行记录错误码</h2> 
+    <table> 
+     <thead> 
+      <tr> 
+       <th>状态码</th> 
+       <th>描述</th> 
+       <th>备注</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td>105001</td> 
+       <td>批量删除失败</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>105002</td> 
+       <td>导出记录最长记录为3个月</td> 
+       <td></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h2 id="bfc83511-7b55-4e7a-9a3d-7985ca2999ad">事件业务状态码</h2> 
+    <table> 
+     <thead> 
+      <tr> 
+       <th>状态码</th> 
+       <th>描述</th> 
+       <th>备注</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td>106001</td> 
+       <td>事件规则不存在</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>106002</td> 
+       <td>参数错误:%s</td> 
+       <td>会显示具体参数错误内容</td> 
+      </tr> 
+      <tr> 
+       <td>106003</td> 
+       <td>事件记录%s不存在</td> 
+       <td>会指明具体不存在的记录标志</td> 
+      </tr> 
+      <tr> 
+       <td>106004</td> 
+       <td>事件记录%s已经处理过了</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td><s>106005</s></td> 
+       <td><s>服务器信息错误%s</s></td> 
+       <td><s>已经废弃</s></td> 
+      </tr> 
+      <tr> 
+       <td>106006</td> 
+       <td>创建文件目录失败</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>106007</td> 
+       <td>导出Excel文件失败</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>106008</td> 
+       <td>导出事件记录条目异常</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>106009</td> 
+       <td>导出任务不存在，任务ID为%s</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>106010</td> 
+       <td>缓存第三方订阅消息消息失败,消息trackID = %s</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>106011</td> 
+       <td>删除历史记录失败</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>106012</td> 
+       <td>事件规则名为空</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>106013</td> 
+       <td>事件规则名只能包含中文、数字、字母</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>106014</td> 
+       <td>事件规则名长度错误</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>106015</td> 
+       <td>事件规则名称冲突</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>106016</td> 
+       <td>更新任务状态异常</td> 
+       <td></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h2 id="e92fdf58-387c-4009-9fd3-6061c5cbccf5">人员错误状态码</h2> 
+    <table> 
+     <thead> 
+      <tr> 
+       <th></th> 
+       <th></th> 
+       <th></th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td>121001</td> 
+       <td>获取高频人员列表失败</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>121002</td> 
+       <td>高频处理出现错误</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>121003</td> 
+       <td>人员入ES索引错误</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>121004</td> 
+       <td>查询人员详情出现错误</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>121005</td> 
+       <td>查询人员列表出现错误</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>121006</td> 
+       <td>人员聚类任务名称重复添加</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>121007</td> 
+       <td>人员聚类任务添加达到上限</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>121008</td> 
+       <td>人员聚类任务添加错误</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>121009</td> 
+       <td>查询高频人员详情出现错误</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>121010</td> 
+       <td>调用中台接口错</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>121011</td> 
+       <td>查询轨迹信息错误</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>121012</td> 
+       <td>轨迹列表获取失败</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>121013</td> 
+       <td>过人库Track错误</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>121014</td> 
+       <td>深度实时检索并发上限3次，该操作已超上限，请稍后再试</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>121015</td> 
+       <td>导出超出上限1000条</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>121016</td> 
+       <td>导出条目出现异常</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>121017</td> 
+       <td>导出操作出现异常</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>121018</td> 
+       <td>导出数量为空</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>121019</td> 
+       <td>获取列表失败</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>121020</td> 
+       <td>识别记录推送MQ失败</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>121021</td> 
+       <td>获取图片失败</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>121022</td> 
+       <td>本地缓冲操作错误</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>121023</td> 
+       <td>PersonId和ProfileId不能同时为空</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>121024</td> 
+       <td>获取人次数失败</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>121025</td> 
+       <td>以图搜图查看失败</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>121026</td> 
+       <td>图片URI和ProfileId不能同时为空</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>121027</td> 
+       <td>获取档案信息失败</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>121028</td> 
+       <td>PersonId和ProfileId不能同时存在</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>121029</td> 
+       <td>以图搜图查看记录详情错误</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>121030</td> 
+       <td>添加一人一档强id错误</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>121031</td> 
+       <td>添加人员底库失败，人脸过多</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>121032</td> 
+       <td>添加人员底库失败，未检测到人脸</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>121033</td> 
+       <td>添加人员底库失败，未检测到人脸</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>121034</td> 
+       <td>添加人员底库失败，人脸质量过低</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>121035</td> 
+       <td>添加人员底库失败</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>121036</td> 
+       <td>删除底库人员失败</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>121037</td> 
+       <td>人员服务内部调用错</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>121038</td> 
+       <td>处理时间计划处理失败</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>121039</td> 
+       <td>识别pipeline错误</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>121040</td> 
+       <td>开始时间大于结束时间</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>121041</td> 
+       <td>入参pageNum或者pageSize不可小于等于0</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>121042</td> 
+       <td>personUuid和profileUuid不能同时为空,也不能同时存在,请检查参数</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>121043</td> 
+       <td>图片质量不合格，可能是由于人脸过多</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>121044</td> 
+       <td>flag如果参数传递 参数只能为true或者false</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>121045</td> 
+       <td>字符串长度超出</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>121046</td> 
+       <td>聚类任务不存在</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>121047</td> 
+       <td>档案不存在</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>121048</td> 
+       <td>设备不存在</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>121049</td> 
+       <td>聚类任务不存在</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>121050</td> 
+       <td>聚类任务未完成</td> 
+       <td></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h2 id="244e04e2-663c-4f90-8b1b-d77679134085">结构化业务状态码</h2> 
+    <table> 
+     <thead> 
+      <tr> 
+       <th>状态码</th> 
+       <th>描述</th> 
+       <th>备注</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td>122001</td> 
+       <td>已布控</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>122002</td> 
+       <td>结构化布控规则不存在</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>122003</td> 
+       <td>结构化新增布控请求失败</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>122004</td> 
+       <td>结构化更新布控请求失败</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>122005</td> 
+       <td>结构化布控详情请求失败</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>122006</td> 
+       <td>结构化删除布控请求失败</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>122007</td> 
+       <td>结构化布控列表请求失败</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>122008</td> 
+       <td>该区域内已录入此车牌</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>122009</td> 
+       <td>车辆不存在</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>122010</td> 
+       <td>车辆基础信息新增失败</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>122011</td> 
+       <td>车辆基础信息更新失败</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>122012</td> 
+       <td>车辆信息列表获取失败</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>122013</td> 
+       <td>车辆详情信息获取失败</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>122014</td> 
+       <td>车辆详情信息删除失败</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>122015</td> 
+       <td>布控AIOT绑定失败</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>122016</td> 
+       <td>结构化布控AIOT解绑失败</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>122017</td> 
+       <td>结构化布控AIOT更新失败</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>122018</td> 
+       <td>读取导入文件出错误</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>122019</td> 
+       <td>车牌号码不能为空</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>122020</td> 
+       <td>车牌号码必须在1-16个字符内且只能包含数字、中英文</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>122021</td> 
+       <td>车牌颜色8个字符内仅支持汉字</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>122022</td> 
+       <td>车辆颜色8个字符内仅支持汉字</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>122023</td> 
+       <td>车辆信息描述支持0-255个中英文字符</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>122024</td> 
+       <td>电话支持6-18位数字</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>122025</td> 
+       <td>唯一标识最大16位数字</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>122026</td> 
+       <td>该区域内唯一标识已存在</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>122027</td> 
+       <td>批量导入车辆信息数据转换异常</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>122028</td> 
+       <td>未获取到有效车辆信息</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>122029</td> 
+       <td>获取车辆识别记录详情异常</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>122030</td> 
+       <td>获取车辆识别记录列表异常</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>122031</td> 
+       <td>获取车辆轨迹异常</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>122032</td> 
+       <td>车辆列表导出异常</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>122033</td> 
+       <td>excel生成异常</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>122034</td> 
+       <td>超出导出上限，最多支持5000条数据导出</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>122035</td> 
+       <td>记录导出异常</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>122036</td> 
+       <td>车辆轨迹信息导出异常</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>122037</td> 
+       <td>枚举转换异常</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>122038</td> 
+       <td>车辆记录信息导出异常</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>122039</td> 
+       <td>该区域已存在此规则名称</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>120040</td> 
+       <td>车辆记录不存在</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>120041</td> 
+       <td>时间计划不存在</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>120042</td> 
+       <td>感知设备绑定关系不存在</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>120043</td> 
+       <td>车辆事件消息下发失败</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>120044</td> 
+       <td>该区域已存在此手机号</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>120045</td> 
+       <td>车辆类型枚举不存在</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>120046</td> 
+       <td>车身颜色枚举不存在</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>120047</td> 
+       <td>车牌颜色枚举不存在</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>120048</td> 
+       <td>车辆品牌枚举不存在</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>120049</td> 
+       <td>功能用车枚举不存在</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>120050</td> 
+       <td>专项作业枚举不存在</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>120051</td> 
+       <td>车主身份枚举不存在</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>120052</td> 
+       <td>车辆身份枚举不存在</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>120053</td> 
+       <td>开始时间不能大于结束时间</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>120054</td> 
+       <td>分页参数必须大于0</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>120055</td> 
+       <td>车牌类型不存在</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>120056</td> 
+       <td>非结构化设备</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>120057</td> 
+       <td>结构化设备不存在</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>120058</td> 
+       <td>人员不存在</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>120059</td> 
+       <td>布控类型不存在</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>120060</td> 
+       <td>枚举中方法不存在</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>120061</td> 
+       <td>超过系统单次导入支持上限10W条，请重新导入</td> 
+       <td></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h2 id="9c288d3c-44ad-4287-b0df-acb8cb2e4d72">警戒业务状态码</h2> 
+    <table> 
+     <thead> 
+      <tr> 
+       <th>状态码</th> 
+       <th>描述</th> 
+       <th>备注</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td>123001</td> 
+       <td>解析告警消息失败</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>123002</td> 
+       <td>消息格式验证失败</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>123003</td> 
+       <td>处理告警消息失败</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>123101</td> 
+       <td>获取设备布控数据失败</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>123102</td> 
+       <td>获取布控列表失败</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>123103</td> 
+       <td>区域警戒新增布控失败</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>123104</td> 
+       <td>区域警戒删除布控失败</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>123105</td> 
+       <td>区域警戒更新布控失败</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>123106</td> 
+       <td>区域警戒指定布控不存在</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>123107</td> 
+       <td>区域警戒指定布控已存在</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>123108</td> 
+       <td>区域警戒指定布控不唯一</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>123109</td> 
+       <td>设备状态为离线，无法修改区域警戒布控</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>122041</td> 
+       <td>时间计划不存在</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>123201</td> 
+       <td>警戒记录查询失败</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>123202</td> 
+       <td>警戒记录导出失败</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>123203</td> 
+       <td>警戒记录详情导出失败</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>123204</td> 
+       <td>警戒导出失败</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td>123301</td> 
+       <td>获取设备信息失败</td> 
+       <td></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h1 id="1ce06e2e-1ab3-404f-89a1-ecd20c44c7a0">业务数据推送的数据结构</h1> 
+    <h3 id="0c3769b2-28a8-4973-8dae-af381c739b83">业务数据以json格式推送到第三方，结构如下：</h3> 
+    <table> 
+     <thead> 
+      <tr> 
+       <th>字段</th> 
+       <th>字段类型</th> 
+       <th>是否必须</th> 
+       <th>默认值</th> 
+       <th>备注</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td>busiType</td> 
+       <td>string</td> 
+       <td>是</td> 
+       <td></td> 
+       <td>业务类型: 1-安防识别记录;2-车辆识别记录;5-通行记录;12-结构化全属性识别记录</td> 
+      </tr> 
+      <tr> 
+       <td>data</td> 
+       <td>object</td> 
+       <td>是</td> 
+       <td></td> 
+       <td>对应业务类型的数据，不同的业务类型产生的数据各不相同，下面会一一说明</td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h3 id="5c4d2e7f-e04f-4cc0-a5a1-19ab6fa13082">busiType=1的时候：</h3> 
+    <table> 
+     <thead> 
+      <tr> 
+       <th>字段</th> 
+       <th>字段类型</th> 
+       <th>是否必须</th> 
+       <th>默认值</th> 
+       <th>备注</th> 
+       <th></th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">personId</span></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">string</span></td> 
+       <td>否</td> 
+       <td></td> 
+       <td>人员UUID</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">personName</span></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">string</span></td> 
+       <td>否</td> 
+       <td></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">人员名称</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">snapshotUri</span></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">string</span></td> 
+       <td>否</td> 
+       <td></td> 
+       <td>抓拍图</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">recognitionType</span></td> 
+       <td>integer</td> 
+       <td>否</td> 
+       <td></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">识别人员类型 1：员工 2：访客 3：重点人员 4：陌生人 5：未识别 6：VIP访客</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">livenessType</span></td> 
+       <td>integer</td> 
+       <td>否</td> 
+       <td></td> 
+       <td>活体结果 0：非活体 1：活体 2：未知</td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">verificationMode</span></td> 
+       <td>integer</td> 
+       <td>否</td> 
+       <td></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">验证类型 0：人脸 1：人脸或刷卡 2：人脸及刷卡 3：人脸及密码 4：远程开门</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">passType</span></td> 
+       <td>integer</td> 
+       <td>否</td> 
+       <td></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">通行类型，枚举类型 0：未通行 1：通行 2：刷脸通过密码错误</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">vistorType</span></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">integer</span></td> 
+       <td>否</td> 
+       <td></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">访客类型</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">recognitionScore</span></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">number</span></td> 
+       <td>否</td> 
+       <td></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">识别分数</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">livenessScore</span></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">number</span></td> 
+       <td>否</td> 
+       <td></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">活体分数</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">timestamp</span></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">integer</span></td> 
+       <td>否</td> 
+       <td></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">抓拍时间戳，毫秒</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">playbackSupport</span></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">boolean</span></td> 
+       <td>否</td> 
+       <td></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">是否支持录像回放</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">nvrUuid</span></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">string</span></td> 
+       <td>否</td> 
+       <td></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">nvr uuid</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">channelNo</span></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">integer</span></td> 
+       <td>否</td> 
+       <td></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">nvr频道号</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">frameUri</span></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">string</span></td> 
+       <td>否</td> 
+       <td></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">全景图</span></td> 
+       <td></td> 
+      </tr> 
+      <tr> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">deviceSetId</span></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">string</span></td> 
+       <td>否</td> 
+       <td></td> 
+       <td>设备的UUID</td> 
+       <td></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h3 id="3aabf8a5-02bc-40e2-a5bc-941b6b248d4e">当busiType==2的时候，数据是车辆相关的，有两类，机动车和非机动车，</h3> 
+    <ul> 
+     <li>机动车数据结构如下：</li> 
+    </ul> 
+    <table> 
+     <thead> 
+      <tr> 
+       <th>字段</th> 
+       <th>字段类型</th> 
+       <th>是否必须</th> 
+       <th>默认值</th> 
+       <th>备注</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">cropUri</span></td> 
+       <td>string</td> 
+       <td>否</td> 
+       <td></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">图片截图URI</span></td> 
+      </tr> 
+      <tr> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">fullUri</span></td> 
+       <td>string</td> 
+       <td>否</td> 
+       <td></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">图片全景图URI</span></td> 
+      </tr> 
+      <tr> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">deviceUuId</span></td> 
+       <td>string</td> 
+       <td>否</td> 
+       <td></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">设备UuId</span></td> 
+      </tr> 
+      <tr> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">deviceName</span></td> 
+       <td>string</td> 
+       <td>否</td> 
+       <td></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">设备名</span></td> 
+      </tr> 
+      <tr> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">deviceLocation</span></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">string</span></td> 
+       <td>否</td> 
+       <td></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">设备所在位置</span></td> 
+      </tr> 
+      <tr> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">category</span></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">integer</span></td> 
+       <td>否</td> 
+       <td></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">结构化的类别，1:人脸、2:人体、3:机动车、4:非机动车</span></td> 
+      </tr> 
+      <tr> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">serverTime</span></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">integer</span></td> 
+       <td>否</td> 
+       <td></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">服务器时间,毫秒时间戳</span></td> 
+      </tr> 
+      <tr> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">recognitionTime</span></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">integer</span></td> 
+       <td>否</td> 
+       <td></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">识别时间,毫秒时间戳</span></td> 
+      </tr> 
+      <tr> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">cropRectLeft</span></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">number</span></td> 
+       <td>否</td> 
+       <td></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">目标在抓拍图中的左边距</span></td> 
+      </tr> 
+      <tr> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">cropRectTop</span></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">number</span></td> 
+       <td>否</td> 
+       <td></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">目标在抓拍图中的上边距</span></td> 
+      </tr> 
+      <tr> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">cropRectRight</span></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">number</span></td> 
+       <td>否</td> 
+       <td></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">目标在抓拍图中的右边距</span></td> 
+      </tr> 
+      <tr> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">cropRectBottom</span></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">number</span></td> 
+       <td>否</td> 
+       <td></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">目标在抓拍图中的下边距</span></td> 
+      </tr> 
+      <tr> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">fullRectLeft</span></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">number</span></td> 
+       <td>否</td> 
+       <td></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">目标在全景图图中的左边距</span></td> 
+      </tr> 
+      <tr> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">fullRectTop</span></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">number</span></td> 
+       <td>否</td> 
+       <td></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">目标在全景图图中的上边距</span></td> 
+      </tr> 
+      <tr> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">fullRectBottom</span></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">number</span></td> 
+       <td>否</td> 
+       <td></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">目标在全景图图中的下边距</span></td> 
+      </tr> 
+      <tr> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">ruleType</span></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">integer</span></td> 
+       <td>否</td> 
+       <td></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">布控类型枚举 (1:结构化布控; 2:车辆布控)</span></td> 
+      </tr> 
+      <tr> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">storageUuid</span></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">string</span></td> 
+       <td>否</td> 
+       <td></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">NVR ID,用于获取录像回放</span></td> 
+      </tr> 
+      <tr> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">channelNo</span></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">integer</span></td> 
+       <td>否</td> 
+       <td></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">通道ID,用于获取录像回放</span></td> 
+      </tr> 
+      <tr> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">vehicleShape</span></td> 
+       <td>string</td> 
+       <td>否</td> 
+       <td></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">车的形态, 表示是机动车还是非机动车,3-表示机动车，4-表示非机动车</span></td> 
+      </tr> 
+      <tr> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">plateNumber</span></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">string</span></td> 
+       <td>否</td> 
+       <td></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">车牌号码</span></td> 
+      </tr> 
+      <tr> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">vehicleType</span></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">integer</span></td> 
+       <td>否</td> 
+       <td></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">车辆类型枚举 (0:未知; 1:两厢轿车; 2:轿车; 3:轿跑; 4:小型轿车; 5:微型轿车; 6:MPV; 7:SUV; 8:大型客车; 9:中型客车; 10:面包车; 11:微型面包车; 12:货车; 13:中型货车; 14:油罐车; 15:吊车; 16:渣土车; 17:小货车; 18:皮卡; 19:微卡; 20:两轮车; 21:三轮车; 22:行人; 29:挂车; 30:小型车(大范围); 31:大型车(大范围))</span></td> 
+      </tr> 
+      <tr> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">vehicleColor</span></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">integer</span></td> 
+       <td>否</td> 
+       <td></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">车身颜色枚举 (0:白色; 1:红色; 2:黄色; 5:绿色; 7:紫色; 8:粉色; 9:黑色; 13:灰色; 15:蓝色; 21:青色; 29:棕色; 32:深蓝; 40:彩色; 99:未知)</span></td> 
+      </tr> 
+      <tr> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">plateColor</span></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">integer</span></td> 
+       <td>否</td> 
+       <td></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">车牌颜色枚举 (0:未知; 1:蓝色; 2:黄色; 3:白色; 4:黑色; 5:绿色; 6:渐变绿底黑字; 7:黄绿双拼底黑字)</span></td> 
+      </tr> 
+      <tr> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">vehicleBrand</span></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">integer</span></td> 
+       <td>否</td> 
+       <td></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">车辆品牌枚举 (0:其它; 1:大众; 2:奥迪; 3:丰田; 4:本田; 5:奔驰; 6:雪佛兰; 7:奇瑞; 8:别克; 9:长城; 10:现代; 11:尼桑; 12:福特; 13:宝马; 14:雪铁龙; 15:起亚; 16:铃木; 17:马自达; 18:比亚迪; 20:标致; 21:长安; 22:雷克萨斯; 23:中华; 24:斯柯达; 25:海马; 26:夏利; 27:五菱; 28:东风; 29:哈飞; 30:一汽; 31:宝骏; 32:帝豪(吉利); 33:MG名爵; 34:东南; 35:皇冠(丰田); 36:金杯; 37:三菱; 38:荣威; 39:吉利; 40:英伦(吉利); 41:吉利全球鹰(吉利); 42:哈飞赛豹; 43:长丰; 44:北汽威旺; 45:北京汽车; 46:新凯; 47:吉奥汽车; 48:玛莎拉蒂; 49:罗孚; 50:奥斯汀; 52:道奇; 55:捷豹; 57:阿尔法; 58:兰博基尼; 59:布加迪; 60:林肯; 61:法拉利汽车; 62:昌河; 63:菲亚特; 64:福田; 65:讴歌; 66:莲花汽车; 67:华普汽车; 68:红旗; 69:瑞麟; 70:一汽奔腾(一汽); 71:威麟汽车; 72:众泰; 73:力帆; 74:JEEP(吉普); 75:中兴; 76:开瑞; 77:路虎; 78:迈巴赫; 79:雷诺; 80:欧宝; 81:野马; 82:吉普; 83:依维柯; 84:英菲尼迪; 85:斯巴鲁; 86:阿斯顿·马丁; 87:安凯客车; 88:保时捷; 89:宾利; 90:福迪; 91:福建奔驰; 92:吉姆斯; 93:观致; 94:广汽; 95:双龙; 96:海格; 97:悍马; 98:华泰; 99:黄海; 100:九龙客车; 101:理念; 102:奔驰SMART; 103:陆风; 104:纳智捷; 105:欧朗; 106:启辰; 107:哈弗HAVAL; 108:豪沃; 109:上海汇众(上汽集团); 110:金龙; 112:江淮; 113:JMC(江铃); 114:凯迪拉克; 116:宝马MINI; 117:陕汽; 118:少林; 119:沃尔沃; 120:五十铃(庆铃); 121:跃进; 122:宇通; 123:中通; 125:申沃; 126:扬子江; 128:北奔重卡; 139:红岩汽车(上汽依维柯红岩); 130:劳斯莱斯; 131:特斯拉; 132:腾势; 134:英致; 135:西雅特; 136:亚星客车; 137:大宇客车; 138:长安谛艾仕; 139:凯翼; 140:上汽大通; 141:本田思铭; 142:凯马)</span></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <ul> 
+     <li>非机动车数据结构：</li> 
+    </ul> 
+    <table> 
+     <thead> 
+      <tr> 
+       <th>字段</th> 
+       <th>字段类型</th> 
+       <th>是否必须</th> 
+       <th>默认值</th> 
+       <th>备注</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">cropUri</span></td> 
+       <td>string</td> 
+       <td>否</td> 
+       <td></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">图片截图URI</span></td> 
+      </tr> 
+      <tr> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">fullUri</span></td> 
+       <td>string</td> 
+       <td>否</td> 
+       <td></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">图片全景图URI</span></td> 
+      </tr> 
+      <tr> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">deviceUuId</span></td> 
+       <td>string</td> 
+       <td>否</td> 
+       <td></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">设备UuId</span></td> 
+      </tr> 
+      <tr> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">deviceName</span></td> 
+       <td>string</td> 
+       <td>否</td> 
+       <td></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">设备名</span></td> 
+      </tr> 
+      <tr> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">deviceLocation</span></td> 
+       <td>string</td> 
+       <td>否</td> 
+       <td></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">设备所在位置</span></td> 
+      </tr> 
+      <tr> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">category</span></td> 
+       <td>integer</td> 
+       <td>否</td> 
+       <td></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">结构化的类别，1:人脸、2:人体、3:机动车、4:非机动车</span></td> 
+      </tr> 
+      <tr> 
+       <td>serverTime</td> 
+       <td>integer</td> 
+       <td>否</td> 
+       <td></td> 
+       <td>服务器时间,毫秒时间戳</td> 
+      </tr> 
+      <tr> 
+       <td>recognitionTime</td> 
+       <td>integer</td> 
+       <td>否</td> 
+       <td></td> 
+       <td>识别时间,毫秒时间戳</td> 
+      </tr> 
+      <tr> 
+       <td>cropRectLeft</td> 
+       <td>number</td> 
+       <td>否</td> 
+       <td></td> 
+       <td>目标在抓拍图中的左边距</td> 
+      </tr> 
+      <tr> 
+       <td>cropRectTop</td> 
+       <td>number</td> 
+       <td>否</td> 
+       <td></td> 
+       <td>目标在抓拍图中的上边距</td> 
+      </tr> 
+      <tr> 
+       <td>cropRectRight</td> 
+       <td>number</td> 
+       <td>否</td> 
+       <td></td> 
+       <td>目标在抓拍图中的右边距</td> 
+      </tr> 
+      <tr> 
+       <td>cropRectBottom</td> 
+       <td>number</td> 
+       <td>否</td> 
+       <td></td> 
+       <td>目标在抓拍图中的下边距</td> 
+      </tr> 
+      <tr> 
+       <td>fullRectLeft</td> 
+       <td>number</td> 
+       <td>否</td> 
+       <td></td> 
+       <td>目标在全景图图中的左边距</td> 
+      </tr> 
+      <tr> 
+       <td>fullRectTop</td> 
+       <td>number</td> 
+       <td>否</td> 
+       <td></td> 
+       <td>目标在全景图图中的上边距</td> 
+      </tr> 
+      <tr> 
+       <td>fullRectBottom</td> 
+       <td>number</td> 
+       <td>否</td> 
+       <td></td> 
+       <td>目标在全景图图中的下边距</td> 
+      </tr> 
+      <tr> 
+       <td>ruleType</td> 
+       <td>integer</td> 
+       <td>否</td> 
+       <td></td> 
+       <td>布控类型枚举 (1:结构化布控; 2:车辆布控)</td> 
+      </tr> 
+      <tr> 
+       <td>storageUuid</td> 
+       <td>string</td> 
+       <td>否</td> 
+       <td></td> 
+       <td>NVR ID,用于获取录像回放</td> 
+      </tr> 
+      <tr> 
+       <td>channelNo</td> 
+       <td>integer</td> 
+       <td>否</td> 
+       <td></td> 
+       <td>通道ID,用于获取录像回放</td> 
+      </tr> 
+      <tr> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">vehicleType</span></td> 
+       <td>integer</td> 
+       <td>否</td> 
+       <td></td> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">车辆类型,0-未知，20-两轮车，21-三轮车</span></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h3 id="f1b8e6c0-8e37-4c35-8749-7827a32cf126">busyType==3的时候，是警戒数据</h3> 
+    <table> 
+     <thead> 
+      <tr> 
+       <th>字段</th> 
+       <th>字段类型</th> 
+       <th>是否必须</th> 
+       <th>默认值</th> 
+       <th>备注</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td>ecordType</td> 
+       <td>integer</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>记录类型。1 - 通行; 2 - 安防</td> 
+      </tr> 
+      <tr> 
+       <td>personUuid</td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>人员UUID</td> 
+      </tr> 
+      <tr> 
+       <td>personName</td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>人员姓名</td> 
+      </tr> 
+      <tr> 
+       <td>personType</td> 
+       <td>integer</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>人员类型。1 - 员工; 2 - 访客; 3 - 重点人员（黑名单）</td> 
+      </tr> 
+      <tr> 
+       <td>personCode</td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>人员编码</td> 
+      </tr> 
+      <tr> 
+       <td>visitType</td> 
+       <td>integer</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>访客类型。1 - 普通访客, 2 - VIP访客</td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h3 id="127725ec-aedf-4ca8-9369-b31f1f347fed">busyType==5的时候，是通行数据</h3> 
+    <table> 
+     <thead> 
+      <tr> 
+       <th>字段</th> 
+       <th>字段类型</th> 
+       <th>是否必须</th> 
+       <th>默认值</th> 
+       <th>备注</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td>ecordType</td> 
+       <td>integer</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>记录类型。1 - 通行; 2 - 安防</td> 
+      </tr> 
+      <tr> 
+       <td>personUuid</td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>人员UUID</td> 
+      </tr> 
+      <tr> 
+       <td>personName</td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>人员姓名</td> 
+      </tr> 
+      <tr> 
+       <td>personType</td> 
+       <td>integer</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>人员类型。1 - 员工; 2 - 访客; 3 - 重点人员（黑名单）</td> 
+      </tr> 
+      <tr> 
+       <td>personCode</td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>人员编码</td> 
+      </tr> 
+      <tr> 
+       <td>visitType</td> 
+       <td>integer</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>访客类型。1 - 普通访客, 2 - VIP访客</td> 
+      </tr> 
+      <tr> 
+       <td>visitPeronUuid</td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>访客人员UUID</td> 
+      </tr> 
+      <tr> 
+       <td>visitPersonType</td> 
+       <td>integer</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>访问人员的类型。1 - 员工; 2 - 访客; 3 - 重点人员（黑名单）</td> 
+      </tr> 
+      <tr> 
+       <td>visitPersonCode</td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>问人员的员工编码</td> 
+      </tr> 
+      <tr> 
+       <td>visitPersonName</td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>访问人员的姓名</td> 
+      </tr> 
+      <tr> 
+       <td>visitReason</td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>来访原因</td> 
+      </tr> 
+      <tr> 
+       <td>visitFirm</td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>访客单位</td> 
+      </tr> 
+      <tr> 
+       <td>deviceUuid</td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>抓拍设备的uuid</td> 
+      </tr> 
+      <tr> 
+       <td>deviceName</td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>抓拍设备的名称</td> 
+      </tr> 
+      <tr> 
+       <td>deviceLocation</td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>抓拍设备的位置</td> 
+      </tr> 
+      <tr> 
+       <td>deviceType</td> 
+       <td>integer</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>抓拍设备的类型。1 - 智能摄像头; 2 - 智能面板机; 3 - 智能服务器; 4 - 网络摄像机; 5 - 存储服务器</td> 
+      </tr> 
+      <tr> 
+       <td>deviceModel</td> 
+       <td>integer</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>抓拍设备的型号。1 - MegEye-W5K-I8; 2 - MegEye-W4K-E7; 3 - MegEye-W4K-I5</td> 
+      </tr> 
+      <tr> 
+       <td>deviceStatus</td> 
+       <td>integer</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>抓拍设备在抓拍时的状态。0 - 未激活; 1 - 在线未绑定; 2 - 离线未绑定; 3 - 在线; 4 - 离线; 5 - 解绑中</td> 
+      </tr> 
+      <tr> 
+       <td>recognitionType</td> 
+       <td>integer</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>识别人员类型。1 - 员工; 2 - 访客; 3 - 重点人员（黑名单）; 4 - 陌生人; 5 - 未识别; 6 - VIP访客</td> 
+      </tr> 
+      <tr> 
+       <td>verificationMode</td> 
+       <td>integer</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>验证类型。0 - 人脸; 1 - 人脸或刷卡; 2 - 人脸及刷卡; 3 - 人脸及密码; 4 - 远程开门</td> 
+      </tr> 
+      <tr> 
+       <td>vistorRecordType</td> 
+       <td>integer</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>验证类型。0 - 人脸; 1 - 人脸或刷卡; 2 - 人脸及刷卡; 3 - 人脸及密码</td> 
+      </tr> 
+      <tr> 
+       <td>passType</td> 
+       <td>integer</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>通行类型。0 - 未通行; 1 - 通行; 2 - 复合认证未通过</td> 
+      </tr> 
+      <tr> 
+       <td>vistorType</td> 
+       <td>integer</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>通行类型。0 - 未通行; 1 - 通行;</td> 
+      </tr> 
+      <tr> 
+       <td>livenessType</td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>活体结果。0 - 非活体; 1 - 活体</td> 
+      </tr> 
+      <tr> 
+       <td>recognitionScore</td> 
+       <td>number</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>识别分数</td> 
+      </tr> 
+      <tr> 
+       <td>livenessScore</td> 
+       <td>number</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>活体分数</td> 
+      </tr> 
+      <tr> 
+       <td>passTime</td> 
+       <td>integer</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>抓拍时间。ISO 8601的精确到秒的格式化时间。形如2020-04-15T17:16:20+08:00</td> 
+      </tr> 
+      <tr> 
+       <td>playbackSupport</td> 
+       <td>boolean</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>是否支持录像回放</td> 
+      </tr> 
+      <tr> 
+       <td>nvrUuid</td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>录像回放NVR id</td> 
+      </tr> 
+      <tr> 
+       <td>channelNo</td> 
+       <td>integer</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>录像回放channel number</td> 
+      </tr> 
+      <tr> 
+       <td>personImageUrl</td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>人员底库图片url</td> 
+      </tr> 
+      <tr> 
+       <td>snapshotUrl</td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>抓拍图url</td> 
+      </tr> 
+      <tr> 
+       <td>passTimestamp</td> 
+       <td>integer</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>抓拍时间。unix时间戳，毫秒</td> 
+      </tr> 
+      <tr> 
+       <td>birthdayString</td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>生日祝福</td> 
+      </tr> 
+      <tr> 
+       <td>entryTimeCount</td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>入职周年祝福</td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h3 id="953338ad-db8e-4d9b-ab2a-f1794273fd7f">当busiType==12的时候，描述的是结构化数据，分为两种</h3> 
+    <ul> 
+     <li>人体结构化</li> 
+    </ul> 
+    <table> 
+     <thead> 
+      <tr> 
+       <th>字段</th> 
+       <th>字段类型</th> 
+       <th>是否必须</th> 
+       <th>默认值</th> 
+       <th>备注</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td>cropUri</td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>图片截图URI</td> 
+      </tr> 
+      <tr> 
+       <td>fullUri</td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>图片全景图URI</td> 
+      </tr> 
+      <tr> 
+       <td>deviceName</td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>设备名</td> 
+      </tr> 
+      <tr> 
+       <td>deviceLocation</td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>设备所在位置</td> 
+      </tr> 
+      <tr> 
+       <td>category</td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>结构化的类别，1:人脸、2:人体、3:机动车、4:非机动车</td> 
+      </tr> 
+      <tr> 
+       <td>serverTime</td> 
+       <td>integer</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>服务器时间,毫秒时间戳</td> 
+      </tr> 
+      <tr> 
+       <td>recognitionTime</td> 
+       <td>integer</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>识别时间,毫秒时间戳</td> 
+      </tr> 
+      <tr> 
+       <td>cropRectLeft</td> 
+       <td>number</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>目标在抓拍图中的左边距</td> 
+      </tr> 
+      <tr> 
+       <td>cropRectTop</td> 
+       <td>number</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>目标在抓拍图中的上边距</td> 
+      </tr> 
+      <tr> 
+       <td>cropRectRight</td> 
+       <td>number</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>目标在抓拍图中的右边距</td> 
+      </tr> 
+      <tr> 
+       <td>cropRectBottom</td> 
+       <td>number</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>目标在抓拍图中的下边距</td> 
+      </tr> 
+      <tr> 
+       <td>fullRectLeft</td> 
+       <td>number</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>目标在全景图图中的左边距</td> 
+      </tr> 
+      <tr> 
+       <td>fullRectTop</td> 
+       <td>number</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>目标在全景图图中的上边距</td> 
+      </tr> 
+      <tr> 
+       <td>fullRectBottom</td> 
+       <td>number</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>目标在全景图图中的下边距</td> 
+      </tr> 
+      <tr> 
+       <td>ruleType</td> 
+       <td>integer</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>布控类型枚举 (1:结构化布控; 2:车辆布控)</td> 
+      </tr> 
+      <tr> 
+       <td><span class="colour" style="color:rgb(57, 56, 56)">storageId</span></td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>NVR ID,用于获取录像回放</td> 
+      </tr> 
+      <tr> 
+       <td>channelNo</td> 
+       <td>integer</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>通道ID,用于获取录像回放</td> 
+      </tr> 
+      <tr> 
+       <td>dataFromCore</td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>判断数据是否来自Core</td> 
+      </tr> 
+      <tr> 
+       <td>gender</td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>性别</td> 
+      </tr> 
+      <tr> 
+       <td>age</td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>年龄</td> 
+      </tr> 
+      <tr> 
+       <td>dressUpperColor</td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>上衣颜色</td> 
+      </tr> 
+      <tr> 
+       <td>dressLowerColor</td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>下衣颜色</td> 
+      </tr> 
+      <tr> 
+       <td>dressUpperStyle</td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>上衣尺寸</td> 
+      </tr> 
+      <tr> 
+       <td>dressLowerStyle</td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>下衣尺寸</td> 
+      </tr> 
+      <tr> 
+       <td>wearHat</td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>是否戴帽子</td> 
+      </tr> 
+      <tr> 
+       <td>hatColor</td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>帽子颜色</td> 
+      </tr> 
+      <tr> 
+       <td>bagType</td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>是否带包</td> 
+      </tr> 
+      <tr> 
+       <td>rideBike</td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>是否骑车</td> 
+      </tr> 
+      <tr> 
+       <td>wearSafetycap</td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>是否戴安全帽</td> 
+      </tr> 
+      <tr> 
+       <td>relatedFaceId</td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>关联的人脸id</td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <ul> 
+     <li>人脸结构化</li> 
+    </ul> 
+    <table> 
+     <thead> 
+      <tr> 
+       <th>字段</th> 
+       <th>字段类型</th> 
+       <th>是否必须</th> 
+       <th>默认值</th> 
+       <th>备注</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td>cropUri</td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>图片截图URI</td> 
+      </tr> 
+      <tr> 
+       <td>fullUri</td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>图片全景图URI</td> 
+      </tr> 
+      <tr> 
+       <td>deviceName</td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>设备名</td> 
+      </tr> 
+      <tr> 
+       <td>deviceLocation</td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>设备所在位置</td> 
+      </tr> 
+      <tr> 
+       <td>category</td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>结构化的类别，1:人脸、2:人体、3:机动车、4:非机动车</td> 
+      </tr> 
+      <tr> 
+       <td>serverTime</td> 
+       <td>integer</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>服务器时间,毫秒时间戳</td> 
+      </tr> 
+      <tr> 
+       <td>recognitionTime</td> 
+       <td>integer</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>识别时间,毫秒时间戳</td> 
+      </tr> 
+      <tr> 
+       <td>cropRectLeft</td> 
+       <td>number</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>目标在抓拍图中的左边距</td> 
+      </tr> 
+      <tr> 
+       <td>cropRectTop</td> 
+       <td>number</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>目标在抓拍图中的上边距</td> 
+      </tr> 
+      <tr> 
+       <td>cropRectRight</td> 
+       <td>number</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>目标在抓拍图中的右边距</td> 
+      </tr> 
+      <tr> 
+       <td>cropRectBottom</td> 
+       <td>number</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>目标在抓拍图中的下边距</td> 
+      </tr> 
+      <tr> 
+       <td>fullRectLeft</td> 
+       <td>number</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>目标在全景图图中的左边距</td> 
+      </tr> 
+      <tr> 
+       <td>fullRectTop</td> 
+       <td>number</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>目标在全景图图中的上边距</td> 
+      </tr> 
+      <tr> 
+       <td>fullRectBottom</td> 
+       <td>number</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>目标在全景图图中的下边距</td> 
+      </tr> 
+      <tr> 
+       <td>ruleType</td> 
+       <td>integer</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>布控类型枚举 (1:结构化布控; 2:车辆布控)</td> 
+      </tr> 
+      <tr> 
+       <td>storageId</td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>NVR ID,用于获取录像回放</td> 
+      </tr> 
+      <tr> 
+       <td>channelNo</td> 
+       <td>integer</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>通道ID,用于获取录像回放</td> 
+      </tr> 
+      <tr> 
+       <td>dataFromCore</td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>判断数据是否来自Core</td> 
+      </tr> 
+      <tr> 
+       <td>gender</td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>性别</td> 
+      </tr> 
+      <tr> 
+       <td>age</td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>年龄</td> 
+      </tr> 
+      <tr> 
+       <td>mouthStatus</td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>嘴部状态</td> 
+      </tr> 
+      <tr> 
+       <td>eyeStatus</td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>眼部状态</td> 
+      </tr> 
+      <tr> 
+       <td>beardStatus</td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>胡子状态</td> 
+      </tr> 
+      <tr> 
+       <td>hairStatus</td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>头发状态</td> 
+      </tr> 
+      <tr> 
+       <td>noseOcclusion</td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>鼻子遮挡</td> 
+      </tr> 
+      <tr> 
+       <td>relatedPedestrianId</td> 
+       <td>string</td> 
+       <td>非必须</td> 
+       <td></td> 
+       <td>关联的人体id</td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <p><br data-tomark-pass=""><br> <br data-tomark-pass=""><br> <br data-tomark-pass=""><br> <br data-tomark-pass=""></p>           
+   </div> 
+  </div>   
+ </body>
+</html>
