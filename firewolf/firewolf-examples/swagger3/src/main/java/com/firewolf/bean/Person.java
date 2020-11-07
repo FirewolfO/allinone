@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class Person {
-    @ApiModelProperty(example = "张三")
+    @ApiModelProperty(example = "张三",required = true)
     private String name;
     @ApiModelProperty(example = "12")
     private Integer zoneId;

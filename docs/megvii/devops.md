@@ -1,7 +1,7 @@
 ## 构建镜像并推送
 
 ```powershell
-sudo docker build -t ampregistry:5000/aipark-adapter:1.0 .
+sudo docker build -t ampregistry:5000/pangu-facade-openapi:poc-taihao .
 sudo docker push ampregistry:5000/aipark-adapter:1.0
 ```
 
@@ -38,6 +38,3 @@ sudo docker push ampregistry:5000/aipark-adapter:1.0
    ```
 
    
-
-
-
