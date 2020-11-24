@@ -28,9 +28,9 @@ public class HtmlUtils {
                 "错误码",
                 "业务数据推送的数据结构"
         );
-        Document doc = Jsoup.parse(new File("/Users/liuxing/Downloads/api.html"), "UTF-8");
+        Document doc = Jsoup.parse(new File("C:\\Users\\liuxing\\Desktop\\openApi\\api.html"), "UTF-8");
         Element mulu = doc.getElementsByClass("table-of-contents").get(0).getElementsByTag("ul").get(0);
-        mulu.empty();
+//        mulu.empty();
         Element right = doc.getElementById("right");
         for (int i = toAddMulu.size() - 1; i >= 0; i--) {
             Elements hs = right.getElementsContainingText(toAddMulu.get(i));
@@ -47,7 +47,7 @@ public class HtmlUtils {
             }
         }
 
-        removeSpecialTest(right);
+//        removeSpecialTest(right);
 
         FileOutputStream fos = new FileOutputStream("openApi.html", false);
         fos.write(doc.html().getBytes("UTF-8"));
