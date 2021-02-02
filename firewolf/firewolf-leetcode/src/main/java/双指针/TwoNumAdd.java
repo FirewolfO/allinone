@@ -1,16 +1,15 @@
-package 其他;
+package 双指针;
 
 /**
  * 描述：2. 两数相加
  * 连接：https://leetcode-cn.com/problems/add-two-numbers/
- * 这种方式虽然代码较长，但是效率高一些
  * Author：liuxing
  * Date：2021-01-31
  */
-public class TwoNumAdd2 {
+public class TwoNumAdd {
 
     public static void main(String[] args) {
-        TwoNumAdd2 t = new TwoNumAdd2();
+        TwoNumAdd t = new TwoNumAdd();
         ListNode l1 = t.buildLink(new int[]{9, 9, 9, 9, 9, 9, 9});
         ListNode l2 = t.buildLink(new int[]{9, 9, 9, 9});
         ListNode listNode = t.addTwoNumbers(l2, l1);
@@ -42,34 +41,17 @@ public class TwoNumAdd2 {
         ListNode result = new ListNode();
         ListNode next = result;
         int count = 0;
-        while (l1 != null && l2 != null) {
+        while (l1 != null || l2 != null) {
             ListNode n = new ListNode();
-            int a = l1.val + l2.val + count;
+            int a = (l1 == null ? 0 : l1.val) + (l2 == null ? 0 : l2.val) + count;
             n.val = a % 10;
             count = a / 10;
             next.next = n;
             next = n;
-            l1 = l1.next;
-            l2 = l2.next;
-        }
-        if (l1 != null) {
-            while (l1 != null) {
-                int a = l1.val + count;
-                count = a / 10;
-                l1.val = a % 10;
-                next.next = l1;
-                next = l1;
+            if (l1 != null) {
                 l1 = l1.next;
             }
-        }
-        if (l2 != null) {
-            next.next = l2;
-            while (l2 != null) {
-                int a = l2.val + count;
-                count = a / 10;
-                l2.val = a % 10;
-                next.next = l2;
-                next = l2;
+            if (l2 != null) {
                 l2 = l2.next;
             }
         }
