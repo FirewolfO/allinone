@@ -1,4 +1,4 @@
-package middle;
+package 其他;
 
 /**
  * 描述：2. 两数相加

@@ -1,19 +1,17 @@
-package easy;
+package 二分法;
 
 /**
- * 704. 二分查找
- * 描述：https://leetcode-cn.com/problems/binary-search/
- * 思路：
- * 对于排好序的数组、通过二分查找完成
+ * 描述：33. 搜索旋转排序数组
+ * 连接：https://leetcode-cn.com/problems/search-in-rotated-sorted-array/
  * Author：liuxing
- * Date：2021-01-25
+ * Date：2021-02-02
  */
-public class BinarySearch {
+public class ArraySearch {
 
     public static void main(String[] args) {
-        int nums[] = {-1, 0, 3, 5, 9, 12};
-        int target = 9;
-        System.out.println(new BinarySearch().search(nums, target));
+        int nums[] = {4, 5, 6, 7, 0, 1, 2};
+        int target = 0;
+        System.out.println(new ArraySearch().search(nums, target));
     }
 
     public int search(int[] nums, int target) {
@@ -28,8 +26,9 @@ public class BinarySearch {
         if (nums[middle] == target) {
             return middle;
         }
-        if (nums[middle] > target) {
-            return search(target, start, middle - 1, nums);
+        int aa = search(target, start, middle - 1, nums);
+        if (aa != -1) {
+            return aa;
         }
         return search(target, middle + 1, end, nums);
     }

@@ -1,4 +1,4 @@
-package easy;
+package 滑动窗口;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,12 +9,12 @@ import java.util.Map;
  * Author：liuxing
  * Date：2021-02-02
  */
-public class TomNumSum {
+public class TwoNumSum {
 
     public static void main(String[] args) {
         int[] nums = {2, 7, 11, 15};
         int target = 9;
-        System.out.println(new TomNumSum().twoSum(nums, target));
+        System.out.println(new TwoNumSum().twoSum(nums, target));
     }
 
     public int[] twoSum(int[] nums, int target) {
