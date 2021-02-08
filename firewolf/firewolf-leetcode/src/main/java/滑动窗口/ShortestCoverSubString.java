@@ -28,10 +28,11 @@ public class ShortestCoverSubString {
             tMap.put(c, tMap.getOrDefault(c, 0) + 1);
         }
 
-        int right = 0;
+        int right = -1;
         int left = -1;
         int start = 0;
-        while (right < s.length()) {
+        while (right < s.length() - 1) {
+            ++right;
             char currentC = sChars[right];
             if (tMap.containsKey(currentC)) {
                 sMap.put(currentC, sMap.getOrDefault(currentC, 0) + 1);
@@ -49,7 +50,6 @@ public class ShortestCoverSubString {
                     start = left;
                 }
             }
-            right++;
         }
         return minLen == s.length() + 1 ? "" : new String(sChars, start, minLen);
     }
