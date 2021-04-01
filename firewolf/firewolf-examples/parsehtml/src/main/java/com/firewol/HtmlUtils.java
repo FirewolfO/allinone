@@ -28,7 +28,7 @@ public class HtmlUtils {
                 "错误码",
                 "业务数据推送的数据结构"
         );
-        Document doc = Jsoup.parse(new File("C:\\Users\\liuxing\\Desktop\\openApi\\api.html"), "UTF-8");
+        Document doc = Jsoup.parse(new File("/Users/liuxing/Desktop/open/api.html"), "UTF-8");
         Element mulu = doc.getElementsByClass("table-of-contents").get(0).getElementsByTag("ul").get(0);
 //        mulu.empty();
         Element right = doc.getElementById("right");
