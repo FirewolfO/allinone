@@ -26,7 +26,8 @@ public class HtmlUtils {
                 "接口鉴权",
                 "接口流程",
                 "错误码",
-                "业务数据推送的数据结构"
+                "业务数据推送的数据结构",
+                "事件推送数据结构"
         );
         Document doc = Jsoup.parse(new File("/Users/liuxing/Desktop/api/api.html"), "UTF-8");
         Element mulu = doc.getElementsByClass("table-of-contents").get(0).getElementsByTag("ul").get(0);
