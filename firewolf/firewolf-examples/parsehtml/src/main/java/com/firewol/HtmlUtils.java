@@ -21,6 +21,11 @@ public class HtmlUtils {
 
     public static void main(String[] args) throws Exception {
 
+        String fileName = "/Users/liuxing/Desktop/api/api.html";
+        if(args != null && args.length > 0){
+            fileName = args[0];
+        }
+
         List<String> toAddMulu = Arrays.asList(
                 "基本说明",
                 "接口鉴权",
@@ -29,7 +34,7 @@ public class HtmlUtils {
                 "业务数据推送的数据结构",
                 "事件推送数据结构"
         );
-        Document doc = Jsoup.parse(new File("/Users/liuxing/Desktop/api/api.html"), "UTF-8");
+        Document doc = Jsoup.parse(new File(fileName), "UTF-8");
         Element mulu = doc.getElementsByClass("table-of-contents").get(0).getElementsByTag("ul").get(0);
 //        mulu.empty();
         Element right = doc.getElementById("right");
