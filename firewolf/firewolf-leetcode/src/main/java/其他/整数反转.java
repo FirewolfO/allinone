@@ -6,11 +6,11 @@ package 其他;
  * Email: 1483345163@qq.com
  * Time: 2021/6/23 7:28 下午
  */
-public class Test {
+public class 整数反转 {
 
     public static void main(String[] args) {
 
-        System.out.println(new Test().reverse(12345));
+        System.out.println(new 整数反转().reverse(-12345));
 
     }
 
