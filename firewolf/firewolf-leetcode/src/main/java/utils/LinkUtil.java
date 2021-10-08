@@ -1,6 +1,7 @@
 package utils;
 
 /**
+ * 链表工具
  * Description:
  * Author: liuxing
  * Email: 1483345163@qq.com
@@ -8,7 +9,7 @@ package utils;
  */
 public class LinkUtil {
 
-    public static ListNode buildLink(int[] nums) {
+    public static ListNode buildLink(int... nums) {
         ListNode result = new ListNode();
         ListNode p = result;
         int i = 0;
@@ -21,18 +22,18 @@ public class LinkUtil {
         return result.next;
     }
 
-    public static class ListNode {
-        public int val;
+    public static class ListNode<T> {
+        public T val;
         public ListNode next;
 
         public ListNode() {
         }
 
-        public ListNode(int val) {
+        public ListNode(T val) {
             this.val = val;
         }
 
-        public ListNode(int val, ListNode next) {
+        public ListNode(T val, ListNode next) {
             this.val = val;
             this.next = next;
         }

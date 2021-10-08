@@ -16,10 +16,10 @@ import java.util.Map;
  * 链接：https://leetcode-cn.com/problems/two-sum
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
  */
-class 两数之和 {
+class 两数之和_001 {
 
     public static void main(String[] args) {
-        int[] res = new 两数之和().twoSum(new int[]{2, 7, 11, 15}, 9);
+        int[] res = new 两数之和_001().twoSum(new int[]{2, 7, 11, 15}, 9);
         System.out.println(Arrays.toString(res));
     }
 

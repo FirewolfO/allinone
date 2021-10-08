@@ -4,10 +4,10 @@ package 双指针;
  * 4. 寻找两个正序数组的中位数
  * 给定两个大小分别为 m 和 n 的正序（从小到大）数组 nums1 和 nums2。请你找出并返回这两个正序数组的 中位数 。
  */
-class 两个有序数组合并后的中位数 {
+class 两个有序数组合并后的中位数_004 {
 
     public static void main(String[] args) {
-        double x = new 两个有序数组合并后的中位数().findMedianSortedArrays(new int[]{1, 2}, new int[]{3, 4});
+        double x = new 两个有序数组合并后的中位数_004().findMedianSortedArrays(new int[]{1, 2}, new int[]{3, 4});
         System.out.println(x);
     }
 

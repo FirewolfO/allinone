@@ -1,11 +1,13 @@
 package 中心扩散;
 
-class 最长回文串 {
+/**
+ * 5. 最长回文子串
+ * 给你一个字符串 s，找到 s 中最长的回文子串。
+ */
+class 最长回文串_005 {
 
     public static void main(String[] args) {
-
-
-        String m = new 最长回文串().longestPalindrome("cbbd");
+        String m = new 最长回文串_005().longestPalindrome("babad");
         System.out.println(m);
     }
 

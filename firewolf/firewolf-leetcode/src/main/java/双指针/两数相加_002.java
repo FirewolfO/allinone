@@ -5,7 +5,7 @@ import utils.LinkUtil;
 import static utils.LinkUtil.ListNode;
 
 /**
- * 2. 两个相加
+ * 2. 两数相加
  * 给你两个 非空 的链表，表示两个非负的整数。它们每位数字都是按照 逆序 的方式存储的，并且每个节点只能存储 一位 数字。
  * <p>
  * 请你将两个数相加，并以相同形式返回一个表示和的链表。
@@ -16,9 +16,15 @@ import static utils.LinkUtil.ListNode;
  * 链接：https://leetcode-cn.com/problems/add-two-numbers
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
  */
-class 两数相加 {
+class 两数相加_002 {
 
-    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+    public static void main(String[] args) {
+        ListNode<Integer> num1 = LinkUtil.buildLink(2,4,3);
+        ListNode<Integer> num2 = LinkUtil.buildLink(5,6,4);
+        System.out.println(new 两数相加_002().addTwoNumbers(num1,num2));
+    }
+
+    public ListNode addTwoNumbers(ListNode<Integer> l1, ListNode<Integer> l2) {
         ListNode root = new ListNode();
         ListNode p = root;
         int next = 0;
