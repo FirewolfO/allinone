@@ -16,7 +16,7 @@ package 其他;
 public class 字符串转整数_008 {
 
     public static void main(String[] args) {
-        int res = new 字符串转整数_008().myAtoi("-2147483649");
+        int res = new 字符串转整数_008().myAtoi("2147483648");
         System.out.println(res);
     }
 
@@ -43,9 +43,11 @@ public class 字符串转整数_008 {
                 break;
             } else {
                 int cInt = chars[i] - '0';
-                if (flag == 1 && res > (Integer.MAX_VALUE - cInt) / 10) {
+                // res * 10 > Integer.MAX_VALUE ，一定越界， ||  res * 10 == Integer.MAX_VALUE 的时候，如果cInt>7了，那么和也会大于Integer.MAX_VALUE
+                if (flag == 1 && (res > Integer.MAX_VALUE / 10 || (res == Integer.MAX_VALUE / 10 && cInt > 7))) {
                     return Integer.MAX_VALUE;
-                } else if (flag == -1 && res * -1 < (Integer.MIN_VALUE / 10 - cInt / 10)) {
+                } else if (flag == -1 && (res * -1 < Integer.MIN_VALUE / 10 || (res * -1 == Integer.MIN_VALUE / 10 && cInt > 8))) {
+                    // res * -10 < Integer.MIN_VALUE ，一定越界 || res * -10 ==  Integer.MIN_VALUE 的时候，如果cInt > 8 ，那结果就会 < -8 ,总和也会小于Integer.MIN_VALUE 导致越界
                     return Integer.MIN_VALUE;
                 }
                 res = res * 10 + cInt;
