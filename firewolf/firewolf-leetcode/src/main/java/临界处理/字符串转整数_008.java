@@ -1,4 +1,4 @@
-package 其他;
+package 临界处理;
 
 /**
  * 8. 字符串转换整数 (atoi)
