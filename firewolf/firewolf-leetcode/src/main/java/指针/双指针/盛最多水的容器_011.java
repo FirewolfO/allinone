@@ -1,4 +1,4 @@
-package 双指针;
+package 指针.双指针;
 
 /**
  * https://leetcode-cn.com/problems/container-with-most-water/

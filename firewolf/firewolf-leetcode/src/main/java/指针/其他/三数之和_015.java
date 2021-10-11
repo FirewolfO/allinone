@@ -1,4 +1,4 @@
-package 指针;
+package 指针.其他;
 
 import java.util.ArrayList;
 import java.util.Arrays;
