@@ -1,5 +1,8 @@
 package 其他;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class 两数相除_029 {
 
     public static void main(String[] args) {
@@ -35,23 +38,19 @@ public class 两数相除_029 {
         }
 
         int res = 0;
-        long x = dividend;
-        long y = divisor;
-        while (x <= y) { //一直减小
-            int c = 1;
-            long a = y;
-            while (true) {
-                long tmp = a + a;
-                if (tmp < x) {
-                    break;
-                }
-                a = tmp;
-                c += c;
-            }
-            x -= a;
-            res += c;
+        int sub = divisor;
+        List<Integer> s = new ArrayList<>();
+        s.add(sub);
+        while (sub >= dividend - sub) { //sub + sub >= dividend
+            sub += sub;
+            s.add(sub);
         }
-
+        for (int i = s.size() - 1; i >= 0; i--) {
+            if (dividend <= s.get(i)) {
+                res += (1 << i);
+                dividend -= s.get(i);
+            }
+        }
         return res * flag;
     }
 
