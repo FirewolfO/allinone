@@ -9,7 +9,7 @@ package utils;
  */
 public class LinkUtil {
 
-    public static ListNode buildLink(int... nums) {
+    public static <T> ListNode<T> buildLink(T... nums) {
         ListNode result = new ListNode();
         ListNode p = result;
         int i = 0;
