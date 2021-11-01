@@ -12,7 +12,7 @@ import static utils.LinkUtil.ListNode;
  */
 public class 删除链表的倒数第N个结点_019 {
     public static void main(String[] args) {
-        ListNode<Integer> head = LinkUtil.buildLink(new int[]{1, 2});
+        ListNode<Integer> head = LinkUtil.buildLink(new Integer[]{1, 2});
         ListNode listNode = new 删除链表的倒数第N个结点_019().removeNthFromEnd(head, 3);
         System.out.println(listNode);
     }
