@@ -58,9 +58,9 @@ public class TreeUtils {
      * 树节点
      */
     public static class TreeNode<T> {
-        private T val;
-        private TreeNode left;
-        private TreeNode right;
+        public T val;
+        public TreeNode left;
+        public TreeNode right;
 
         public TreeNode() {
         }
