@@ -5,6 +5,7 @@ import utils.TreeUtils.TreeNode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 /**
  * 描述：
@@ -16,6 +17,7 @@ public class 二叉树的前序遍历_144 {
     public static void main(String[] args) {
         TreeNode<Integer> integerTreeNode = TreeUtils.buildBSTTree(new Integer[]{1, null, 3, 4, 5, 6, 7, 8, 9, 10});
         System.out.println(new 二叉树的前序遍历_144().preorderTraversal(integerTreeNode));
+        System.out.println(new 二叉树的前序遍历_144().nonRecursionTraversal(integerTreeNode));
     }
 
     /*************递归方式 ***************/
@@ -36,5 +38,21 @@ public class 二叉树的前序遍历_144 {
 
 
     /************* 非递归方式 ****************/
+    public List<Integer> nonRecursionTraversal(TreeNode<Integer> root) {
+        // 中 左 右
+        List<Integer> result = new ArrayList<>();
+        Stack<TreeNode<Integer>> stack = new Stack();
+        stack.push(root);
+        while (!stack.isEmpty()) {
+            TreeNode<Integer> pop = stack.pop();
+            if(pop == null){
+                continue;
+            }
+            result.add(pop.val);
+            stack.push(pop.right);
+            stack.push(pop.left);
+        }
+        return result;
+    }
 
 }
