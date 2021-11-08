@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Stack;
 
 /**
+ * 144. 二叉树的前序遍历
+ * 给你二叉树的根节点 root ，返回它节点值的 前序 遍历。
  * 描述：
  * Author：liuxing
  * Date：2021-10-26
