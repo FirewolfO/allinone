@@ -15,27 +15,44 @@ import java.util.Arrays;
 public class 在排序数组中查找元素的第一个和最后一个位置_034 {
 
     public static void main(String[] args) {
-        int nums[] = new int[]{5, 7, 7, 8, 8, 10};
-        int[] x = new 在排序数组中查找元素的第一个和最后一个位置_034().searchRange(nums, 8);
+        int nums[] = new int[]{1};
+        int[] x = new 在排序数组中查找元素的第一个和最后一个位置_034().searchRange(nums, 1);
         System.out.println(Arrays.toString(x));
     }
 
 
     public int[] searchRange(int[] nums, int target) {
-        int i = 0;
-        int j = nums.length - 1;
-        while (i <= j) {
-            if (nums[i] == target && nums[j] == target) {
-                return new int[]{i, j};
-            }
-            if (nums[i] < target) {
-                i++;
-            }
-            if (nums[j] > target) {
-                j--;
-            }
+        if (nums.length == 0) { // 没有元素的时候
+            return new int[]{-1, -1};
         }
 
-        return new int[]{-1, -1};
+        int left = 0;
+        int right = nums.length - 1;
+        while (left < right) {
+            int mid = (left + right) >>> 1;
+            if (nums[mid] >= target) {
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
+        if (nums[right] != target) {
+            return new int[]{-1, -1};
+        }
+
+        int L = right;
+        left = 0;
+        right = nums.length - 1;
+        int R = L;
+        while (left < right) {
+            int mid = (left + right) >>> 1;
+            if (nums[mid] > target) {
+                right = mid;
+            } else {
+                R = mid;
+                left = mid + 1;
+            }
+        }
+        return new int[]{L, R};
     }
 }
