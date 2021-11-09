@@ -43,16 +43,14 @@ public class 在排序数组中查找元素的第一个和最后一个位置_034
         int L = right;
         left = 0;
         right = nums.length - 1;
-        int R = L;
         while (left < right) {
-            int mid = (left + right) >>> 1;
-            if (nums[mid] > target) {
-                right = mid;
+            int mid = (left + right + 1) >>> 1;
+            if (nums[mid] <= target) {
+                left = mid;
             } else {
-                R = mid;
-                left = mid + 1;
+                right = mid - 1;
             }
         }
-        return new int[]{L, R};
+        return new int[]{L, left};
     }
 }
