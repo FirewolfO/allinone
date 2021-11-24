@@ -1,6 +1,18 @@
+## 处理devops关闭容器不正常问题
+
+问题如下：
+
+```
+sudo docker network disconnect --force host megvii.pangu110_20211108-core.core-core.longinus-1
+```
+
+```shell
+ sudo docker network disconnect --force 网络方式 服务名
+```
+
 ## 构建镜像并推送
 
-```powershell
+```shell
 sudo docker build -t ampregistry:5000/pangu-facade-openapi:poc-taihao .
 sudo docker push ampregistry:5000/aipark-adapter:1.0
 ```
@@ -38,3 +50,10 @@ sudo docker push ampregistry:5000/aipark-adapter:1.0
    ```
 
    
+
+### 证书
+
+```
+sudo ETCDCTL_API=3 devops-etcdctl --endpoints localhost:5430 del /devops/license
+```
+
