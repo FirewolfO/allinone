@@ -3,7 +3,7 @@
 上传命令：
 
 ```shel
-./sdc-upload-linux -k eyJpZCI6MjQzfQ.E2e6Dw.tCYxnVpNfzLIhh4bcxbEPISNlII -p EBG发布版本/盘古/test版本/主线版本/V1.0.2/V1.0.2.RC2/业务/  pangu-pangu-1.0.2-rc2.image.tar.xz
+./sdc-upload-linux -k eyJpZCI6MjQzfQ.E2e6Dw.tCYxnVpNfzLIhh4bcxbEPISNlII -p EBG发布版本/盘古/test版本/主线版本/V1.1.0/V1.1.0.RC01/pangu/  pangu_docker_pangu_V1.1.0.RC01.tar
 ```
 
 - -p：SDC路径
