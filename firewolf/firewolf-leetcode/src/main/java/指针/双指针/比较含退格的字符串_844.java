@@ -14,27 +14,73 @@ public class 比较含退格的字符串_844 {
         String s = "ab#c";
         String t = "ad#c";
 
+        System.out.println(new 比较含退格的字符串_844().backspaceCompare(s,t));
+
     }
 
     public boolean backspaceCompare(String s, String t) {
         int sIndex = s.length() - 1;
         int tIndex = t.length() - 1;
+        char[] sChars = s.toCharArray();
+        char[] tChars = t.toCharArray();
         int sSkip = 0;
         int tSkip = 0;
         while (sIndex >= 0 && tIndex >= 0) {
-            while (s.charAt(sIndex) == '#' && sIndex >= 0) {
+            char sChar = sChars[sIndex];
+            if (sChar == '#') {
                 sSkip++;
                 sIndex--;
+                continue;
+            } else if (sSkip > 0) {
+                sSkip--;
+                sIndex--;
+                continue;
             }
-            while (t.charAt(tIndex) == '#' && tIndex >= 0) {
+            char tChar = tChars[tIndex];
+            if (tChar == '#') {
                 tSkip++;
                 tIndex--;
+                continue;
+            } else if (tSkip > 0) {
+                tSkip--;
+                tIndex--;
+                continue;
             }
-            if ((sIndex >= 0 && tIndex >= 0) && s.charAt(sIndex) != t.charAt(tIndex)) {
+            if (sChar != tChar) {
                 return false;
+            } else {
+                sIndex--;
+                tIndex--;
             }
         }
-        return false;
+        while (sIndex >= 0) {
+            char sChar = sChars[sIndex];
+            if (sChar == '#') {
+                sSkip++;
+            } else {
+                if (sSkip > 0) {
+                    sSkip--;
+                } else {
+                    return false;
+                }
+            }
+            sIndex--;
+        }
+
+        while (tIndex >= 0) {
+            char tChar = tChars[tIndex];
+            if (tChar == '#') {
+                tSkip++;
+            } else {
+                if (tSkip > 0) {
+                    tSkip--;
+                } else {
+                    return false;
+                }
+            }
+            tIndex--;
+        }
+        return true;
     }
 
 }
