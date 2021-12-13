@@ -14,19 +14,18 @@ public class 删除有序数组中的重复项_026 {
     }
 
     public int removeDuplicates(int[] nums) {
-        if (nums.length < 2) {
-            return nums.length;
+        if(nums.length == 1){
+            return 1;
         }
         int slow = 0;
-        int fast = 0;
-        while (fast < nums.length) {
-            while (fast < nums.length && nums[fast] == nums[slow]) {
+        int fast = 1;
+        while(fast < nums.length){
+            if(nums[slow] == nums[fast]){
                 fast++;
-            }
-            if (fast < nums.length) {
+            }else{
                 nums[++slow] = nums[fast];
             }
         }
-        return slow + 1;
+        return slow+1;
     }
 }
