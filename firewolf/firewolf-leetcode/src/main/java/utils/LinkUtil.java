@@ -9,6 +9,13 @@ package utils;
  */
 public class LinkUtil {
 
+    /**
+     * 构建链表
+     *
+     * @param nums
+     * @param <T>
+     * @return
+     */
     public static <T> ListNode<T> buildLink(T... nums) {
         ListNode result = new ListNode();
         ListNode p = result;
@@ -20,6 +27,31 @@ public class LinkUtil {
             i++;
         }
         return result.next;
+    }
+
+
+    /**
+     * 找出第 n 个值为nodeVal的节点
+     *
+     * @param head
+     * @param nodeVal
+     * @param count
+     * @param <T>
+     * @return
+     */
+    public static <T> ListNode findNode(ListNode<T> head, T nodeVal, int count) {
+        ListNode<T> p = head;
+        int c = 0;
+        while (p != null) {
+            if (p.val == nodeVal) {
+                c++;
+                if (c == count) {
+                    return p;
+                }
+            }
+            p = p.next;
+        }
+        return null;
     }
 
     public static class ListNode<T> {
@@ -46,4 +78,6 @@ public class LinkUtil {
             return s;
         }
     }
+
+
 }
