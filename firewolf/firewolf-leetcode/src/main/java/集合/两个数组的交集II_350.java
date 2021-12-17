@@ -4,12 +4,12 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-class 两个数组的交集II {
+class 两个数组的交集II_350 {
 
     public static void main(String[] args) {
         int[] nums1 = new int[]{4, 9, 5};
         int[] nums2 = new int[]{9, 4, 9, 8, 4};
-        int[] intersect = new 两个数组的交集II().intersect(nums1, nums2);
+        int[] intersect = new 两个数组的交集II_350().intersect(nums1, nums2);
         System.out.println(Arrays.toString(intersect));
     }
 
