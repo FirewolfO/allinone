@@ -1,4 +1,4 @@
-package 栈;
+package 栈和队列;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,29 +24,34 @@ public class 有效的括号_020 {
         if (s.length() % 2 == 1) {
             return false;
         }
-        Stack<Character> stack = new Stack<>();
         char[] chars = s.toCharArray();
-        Map<Character, Character> map = new HashMap<>();
-        map.put(']', '[');
-        map.put('}', '{');
-        map.put(')', '(');
-        int i = 0;
-        while (i < chars.length) {
-            char c = chars[i];
-            if (map.containsKey(c)) {
+        Stack<Character> stack = new Stack<>();
+        for (char c : chars) {
+            if (c == '[' || c == '{' || c == '(') {
+                stack.push(c);
+            } else {
                 if (stack.empty()) {
                     return false;
                 }
-                Character peek = stack.peek();
-                if (peek.charValue() == map.get(c)) {
-                    stack.pop();
-                } else {
-                    stack.push(c);
+                char last = stack.pop();
+                switch (c) {
+                    case ']':
+                        if (last != '[') {
+                            return false;
+                        }
+                        break;
+                    case '}':
+                        if (last != '{') {
+                            return false;
+                        }
+                        break;
+                    case ')':
+                        if (last != '(') {
+                            return false;
+                        }
+                        break;
                 }
-            } else {
-                stack.push(c);
             }
-            i++;
         }
         return stack.empty();
     }

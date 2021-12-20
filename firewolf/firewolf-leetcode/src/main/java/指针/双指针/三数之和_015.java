@@ -35,8 +35,8 @@ public class 三数之和_015 {
                     // 现在要增加 left，减小 right，但是不能重复，比如: [-2, -1, -1, -1, 3, 3, 3], i = 0, left = 1, right = 6, [-2, -1, 3] 的答案加入后，需要排除重复的 -1 和 3
                     left++;
                     right--; // 首先无论如何先要进行加减操作
-                    while (left < right && nums[left] == nums[left - 1]) left++;
-                    while (left < right && nums[right] == nums[right + 1]) right--;
+                    while (left < right && nums[left] == nums[left - 1]) left++;  // 跳过相同的值
+                    while (left < right && nums[right] == nums[right + 1]) right--; // 跳过相同的值
                 } else if (nums[left] + nums[right] < target) {
                     left++;
                 } else {  // nums[left] + nums[right] > target

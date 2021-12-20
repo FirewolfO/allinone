@@ -11,18 +11,16 @@ public class 赎金信_383 {
     }
 
     public boolean canConstruct(String ransomNote, String magazine) {
-        int[] ransomNoteArray = new int[123];
         int[] magazineArray = new int[123];
         char[] ransomNoteChars = ransomNote.toCharArray();
         char[] magazineChars = magazine.toCharArray();
-        for (char c : ransomNoteChars) {
-            ransomNoteArray[c]++;
-        }
         for (char c : magazineChars) {
             magazineArray[c]++;
         }
-        for (int i = 97; i < 123; i++) {
-            if (ransomNoteArray[i] > magazineArray[i]) {
+        for (char c : ransomNoteChars) {
+            if (magazineArray[c] > 0) {
+                magazineArray[c]--;
+            } else {
                 return false;
             }
         }
