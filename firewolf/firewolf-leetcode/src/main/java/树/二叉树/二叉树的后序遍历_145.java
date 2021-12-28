@@ -24,33 +24,41 @@ public class 二叉树的后序遍历_145 {
     /*****************递归遍历*********************/
     public List<Integer> postorderTraversal(TreeNode<Integer> root) {
         List<Integer> result = new ArrayList<>();
+        if (root == null) {
+            return result;
+        }
         traversal(root, result);
         return result;
     }
 
 
     private void traversal(TreeNode<Integer> root, List<Integer> result) {
-        if (root == null) {
-            return;
+        if (root.left != null) {
+            traversal(root.left, result);
         }
-        traversal(root.left, result);
-        traversal(root.right, result);
+        if (root.right != null) {
+            traversal(root.right, result);
+        }
         result.add(root.val);
     }
 
-    /***************非递归遍历*****************/
+    /***************非递归遍历：通过中、右、左的方式遍历完了之后反转*****************/
     public List<Integer> nonRecursionTraversal(TreeNode<Integer> root) {
+        List<Integer> result = new ArrayList<>();
+        if (root == null) {
+            return result;
+        }
         Stack<TreeNode<Integer>> stack = new Stack();
         stack.push(root);
-        LinkedList<Integer> result = new LinkedList<>();
         while (!stack.isEmpty()) {
             TreeNode<Integer> pop = stack.pop();
-            if(pop == null){
-                continue;
+            result.add(0, pop.val); // 通过往前加的方式，实现列表反转
+            if (pop.left != null) {
+                stack.push(pop.left);
             }
-            result.addFirst(pop.val);
-            stack.push(pop.left);
-            stack.push(pop.right);
+            if (pop.right != null) {
+                stack.push(pop.right);
+            }
         }
         return result;
     }

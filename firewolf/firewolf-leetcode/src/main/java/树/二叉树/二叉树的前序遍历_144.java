@@ -25,17 +25,21 @@ public class 二叉树的前序遍历_144 {
     /*************递归方式 ***************/
     public List<Integer> preorderTraversal(TreeNode root) {
         List<Integer> result = new ArrayList<>();
+        if (root == null) {
+            return result;
+        }
         traversal(root, result);
         return result;
     }
 
     private void traversal(TreeNode<Integer> node, List<Integer> result) {
-        if (node == null) {
-            return;
-        }
         result.add(node.val);
-        traversal(node.left, result);
-        traversal(node.right, result);
+        if (node.left != null) {
+            traversal(node.left, result);
+        }
+        if (node.right != null) {
+            traversal(node.right, result);
+        }
     }
 
 
@@ -43,16 +47,20 @@ public class 二叉树的前序遍历_144 {
     public List<Integer> nonRecursionTraversal(TreeNode<Integer> root) {
         // 中 左 右
         List<Integer> result = new ArrayList<>();
+        if (root == null) {
+            return result;
+        }
         Stack<TreeNode<Integer>> stack = new Stack();
         stack.push(root);
         while (!stack.isEmpty()) {
             TreeNode<Integer> pop = stack.pop();
-            if(pop == null){
-                continue;
-            }
             result.add(pop.val);
-            stack.push(pop.right);
-            stack.push(pop.left);
+            if (pop.right != null) {
+                stack.push(pop.right);
+            }
+            if (pop.left != null) {
+                stack.push(pop.left);
+            }
         }
         return result;
     }
