@@ -11,7 +11,7 @@ import utils.TreeUtils.*;
 class N叉树的层序遍历_429 {
 
     public static void main(String[] args) {
-        Node<Integer> nodes = TreeUtils.buildBSNTree(1, null, 2, 3, 4, 5, null, null, 6, 7, null, 8, null, 9, 10, null, null, 11, null, 12, null, 13, null, null, 14);
+        Node<Integer> nodes = TreeUtils.buildBSTNTree(1, null, 2, 3, 4, 5, null, null, 6, 7, null, 8, null, 9, 10, null, null, 11, null, 12, null, 13, null, null, 14);
         List<List<Integer>> lists = new N叉树的层序遍历_429().levelOrder(nodes);
         System.out.println(lists);
     }

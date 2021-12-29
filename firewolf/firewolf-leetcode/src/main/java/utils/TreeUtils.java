@@ -66,7 +66,7 @@ public class TreeUtils {
      * @param <T>
      * @return
      */
-    public static <T> Node<T> buildBSNTree(T... nodeValues) {
+    public static <T> Node<T> buildBSTNTree(T... nodeValues) {
         if (nodeValues.length == 0) {
             return null;
         }
