@@ -22,6 +22,39 @@ public class TreeUtils {
     }
 
     /***
+     * 按层展示二叉树
+     * @param root
+     * @param <T>
+     * @return
+     */
+    public static <T> List<List<T>> showBinaryTreeByLevel(TreeNode<T> root) {
+        List<List<T>> list = new ArrayList<>();
+        if (root == null) {
+            return list;
+        }
+        Queue<TreeNode<T>> queue = new LinkedList<>();
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            List<T> oneLevel = new ArrayList<>();
+            while (size > 0) {
+                TreeNode<T> poll = queue.poll();
+                oneLevel.add(poll.val);
+                if (poll.left != null) {
+                    queue.offer(poll.left);
+                }
+                if (poll.right != null) {
+                    queue.offer(poll.right);
+                }
+                size--;
+            }
+            list.add(oneLevel);
+        }
+        return list;
+    }
+
+
+    /***
      * 广度遍历构建一棵二叉树
      * 如： [1,2,3,null,4,null,null,5]
      *          1
