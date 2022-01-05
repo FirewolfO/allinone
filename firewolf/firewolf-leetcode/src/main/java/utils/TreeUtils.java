@@ -298,7 +298,7 @@ public class TreeUtils {
      */
     public static class NNode<T> {
         public T val;
-        public List<NNode<T>> children;
+        public List<NNode<T>> children = new ArrayList<>();
 
         public NNode() {
         }

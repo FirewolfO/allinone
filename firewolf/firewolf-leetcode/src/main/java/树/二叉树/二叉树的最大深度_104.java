@@ -36,4 +36,13 @@ public class 二叉树的最大深度_104 {
         }
         return deepth;
     }
+
+
+    //-------------递归解法---------
+    public int maxDepthRecursion(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        return Math.max(maxDepthRecursion(root.left), maxDepthRecursion(root.right)) + 1;
+    }
 }

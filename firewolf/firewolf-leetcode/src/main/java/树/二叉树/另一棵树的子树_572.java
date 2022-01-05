@@ -41,7 +41,7 @@ class 另一棵树的子树_572 {
         if (node == null && subNode == null) {
             return true;
         }
-        if (node != null || subNode != null || node.val != subNode.val) {
+        if (node == null || subNode == null || node.val != subNode.val) {
             return false;
         }
         return check(node.left, subNode.left) && check(node.right, subNode.right);
