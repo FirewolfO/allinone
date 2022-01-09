@@ -11,7 +11,7 @@ import utils.TreeUtils.*;
 class 在每个树行中找最大值_515 {
 
     public static void main(String[] args) {
-        TreeNode<Integer> integerTreeNode = TreeUtils.buildBSTTree(1, 3, 2, 5, 3, null, 9);
+        TreeNode<Integer> integerTreeNode = TreeUtils.buildBFSTree(1, 3, 2, 5, 3, null, 9);
         List<Integer> integers = new 在每个树行中找最大值_515().largestValues(integerTreeNode);
         System.out.println(integers);
     }

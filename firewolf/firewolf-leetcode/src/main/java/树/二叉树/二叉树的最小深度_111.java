@@ -9,7 +9,7 @@ import java.util.Queue;
 public class 二叉树的最小深度_111 {
 
     public static void main(String[] args) {
-        TreeNode<Integer> root = TreeUtils.buildBSTTree(2, null, 3, null, 4, null, 5, null, 6);
+        TreeNode<Integer> root = TreeUtils.buildBFSTree(2, null, 3, null, 4, null, 5, null, 6);
         System.out.println(new 二叉树的最小深度_111().minDepth(root));
         System.out.println(new 二叉树的最小深度_111().minDepthRecursion(root));
     }

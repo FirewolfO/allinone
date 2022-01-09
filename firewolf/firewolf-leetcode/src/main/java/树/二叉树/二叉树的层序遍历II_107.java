@@ -11,7 +11,7 @@ import utils.TreeUtils.*;
 class 二叉树的层序遍历II_107 {
 
     public static void main(String[] args) {
-        TreeNode<Integer> integerTreeNode = TreeUtils.buildBSTTree(3, 9, 20, null, null, 15, 7);
+        TreeNode<Integer> integerTreeNode = TreeUtils.buildBFSTree(3, 9, 20, null, null, 15, 7);
         List<List<Integer>> lists = new 二叉树的层序遍历II_107().levelOrderBottom(integerTreeNode);
         System.out.println(lists);
     }

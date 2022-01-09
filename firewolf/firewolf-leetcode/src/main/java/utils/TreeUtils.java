@@ -12,13 +12,13 @@ public class TreeUtils {
 
     /***
      * 广度遍历构建二叉树
-     * @see TreeUtils#buildBSTTreeCommon(java.lang.Object, java.lang.Object[])
+     * @see TreeUtils#buildBFSTreeCommon(java.lang.Object, java.lang.Object[])
      * @param nodeValues 节点数据
      * @param <T>
      * @return
      */
-    public static <T> TreeNode<T> buildBSTTree(T... nodeValues) {
-        return buildBSTTreeCommon(null, nodeValues);
+    public static <T> TreeNode<T> buildBFSTree(T... nodeValues) {
+        return buildBFSTreeCommon(null, nodeValues);
     }
 
     /***
@@ -70,7 +70,7 @@ public class TreeUtils {
      * @param nodeValues 所有的节点数据
      * @return
      */
-    public static <T> TreeNode<T> buildBSTTreeCommon(Object emptyNodeValue, T... nodeValues) {
+    public static <T> TreeNode<T> buildBFSTreeCommon(Object emptyNodeValue, T... nodeValues) {
         if (nodeValues.length == 0) {
             return null;
         }
@@ -114,13 +114,13 @@ public class TreeUtils {
 
     /***
      * 构建N叉树
-     * @see TreeUtils#buildBSTNTreeCommon(java.lang.Object, java.lang.Object[])
+     * @see TreeUtils#buildNBSTTreeCommon(java.lang.Object, java.lang.Object[])
      * @param nodeValues 节点数据
      * @param <T>
      * @return
      */
-    public static <T> NNode<T> buildBSTNTree(T... nodeValues) {
-        return buildBSTNTreeCommon(null, nodeValues);
+    public static <T> NNode<T> buildNBFSTree(T... nodeValues) {
+        return buildNBSTTreeCommon(null, nodeValues);
     }
 
     /***
@@ -147,7 +147,7 @@ public class TreeUtils {
      * @param <T>
      * @return
      */
-    public static <T> NNode<T> buildBSTNTreeCommon(Object emptyNodeValue, T... nodeValues) {
+    public static <T> NNode<T> buildNBSTTreeCommon(Object emptyNodeValue, T... nodeValues) {
         if (nodeValues.length == 0) {
             return null;
         }
@@ -204,7 +204,7 @@ public class TreeUtils {
      * @param <T>
      * @return
      */
-    public static <T> RichTreeNode<T> buildBSTRichTTree(Object emptyNodeValue, boolean levelNextPoint, T... nodeValues) {
+    public static <T> RichTreeNode<T> buildBFSRichTTree(Object emptyNodeValue, boolean levelNextPoint, T... nodeValues) {
         if (nodeValues.length == 0) {
             return null;
         }

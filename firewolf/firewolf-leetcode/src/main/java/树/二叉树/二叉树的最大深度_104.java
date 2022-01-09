@@ -8,7 +8,7 @@ import java.util.Queue;
 
 public class 二叉树的最大深度_104 {
     public static void main(String[] args) {
-        TreeNode<Integer> root = TreeUtils.buildBSTTree(3, 9, 20, null, null, 15, 7);
+        TreeNode<Integer> root = TreeUtils.buildBFSTree(3, 9, 20, null, null, 15, 7);
         int maxDepth = new 二叉树的最大深度_104().maxDepth(root);
         System.out.println(maxDepth);
     }

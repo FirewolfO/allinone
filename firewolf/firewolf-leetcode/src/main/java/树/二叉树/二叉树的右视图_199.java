@@ -11,7 +11,7 @@ import java.util.Queue;
 class 二叉树的右视图_199 {
 
     public static void main(String[] args) {
-        TreeNode<Integer> integerTreeNode = TreeUtils.buildBSTTree(1, 2, 3, null, 5, null, 4);
+        TreeNode<Integer> integerTreeNode = TreeUtils.buildBFSTree(1, 2, 3, null, 5, null, 4);
         List<Integer> integers = new 二叉树的右视图_199().rightSideView(integerTreeNode);
         System.out.println(integers);
     }

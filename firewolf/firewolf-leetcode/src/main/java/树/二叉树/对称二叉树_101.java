@@ -9,7 +9,7 @@ import static utils.TreeUtils.*;
 public class 对称二叉树_101 {
 
     public static void main(String[] args) {
-        TreeNode<Integer> root = buildBSTTree(1, 2, 2, 3, 4, 4, 3);
+        TreeNode<Integer> root = buildBFSTree(1, 2, 2, 3, 4, 4, 3);
         System.out.println(new 对称二叉树_101().isSymmetric(root));
         System.out.println(new 对称二叉树_101().isSymmetricByQueue(root));
 

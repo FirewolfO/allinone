@@ -10,7 +10,7 @@ import static utils.TreeUtils.*;
 public class 翻转二叉树_226 {
 
     public static void main(String[] args) {
-        TreeNode<Integer> root = buildBSTTree(4, 2, 7, 1, 3, 6, 9);
+        TreeNode<Integer> root = buildBFSTree(4, 2, 7, 1, 3, 6, 9);
         System.out.println(showBinaryTreeByLevel(root));
 
         TreeNode treeNode = new 翻转二叉树_226().invertTreeRecursion(root);

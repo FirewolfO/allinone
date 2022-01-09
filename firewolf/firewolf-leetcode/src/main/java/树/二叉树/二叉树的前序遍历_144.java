@@ -17,7 +17,7 @@ import java.util.Stack;
 public class 二叉树的前序遍历_144 {
 
     public static void main(String[] args) {
-        TreeNode<Integer> integerTreeNode = TreeUtils.buildBSTTree(new Integer[]{1, null, 3, 4, 5, 6, 7, 8, 9, 10});
+        TreeNode<Integer> integerTreeNode = TreeUtils.buildBFSTree(new Integer[]{1, null, 3, 4, 5, 6, 7, 8, 9, 10});
         System.out.println(new 二叉树的前序遍历_144().preorderTraversal(integerTreeNode));
         System.out.println(new 二叉树的前序遍历_144().nonRecursionTraversal(integerTreeNode));
     }

@@ -8,7 +8,7 @@ import static utils.TreeUtils.*;
 class N叉树的最大深度_559 {
 
     public static void main(String[] args) {
-        NNode<Integer> root = buildBSTNTree(1, null, 3, 2, 4, null, 5, 6);
+        NNode<Integer> root = buildNBFSTree(1, null, 3, 2, 4, null, 5, 6);
         System.out.println(new N叉树的最大深度_559().maxDepthRecursion(root));
         System.out.println(new N叉树的最大深度_559().maxDepth(root));
     }

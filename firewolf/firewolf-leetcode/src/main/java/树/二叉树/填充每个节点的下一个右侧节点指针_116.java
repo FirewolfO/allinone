@@ -10,7 +10,7 @@ import java.util.Queue;
 class 填充每个节点的下一个右侧节点指针_116 {
 
     public static void main(String[] args) {
-        RichTreeNode<Integer> root = TreeUtils.buildBSTRichTTree(null, false, 1, 2, 3, 4, 5, 6, 7);
+        RichTreeNode<Integer> root = TreeUtils.buildBFSRichTTree(null, false, 1, 2, 3, 4, 5, 6, 7);
         RichTreeNode<Integer> connect = new 填充每个节点的下一个右侧节点指针_116().connect(root);
         List<List<Integer>> lists = TreeUtils.travelRichTreeByLevelNextPoint(connect);
         System.out.println(lists);

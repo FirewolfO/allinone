@@ -20,8 +20,8 @@ import static utils.TreeUtils.*;
 class 另一棵树的子树_572 {
 
     public static void main(String[] args) {
-        TreeNode<Integer> root = buildBSTTree(4, 1, null, null, 2);
-        TreeNode<Integer> subRoot = buildBSTTree(1, null, 4, 2);
+        TreeNode<Integer> root = buildBFSTree(4, 1, null, null, 2);
+        TreeNode<Integer> subRoot = buildBFSTree(1, null, 4, 2);
         System.out.println(new 另一棵树的子树_572().isSubtree(root, subRoot));
 
         System.out.println(new 另一棵树的子树_572().isSubtreeRecursion(root, subRoot));

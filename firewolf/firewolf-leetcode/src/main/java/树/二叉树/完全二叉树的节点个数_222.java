@@ -5,7 +5,7 @@ import static utils.TreeUtils.*;
 public class 完全二叉树的节点个数_222 {
 
     public static void main(String[] args) {
-        TreeNode<Integer> root = buildBSTTree(1, 2, 3, 4, 5, 6);
+        TreeNode<Integer> root = buildBFSTree(1, 2, 3, 4, 5, 6);
         System.out.println(new 完全二叉树的节点个数_222().countNodes(root));
         System.out.println(new 完全二叉树的节点个数_222().countNodesByRecursion(root));
     }

@@ -5,8 +5,8 @@ import static utils.TreeUtils.*;
 public class 相同的树_100 {
 
     public static void main(String[] args) {
-        TreeNode<Integer> p = buildBSTTree(1, 2, 3);
-        TreeNode<Integer> q = buildBSTTree(1, 2, 3);
+        TreeNode<Integer> p = buildBFSTree(1, 2, 3);
+        TreeNode<Integer> q = buildBFSTree(1, 2, 3);
         System.out.println(new 相同的树_100().isSameTree(p, q));
 
     }

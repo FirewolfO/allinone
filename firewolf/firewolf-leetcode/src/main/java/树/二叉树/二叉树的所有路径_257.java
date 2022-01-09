@@ -8,7 +8,7 @@ import static utils.TreeUtils.*;
 class 二叉树的所有路径_257 {
 
     public static void main(String[] args) {
-        TreeNode<Integer> root = buildBSTTree(1, 2, 3, null, 5);
+        TreeNode<Integer> root = buildBFSTree(1, 2, 3, null, 5);
         System.out.println(new 二叉树的所有路径_257().binaryTreePaths(root));
     }
 

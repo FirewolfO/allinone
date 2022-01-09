@@ -11,7 +11,7 @@ import java.util.Queue;
 class 二叉树的层平均值_637 {
 
     public static void main(String[] args) {
-        TreeNode<Integer> integerTreeNode = TreeUtils.buildBSTTree(3, 9, 20, null, null, 15, 7);
+        TreeNode<Integer> integerTreeNode = TreeUtils.buildBFSTree(3, 9, 20, null, null, 15, 7);
         List<Double> doubles = new 二叉树的层平均值_637().averageOfLevels(integerTreeNode);
         System.out.println(doubles);
     }
