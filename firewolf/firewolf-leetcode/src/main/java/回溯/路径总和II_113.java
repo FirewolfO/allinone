@@ -16,9 +16,6 @@ class 路径总和II_113 {
 
     public List<List<Integer>> pathSum(TreeNode<Integer> root, int targetSum) {
         List<List<Integer>> res = new ArrayList<>();
-        if (root == null) {
-            return res;
-        }
         LinkedList<Integer> paths = new LinkedList<>();
         pathSum(root, targetSum, paths, res);
         return res;

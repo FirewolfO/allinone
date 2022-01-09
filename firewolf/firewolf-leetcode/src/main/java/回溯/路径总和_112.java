@@ -1,6 +1,7 @@
 package 回溯;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import static utils.TreeUtils.*;
@@ -15,28 +16,18 @@ class 路径总和_112 {
 
     // ------------- 回溯----------------
     public boolean hasPathSum(TreeNode<Integer> root, int targetSum) {
-        if (root == null) {
-            return false;
-        }
-        return hasPathSum(root, new ArrayList<>(), targetSum);
+        LinkedList<Integer> vals = new LinkedList<>();
+        return hasPathSum(root, vals, targetSum);
     }
 
-    private boolean hasPathSum(TreeNode<Integer> root, List<Integer> vals, int targetSum) {
-        vals.add(root.val);
-        if (root.left == null && root.right == null) {
-            int sum = 0;
-            for (int val : vals) sum += val;
-            if (sum == targetSum) return true;
-        }
-        if (root.left != null) {
-            if (hasPathSum(root.left, vals, targetSum)) return true;
-            vals.remove(vals.size() - 1); // 回溯
-        }
-        if (root.right != null) {
-            if (hasPathSum(root.right, vals, targetSum)) return true;
-            vals.remove(vals.size() - 1); // 回溯
-        }
-        return false;
+    private boolean hasPathSum(TreeNode<Integer> root, LinkedList<Integer> vals, int targetSum) {
+        if (root == null) return false;
+        vals.addLast(root.val);
+        targetSum -= root.val;
+        if (root.left == null && root.right == null && targetSum == 0) return true;
+        boolean res = hasPathSum(root.left, vals, targetSum) || hasPathSum(root.right, vals, targetSum);
+        vals.removeLast();
+        return res;
     }
 
     //--------- 直接递归解法-------------
