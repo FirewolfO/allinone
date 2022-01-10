@@ -23,6 +23,14 @@ public class TreeUtils {
 
     /***
      * 按层展示二叉树
+     * 如：
+     *        3
+     *       / \
+     *     4    5
+     *    / \    \
+     *  5    4    7
+     * 输出：[[3], [4, 5], [5, 4, 7]]
+     *
      * @param root
      * @param <T>
      * @return
@@ -49,6 +57,49 @@ public class TreeUtils {
                 size--;
             }
             list.add(oneLevel);
+        }
+        return list;
+    }
+
+    /**
+     * 层序遍历二叉树，把空节点也展示出来，
+     * 如：
+     *        3
+     *       / \
+     *     4    5
+     *    / \    \
+     *  5    4    7
+     * 输出：[[3], [4, 5], [5, 4, null, 7]]
+     * @param root
+     * @param <T>
+     * @return
+     */
+    public static <T> List<List<T>> showBinaryTreeByLevelWithNull(TreeNode<T> root) {
+        List<List<T>> list = new ArrayList<>();
+        if (root == null) {
+            return list;
+        }
+        Queue<TreeNode<T>> queue = new LinkedList<>();
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            boolean bottomLevel = true; // 最后一层，默认是，如果有节点不会null，就是false了
+            int size = queue.size();
+            List<T> oneLevel = new ArrayList<>();
+            while (size > 0) {
+                TreeNode<T> poll = queue.poll();
+                oneLevel.add(poll != null ? poll.val : null);
+                if (poll != null) {
+                    bottomLevel = false;
+                }
+                queue.offer(poll == null ? null : poll.left);
+                queue.offer(poll == null ? null : poll.right);
+                size--;
+            }
+            if (bottomLevel) {
+                break;
+            } else {
+                list.add(oneLevel);
+            }
         }
         return list;
     }
