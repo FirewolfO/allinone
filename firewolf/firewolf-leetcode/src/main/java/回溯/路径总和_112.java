@@ -1,10 +1,9 @@
 package 回溯;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 
-import static utils.TreeUtils.*;
+import static utils.TreeUtils.TreeNode;
+import static utils.TreeUtils.buildBFSTree;
 
 class 路径总和_112 {
 
