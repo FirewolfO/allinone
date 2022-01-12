@@ -18,12 +18,12 @@ public class 二叉树的前序遍历_144 {
 
     public static void main(String[] args) {
         TreeNode<Integer> integerTreeNode = TreeUtils.buildBFSTree(new Integer[]{1, null, 3, 4, 5, 6, 7, 8, 9, 10});
-        System.out.println(new 二叉树的前序遍历_144().preorderTraversal(integerTreeNode));
-        System.out.println(new 二叉树的前序遍历_144().nonRecursionTraversal(integerTreeNode));
+        System.out.println(new 二叉树的前序遍历_144().preorderTraversalRecursion(integerTreeNode));
+        System.out.println(new 二叉树的前序遍历_144().preorderTraversalIterate(integerTreeNode));
     }
 
     /*************递归方式 ***************/
-    public List<Integer> preorderTraversal(TreeNode root) {
+    public List<Integer> preorderTraversalRecursion(TreeNode root) {
         List<Integer> result = new ArrayList<>();
         if (root == null) {
             return result;
@@ -43,8 +43,8 @@ public class 二叉树的前序遍历_144 {
     }
 
 
-    /************* 非递归方式 ****************/
-    public List<Integer> nonRecursionTraversal(TreeNode<Integer> root) {
+    /************* 迭代方式 ****************/
+    public List<Integer> preorderTraversalIterate(TreeNode<Integer> root) {
         // 中 左 右
         List<Integer> result = new ArrayList<>();
         if (root == null) {
