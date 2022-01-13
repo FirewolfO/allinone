@@ -19,6 +19,7 @@ public class 二叉树的后序遍历_145 {
         System.out.println(new 二叉树的后序遍历_145().postorderTraversal(integerTreeNode));
         System.out.println(new 二叉树的后序遍历_145().postorderTraversalIterateUnnormal(integerTreeNode));
         System.out.println(new 二叉树的后序遍历_145().postorderTraversalIterate(integerTreeNode));
+        System.out.println(new 二叉树的后序遍历_145().postorderTraversalMorris(integerTreeNode));
     }
 
     /*****************递归遍历*********************/
@@ -86,5 +87,53 @@ public class 二叉树的后序遍历_145 {
             }
         }
         return result;
+    }
+
+    //--------------------morris遍历-----------------
+    public List<Integer> postorderTraversalMorris(TreeNode<Integer> root) {
+        List<Integer> result = new ArrayList<>();
+        TreeNode<Integer> cur = root;
+        while (cur != null) {
+            if (cur.left == null) { // 沒有左节点，调到右节点
+                cur = cur.right;
+            } else {
+                TreeNode<Integer> mostRight = cur.left;
+                while (mostRight.right != null && mostRight.right != cur) {
+                    mostRight = mostRight.right;
+                }
+                if (mostRight.right == null) {
+                    mostRight.right = cur;
+                    cur = cur.left;
+                } else {
+                    mostRight.right = null; // 恢复树结构
+                    printEdge(cur.left, result);
+                    cur = cur.right;
+                }
+            }
+        }
+        printEdge(root, result);
+        return result;
+    }
+
+    public static void printEdge(TreeNode<Integer> head, List<Integer> res) {
+        TreeNode<Integer> tail = reverseEdge(head);
+        TreeNode<Integer> cur = tail;
+        while (cur != null) {
+            res.add(cur.val);
+            cur = cur.right;
+        }
+        reverseEdge(tail);
+    }
+
+    public static TreeNode<Integer> reverseEdge(TreeNode<Integer> from) {
+        TreeNode<Integer> pre = null;
+        TreeNode<Integer> next = null;
+        while (from != null) {
+            next = from.right;
+            from.right = pre;
+            pre = from;
+            from = next;
+        }
+        return pre;
     }
 }

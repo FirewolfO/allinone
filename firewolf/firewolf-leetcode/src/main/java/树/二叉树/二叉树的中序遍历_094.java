@@ -13,9 +13,9 @@ public class 二叉树的中序遍历_094 {
         TreeNode<Integer> integerTreeNode = TreeUtils.buildBFSTree(new Integer[]{1, null, 3, 4, 5, 6, 7, 8, 9, 10});
         System.out.println(new 二叉树的中序遍历_094().inorderTraversalRecursion(integerTreeNode));
         System.out.println(new 二叉树的中序遍历_094().inorderTraversalIterate(integerTreeNode));
-        System.out.println(new 二叉树的中序遍历_094().inorderMorris(integerTreeNode));
+        System.out.println(new 二叉树的中序遍历_094().inorderTraversalMorris(integerTreeNode));
         System.out.println("------------------------------");
-        System.out.println(new 二叉树的中序遍历_094().inorderMorris(integerTreeNode));
+        System.out.println(new 二叉树的中序遍历_094().inorderTraversalMorris(integerTreeNode));
     }
 
 
@@ -62,28 +62,27 @@ public class 二叉树的中序遍历_094 {
     }
 
     //-------------------morris遍历，空间复杂度O(1)------------------
-    public List<Integer> inorderMorris(TreeNode<Integer> root) {
+    public List<Integer> inorderTraversalMorris(TreeNode<Integer> root) {
         List<Integer> result = new ArrayList<>();
         TreeNode<Integer> cur = root; // 当前被处理的的根节点
-        TreeNode<Integer> pre = null; // 上一个被访问的节点
         while (cur != null) {
-            if (cur.left == null || pre.right == cur) { //cur.left == null ---> 没有左子树   pre.right == cur 前一个访问的节点的右孩子是当前节点（左子树访问完了）
+            if (cur.left == null) { //没有左孩子了，访问 ---> 处理访问右孩子
                 result.add(cur.val);
-                if (pre != null && pre.right == cur) {  // 恢复树结构，否在下次遍历就不对了
-                    pre.right = null;
-                }
-                pre = cur;
                 cur = cur.right;
-                continue;
+            } else {
+                TreeNode<Integer> mostRight = cur.left; // 左子树最右边的节点
+                while (mostRight.right != null && mostRight.right != cur) { // 找到左子树最右边的那个节点
+                    mostRight = mostRight.right;
+                }
+                if (mostRight.right == null) { // 最右节点没有右孩子，让右孩子指向根节点，这样，下次右孩子被访问到之后，就可以访问根节点了
+                    mostRight.right = cur;
+                    cur = cur.left; // 处理下一个左节点
+                } else { // 左子树最右孩子的下个节点是根节点，访问
+                    result.add(cur.val);
+                    mostRight.right = null;  // 恢复树结构
+                    cur = cur.right; // 跟节点访问完了之后，需要处理右孩子
+                }
             }
-
-            // 找 cur 树的左节点的最右节点
-            TreeNode<Integer> cur2 = cur.left;
-            while (cur2.right != null) {
-                cur2 = cur2.right;
-            }
-            cur2.right = cur; // 让左子树的最右边的节点，指向树的根节点
-            cur = cur.left;
         }
         return result;
     }

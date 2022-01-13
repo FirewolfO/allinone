@@ -20,6 +20,8 @@ public class 二叉树的前序遍历_144 {
         TreeNode<Integer> integerTreeNode = TreeUtils.buildBFSTree(new Integer[]{1, null, 3, 4, 5, 6, 7, 8, 9, 10});
         System.out.println(new 二叉树的前序遍历_144().preorderTraversalRecursion(integerTreeNode));
         System.out.println(new 二叉树的前序遍历_144().preorderTraversalIterate(integerTreeNode));
+        System.out.println(new 二叉树的前序遍历_144().preorderTraversalMorris(integerTreeNode));
+        System.out.println(new 二叉树的前序遍历_144().preorderTraversalMorris(integerTreeNode));
     }
 
     /*************递归方式 ***************/
@@ -65,4 +67,29 @@ public class 二叉树的前序遍历_144 {
         return result;
     }
 
+    //----------------------morris遍历---------------------
+    public List<Integer> preorderTraversalMorris(TreeNode<Integer> root) {
+        List<Integer> res = new ArrayList<>();
+        TreeNode<Integer> cur = root;
+        while (cur != null) {
+            if (cur.left == null) { //左节点为空，访问
+                res.add(cur.val);
+                cur = cur.right;
+            } else {
+                TreeNode<Integer> mostRight = cur.left; //左子树的最右节点
+                while (mostRight.right != null && mostRight.right != cur) {
+                    mostRight = mostRight.right;
+                }
+                if (mostRight.right == null) {
+                    res.add(cur.val);// 访问根节点
+                    mostRight.right = cur; // 把左子树的右节点的右指针指向根节点
+                    cur = cur.left;
+                } else { // 如果右节点是跟节点，则表示左子树遍历完了，
+                    cur = cur.right;
+                    mostRight.right = null; // 恢复树结构
+                }
+            }
+        }
+        return res;
+    }
 }
