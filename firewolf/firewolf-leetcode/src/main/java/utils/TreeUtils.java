@@ -9,6 +9,41 @@ import java.util.*;
  */
 public class TreeUtils {
 
+    /***
+     *
+     * @param val
+     * @param nTh
+     * @param <T>
+     * @return
+     */
+    public static <T> TreeNode<T> searchTreeNodeByValue(TreeNode<T> root, T val, int nTh) {
+        if (root == null) {
+            return null;
+        }
+        Queue<TreeNode<T>> queue = new LinkedList<>();
+        int count = 0;
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            List<T> oneLevel = new ArrayList<>();
+            while (size > 0) {
+                TreeNode<T> poll = queue.poll();
+                if (poll.val == val) count++;
+                if (count == nTh) {
+                    return poll;
+                }
+                if (poll.left != null) {
+                    queue.offer(poll.left);
+                }
+                if (poll.right != null) {
+                    queue.offer(poll.right);
+                }
+                size--;
+            }
+        }
+        return null;
+    }
+
 
     /***
      * 广度遍历构建二叉树
@@ -64,12 +99,13 @@ public class TreeUtils {
     /**
      * 层序遍历二叉树，把空节点也展示出来，
      * 如：
-     *        3
-     *       / \
-     *     4    5
-     *    / \    \
-     *  5    4    7
+     * 3
+     * / \
+     * 4    5
+     * / \    \
+     * 5    4    7
      * 输出：[[3], [4, 5], [5, 4, null, 7]]
+     *
      * @param root
      * @param <T>
      * @return
