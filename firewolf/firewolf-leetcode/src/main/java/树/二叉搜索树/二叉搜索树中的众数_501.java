@@ -9,7 +9,8 @@ class 二叉搜索树中的众数_501 {
     public static void main(String[] args) {
         TreeNode<Integer> root = buildBFSTree(1, null, 2, 2);
         System.out.println(Arrays.toString(new 二叉搜索树中的众数_501().findModeIterate(root)));
-        System.out.println(Arrays.toString(new 二叉搜索树中的众数_501().findModeRecursion(root)));
+        System.out.println(Arrays.toString(new 二叉搜索树中的众数_501().findMode(root)));
+        System.out.println(Arrays.toString(new 二叉搜索树中的众数_501().findModeMorris(root)));
     }
 
 
@@ -19,7 +20,7 @@ class 二叉搜索树中的众数_501 {
     int curVal2; // 当前被统计的值
     int curCount2; // 当前值得个数
 
-    public int[] findModeRecursion(TreeNode<Integer> root) {
+    public int[] findMode(TreeNode<Integer> root) {
         dfs(root);
         int[] res = new int[maxList2.size()];
         for (int i = 0; i < maxList2.size(); i++) {
@@ -97,5 +98,57 @@ class 二叉搜索树中的众数_501 {
         }
     }
 
+
+    // ------------- morris 遍历----------------
+    List<Integer> maxValCountList = new ArrayList<>();
+    int preVal, maxValCount, preCount;
+
+    public int[] findModeMorris(TreeNode<Integer> root) {
+        if (root == null) {
+            return new int[0];
+        }
+        TreeNode<Integer> cur = root;
+        while (cur != null) {
+            if (cur.left == null) {
+                updateVal(cur.val);
+                cur = cur.right;
+            } else {
+                TreeNode mostRight = cur.left;
+                while (mostRight.right != null && mostRight.right != cur) {
+                    mostRight = mostRight.right;
+                }
+                if (mostRight.right == null) {
+                    mostRight.right = cur;
+                    cur = cur.left;
+                } else {
+                    updateVal(cur.val);
+                    mostRight.right = null;
+                    cur = cur.right;
+                }
+            }
+        }
+        int[] res = new int[maxValCountList.size()];
+        for (int i = 0; i < maxValCountList.size(); i++) {
+            res[i] = maxValCountList.get(i);
+        }
+        return res;
+    }
+
+    private void updateVal(int newVal) {
+        if (newVal == preVal) {
+            preCount++;
+        } else {
+            preCount = 1;
+            preVal = newVal;
+        }
+
+        if (preCount == maxValCount) {
+            maxValCountList.add(newVal);
+        } else if (preCount > maxValCount) {
+            maxValCount = preCount;
+            maxValCountList.clear();
+            maxValCountList.add(newVal);
+        }
+    }
 
 }

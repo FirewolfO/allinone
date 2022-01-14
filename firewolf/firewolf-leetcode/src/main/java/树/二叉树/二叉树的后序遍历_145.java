@@ -90,6 +90,7 @@ public class 二叉树的后序遍历_145 {
     }
 
     //--------------------morris遍历-----------------
+    // 核心思想：从左下角开始，每次都逆序访问某个节点的左子树最右边那条边
     public List<Integer> postorderTraversalMorris(TreeNode<Integer> root) {
         List<Integer> result = new ArrayList<>();
         TreeNode<Integer> cur = root;
@@ -106,16 +107,25 @@ public class 二叉树的后序遍历_145 {
                     cur = cur.left;
                 } else {
                     mostRight.right = null; // 恢复树结构
-                    printEdge(cur.left, result);
+                    traversalEdge(cur.left, result);
                     cur = cur.right;
                 }
             }
         }
-        printEdge(root, result);
+        traversalEdge(root, result);
         return result;
     }
 
-    public static void printEdge(TreeNode<Integer> head, List<Integer> res) {
+    // 逆序遍历一个节点一直到最右节点的节点
+    private void traversalEdge(TreeNode<Integer> root, List<Integer> res) {
+        int index = res.size();
+        while (root != null) {
+            res.add(index, root.val);
+            root = root.right;
+        }
+    }
+
+    public static void traversalEdge2(TreeNode<Integer> head, List<Integer> res) {
         TreeNode<Integer> tail = reverseEdge(head);
         TreeNode<Integer> cur = tail;
         while (cur != null) {
