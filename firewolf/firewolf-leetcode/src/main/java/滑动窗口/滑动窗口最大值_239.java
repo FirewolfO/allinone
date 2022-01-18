@@ -2,12 +2,12 @@ package 滑动窗口;
 
 import java.util.LinkedList;
 
-class Solution {
+class 滑动窗口最大值_239 {
 
 
     public static void main(String[] args) {
         int[] nums = new int[]{1, 3, -1, -3, 5, 3, 6, 7};
-        int[] x = new Solution().maxSlidingWindow(nums, 3);
+        int[] x = new 滑动窗口最大值_239().maxSlidingWindow(nums, 3);
         System.out.println(x);
     }
 
