@@ -96,13 +96,13 @@ public class TreeUtils {
         return list;
     }
 
-    /**
+    /***
      * 层序遍历二叉树，把空节点也展示出来，
      * 如：
-     * 3
-     * / \
-     * 4    5
-     * / \    \
+     *      3
+     *     / \
+     *   4    5
+     *  /  \    \
      * 5    4    7
      * 输出：[[3], [4, 5], [5, 4, null, 7]]
      *
@@ -138,6 +138,30 @@ public class TreeUtils {
             }
         }
         return list;
+    }
+
+
+    /***
+     * 层序遍历二叉树，把空节点也展示出来，
+     * 如：
+     *     3
+     *    / \
+     *   4   5
+     *  /  \   \
+     * 5    4    7
+     * 输出：[3, 4, 5, 5, 4, null, 7]
+     *
+     * @param root
+     * @param <T>
+     * @return
+     */
+    public static <T> List<T> showBinaryTreeByLevelWithNullInOne(TreeNode<T> root) {
+        List<List<T>> lists = showBinaryTreeByLevelWithNull(root);
+        List<T> res = new ArrayList<>();
+        for (List<T> t : lists) {
+            res.addAll(t);
+        }
+        return res;
     }
 
 
