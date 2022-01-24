@@ -32,14 +32,14 @@ class 重新安排行程_332 {
     }
 
     private boolean findItineraryHelper(String from, int ticketNum) {
-        if (res.size() == ticketNum + 1) {
+        if (res.size() == ticketNum + 1) { // 证明所有的票都用到了
             return true;
         }
         if (map.containsKey(from)) {
             Set<Map.Entry<String, Integer>> entrySet = map.get(from).entrySet();
             for (Map.Entry<String, Integer> entry : entrySet) {
                 int count = entry.getValue();
-                if (count > 0) {
+                if (count > 0) { //还能去的地方，才去
                     entry.setValue(count - 1);
                     res.add(entry.getKey());
                     if (findItineraryHelper(entry.getKey(), ticketNum)) return true;
