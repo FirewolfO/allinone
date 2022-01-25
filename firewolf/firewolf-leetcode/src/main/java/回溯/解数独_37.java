@@ -2,7 +2,7 @@ package 回溯;
 
 import java.util.Arrays;
 
-class Solution {
+class 解数独_37 {
 
     public static void main(String[] args) {
         char[][] board = new char[9][9];
@@ -15,7 +15,7 @@ class Solution {
         board[6] = new char[]{'.', '6', '.', '.', '.', '.', '2', '8', '.'};
         board[7] = new char[]{'.', '.', '.', '4', '1', '9', '.', '.', '5'};
         board[8] = new char[]{'.', '.', '.', '.', '8', '.', '.', '7', '9'};
-        new Solution().solveSudoku(board);
+        new 解数独_37().solveSudoku(board);
         for (int i = 0; i < 9; i++) {
             System.out.println(Arrays.toString(board[i]));
         }
