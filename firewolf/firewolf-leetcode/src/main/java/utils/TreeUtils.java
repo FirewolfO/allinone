@@ -25,7 +25,6 @@ public class TreeUtils {
         queue.offer(root);
         while (!queue.isEmpty()) {
             int size = queue.size();
-            List<T> oneLevel = new ArrayList<>();
             while (size > 0) {
                 TreeNode<T> poll = queue.poll();
                 if (poll.val == val) count++;
