@@ -1,10 +1,10 @@
 package 贪心;
 
-class Solution {
+class 跳跃游戏_55 {
 
     public static void main(String[] args) {
         int[] nums = new int[]{3, 2, 1, 0, 4};
-        System.out.println(new Solution().canJump(nums));
+        System.out.println(new 跳跃游戏_55().canJump(nums));
     }
 
     public boolean canJump(int[] nums) {
