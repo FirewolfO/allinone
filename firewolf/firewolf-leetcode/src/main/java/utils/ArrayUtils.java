@@ -1,0 +1,39 @@
+package utils;
+
+import java.util.Arrays;
+
+public class ArrayUtils {
+
+    /***
+     * [[1,100],[11,22],[1,11],[2,12]]  转成数组
+     * {
+     *      {1,100},{11,22},{1,11},{2,12}
+     * }
+     *
+     * @param str
+     * @param split
+     * @return
+     */
+    public static int[][] to2Array(String str, String split) {
+        String s = str.replaceAll(" ", "").replaceAll("]" + split + "\\[", ";");
+        s = s.substring(2, s.length() - 2);
+        String[] datas = s.split(";");
+        int[][] res = new int[datas.length][];
+        for (int i = 0; i < datas.length; i++) {
+            res[i] = Arrays.stream(datas[i].split(split)).mapToInt(x -> Integer.parseInt(x)).toArray();
+        }
+        return res;
+    }
+
+    /***
+     * [1,2,3,4]  --> {1,2,3,4}
+     * @param str
+     * @param split
+     * @return
+     */
+    public static int[] toArray(String str, String split) {
+        String s = str.replaceAll(" ", "");
+        s = s.substring(1, s.length() - 1);
+        return Arrays.stream(s.split(split)).mapToInt(x -> Integer.parseInt(x)).toArray();
+    }
+}
