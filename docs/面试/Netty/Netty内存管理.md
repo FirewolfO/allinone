@@ -339,7 +339,74 @@ AbstractByteBufAllocator 是ByteBufAllocator的默认实现，大部分内存分
 
 ### `DirectBuffer`堆外内存分配
 
+1. `io.netty.buffer.UnpooledByteBufAllocator#newDirectBuffer`
 
+   ```java
+   protected ByteBuf newDirectBuffer(int initialCapacity, int maxCapacity) {
+       final ByteBuf buf;
+       if (PlatformDependent.hasUnsafe()) {
+           buf = noCleaner ? new InstrumentedUnpooledUnsafeNoCleanerDirectByteBuf(this, initialCapacity, maxCapacity) :
+           new InstrumentedUnpooledUnsafeDirectByteBuf(this, initialCapacity, maxCapacity);
+       } else {
+           buf = new InstrumentedUnpooledDirectByteBuf(this, initialCapacity, maxCapacity);
+       }
+       return disableLeakDetector ? buf : toLeakAwareBuffer(buf);
+   }
+   ```
 
+   可以看到，通过调用`PlatformDependent.hasUnsafe()`方法来判断系统是否支持Unsafe，如果支持，创建`InstrumentedUnpooledUnsafeNoCleanerDirectByteBuf`类实例或者`InstrumentedUnpooledUnsafeDirectByteBuf`类实例，否则创建`InstrumentedUnpooledDirectByteBuf`类实例。
 
+   这几个类的关系如下：
 
+    ![UnpooledDirectByteBuf](https://gitee.com/firewolf/allinone/raw/master/images/UnpooledDirectByteBuf.png)
+
+   可以看到，在Unsafe和非Unsafe情况下，分别构造了`UnpooledUnsafeDirectByteBuf`和`UnpooledDirectByteBuf`实例
+
+2. `io.netty.buffer.UnpooledDirectByteBuf#UnpooledDirectByteBuf(io.netty.buffer.ByteBufAllocator, int, int)`：
+
+   ```java
+   public UnpooledDirectByteBuf(ByteBufAllocator alloc, int initialCapacity, int maxCapacity) {
+       super(maxCapacity);
+       if (alloc == null) {
+           throw new NullPointerException("alloc");
+       }
+       if (initialCapacity < 0) {
+           throw new IllegalArgumentException("initialCapacity: " + initialCapacity);
+       }
+       if (maxCapacity < 0) {
+           throw new IllegalArgumentException("maxCapacity: " + maxCapacity);
+       }
+       if (initialCapacity > maxCapacity) {
+           throw new IllegalArgumentException(String.format(
+               "initialCapacity(%d) > maxCapacity(%d)", initialCapacity, maxCapacity));
+       }
+   
+       this.alloc = alloc;
+       setByteBuffer(ByteBuffer.allocateDirect(initialCapacity));
+   }
+   ```
+
+   首先，通过`java.nio.ByteBuffer#allocateDirect`构建了`DirectByteBuffer`
+
+   然后，通过setByteBuffer进行bytebuf赋值：
+
+   ```java
+   private void setByteBuffer(ByteBuffer buffer) {
+       ByteBuffer oldBuffer = this.buffer;
+       if (oldBuffer != null) {
+           if (doNotFree) {
+               doNotFree = false;
+           } else {
+               freeDirect(oldBuffer);
+           }
+       }
+   
+       this.buffer = buffer;
+       tmpNioBuf = null;
+       capacity = buffer.remaining();
+   }
+   ```
+
+   
+
+   
