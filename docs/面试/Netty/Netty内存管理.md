@@ -33,4 +33,5 @@ ByteBuf共会有六种组合：Pooled（池化内存）和Unpooled（非池化�
 
 相关类图如下：
 
-![ByteBuf.drawio](https://gitee.com/firewolf/allinone/raw/master/images/ByteBuf.drawio.svg)
+![Netty.drawio](https://gitee.com/firewolf/allinone/raw/master/images/Netty.drawio.png)
+
