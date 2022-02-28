@@ -386,9 +386,9 @@ AbstractByteBufAllocator 是ByteBufAllocator的默认实现，大部分内存分
    }
    ```
 
-   首先，通过`java.nio.ByteBuffer#allocateDirect`构建了`DirectByteBuffer`
+   首先，通过`java.nio.ByteBuffer#allocateDirect`构建了JDK底层的`java.nio.DirectByteBuffer`
 
-   然后，通过setByteBuffer进行bytebuf赋值：
+   然后，通过setByteBuffer保存到全局变量`buffer`中
 
    ```java
    private void setByteBuffer(ByteBuffer buffer) {
@@ -407,6 +407,54 @@ AbstractByteBufAllocator 是ByteBufAllocator的默认实现，大部分内存分
    }
    ```
 
-   
+3. `io.netty.buffer.UnpooledDirectByteBuf#UnpooledDirectByteBuf(io.netty.buffer.ByteBufAllocator, int, int)`
 
+   ```java
+   public UnpooledUnsafeDirectByteBuf(ByteBufAllocator alloc, int initialCapacity, int maxCapacity) {
+       super(maxCapacity);
+       if (alloc == null) {
+           throw new NullPointerException("alloc");
+       }
+       if (initialCapacity < 0) {
+           throw new IllegalArgumentException("initialCapacity: " + initialCapacity);
+       }
+       if (maxCapacity < 0) {
+           throw new IllegalArgumentException("maxCapacity: " + maxCapacity);
+       }
+       if (initialCapacity > maxCapacity) {
+           throw new IllegalArgumentException(String.format(
+               "initialCapacity(%d) > maxCapacity(%d)", initialCapacity, maxCapacity));
+       }
    
+       this.alloc = alloc;
+       setByteBuffer(allocateDirect(initialCapacity), false);
+   }
+   ```
+
+   可以看到，该构造器和`UnpooledDirectByteBuf`的逻辑完全一致。
+
+   首先，通过`java.nio.ByteBuffer#allocateDirect`构建了JDK底层的`java.nio.DirectByteBuffer`
+
+   然后，区别在于`setByteBuffer`的逻辑
+
+   ```java
+   final void setByteBuffer(ByteBuffer buffer, boolean tryFree) {
+       if (tryFree) {
+           ByteBuffer oldBuffer = this.buffer;
+           if (oldBuffer != null) {
+               if (doNotFree) {
+                   doNotFree = false;
+               } else {
+                   freeDirect(oldBuffer);
+               }
+           }
+       }
+       this.buffer = buffer;
+       memoryAddress = PlatformDependent.directBufferAddress(buffer);
+       tmpNioBuf = null;
+       capacity = buffer.remaining();
+   }
+   ```
+
+   这里不仅把`DirectByteBuffer`保存到了buffer变量，还**通过调用PlatformDependent.directBufferAddress()方法获取Buffer真实的内存地址，并保存到memoryAddress变量中**
+
