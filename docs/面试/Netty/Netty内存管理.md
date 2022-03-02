@@ -205,81 +205,89 @@ AbstractByteBufAllocator 是ByteBufAllocator的默认实现，大部分内存分
 
      在`setArray`的时候，通过调用`allocateArray`来构造byte数组。
 
-     - `InstrumentedUnpooledHeapByteBuf`
+#### 非Unsafe
 
-       代码逻辑如下：
+- `InstrumentedUnpooledHeapByteBuf`
 
-       `io.netty.buffer.UnpooledByteBufAllocator.InstrumentedUnpooledHeapByteBuf#allocateArray`：
+  代码逻辑如下：
 
-       ```java
-       byte[] allocateArray(int initialCapacity) {
-           byte[] bytes = super.allocateArray(initialCapacity);
-           ((UnpooledByteBufAllocator) alloc()).incrementHeap(bytes.length);
-           return bytes;
-       }
-       ```
+  `io.netty.buffer.UnpooledByteBufAllocator.InstrumentedUnpooledHeapByteBuf#allocateArray`：
 
-       `io.netty.buffer.UnpooledHeapByteBuf#allocateArray`：
+  ```java
+  byte[] allocateArray(int initialCapacity) {
+      byte[] bytes = super.allocateArray(initialCapacity);
+      ((UnpooledByteBufAllocator) alloc()).incrementHeap(bytes.length);
+      return bytes;
+  }
+  ```
 
-       ```java
-       byte[] allocateArray(int initialCapacity) {
-           return new byte[initialCapacity];
-       }
-       ```
+  `io.netty.buffer.UnpooledHeapByteBuf#allocateArray`：
 
-       可以看到，**`InstrumentedUnpooledHeapByteBuf`是在`UnpooledHeapByteBuf`中直接通过new 的方式获取的堆内存；**
+  ```java
+  byte[] allocateArray(int initialCapacity) {
+      return new byte[initialCapacity];
+  }
+  ```
 
-       
+  可以看到，**`InstrumentedUnpooledHeapByteBuf`是在`UnpooledHeapByteBuf`中直接通过new 的方式获取的堆内存；**
 
-     - `InstrumentedUnpooledUnsafeHeapByteBuf`
 
-       `io.netty.buffer.UnpooledByteBufAllocator.InstrumentedUnpooledUnsafeHeapByteBuf#allocateArray`：
 
-       ```java
-       byte[] allocateArray(int initialCapacity) {
-           byte[] bytes = super.allocateArray(initialCapacity);
-           ((UnpooledByteBufAllocator)this.alloc()).incrementHeap(bytes.length);
-           return bytes;
-       }
-       ```
+#### Unsafe
 
-       `io.netty.buffer.UnpooledUnsafeHeapByteBuf#allocateArray`：
+- `InstrumentedUnpooledUnsafeHeapByteBuf`
 
-       ```java
-       byte[] allocateArray(int initialCapacity) {
-           return PlatformDependent.allocateUninitializedArray(initialCapacity);
-       }
-       ```
+  `io.netty.buffer.UnpooledByteBufAllocator.InstrumentedUnpooledUnsafeHeapByteBuf#allocateArray`：
 
-       `io.netty.util.internal.PlatformDependent#allocateUninitializedArray`：
+  ```java
+  byte[] allocateArray(int initialCapacity) {
+      byte[] bytes = super.allocateArray(initialCapacity);
+      ((UnpooledByteBufAllocator)this.alloc()).incrementHeap(bytes.length);
+      return bytes;
+  }
+  ```
 
-       ```java
-       public static byte[] allocateUninitializedArray(int size) {
-           return UNINITIALIZED_ARRAY_ALLOCATION_THRESHOLD < 0 || UNINITIALIZED_ARRAY_ALLOCATION_THRESHOLD > size ?
-               new byte[size] : PlatformDependent0.allocateUninitializedArray(size);
-       }
-       ```
+  `io.netty.buffer.UnpooledUnsafeHeapByteBuf#allocateArray`：
 
-       可以看到，byte数组的初始化，取决于`UNINITIALIZED_ARRAY_ALLOCATION_THRESHOLD`的值；
+  ```java
+  byte[] allocateArray(int initialCapacity) {
+      return PlatformDependent.allocateUninitializedArray(initialCapacity);
+  }
+  ```
 
-       查看`PlatformDependent`静态代码块对`UNINITIALIZED_ARRAY_ALLOCATION_THRESHOLD`的初始化，如下：
+  `io.netty.util.internal.PlatformDependent#allocateUninitializedArray`：
 
-       ```java
-       static {
-           ...
-           UNINITIALIZED_ARRAY_ALLOCATION_THRESHOLD = javaVersion() >= 9 && PlatformDependent0.hasAllocateArrayMethod() ?
-               tryAllocateUninitializedArray : -1;
-           ...
-       }
-       ```
+  ```java
+  public static byte[] allocateUninitializedArray(int size) {
+      return UNINITIALIZED_ARRAY_ALLOCATION_THRESHOLD < 0 || UNINITIALIZED_ARRAY_ALLOCATION_THRESHOLD > size ?
+          new byte[size] : PlatformDependent0.allocateUninitializedArray(size);
+  }
+  ```
 
-       可以看到，对于java8及之前的jdk版本，`UNINITIALIZED_ARRAY_ALLOCATION_THRESHOLD`的值为-1。
+  可以看到，byte数组的初始化，取决于`UNINITIALIZED_ARRAY_ALLOCATION_THRESHOLD`的值；
 
-       因此，**`InstrumentedUnpooledUnsafeHeapByteBuf`是在`PlatformDependent`中通过new 的方式创建的堆内存**
+  查看`PlatformDependent`静态代码块对`UNINITIALIZED_ARRAY_ALLOCATION_THRESHOLD`的初始化，如下：
 
-   - >经过以上步骤，就把HeapBuffer构建好了，都是通过new的方式，构建的Byte数组
+  ```java
+  static {
+      ...
+      UNINITIALIZED_ARRAY_ALLOCATION_THRESHOLD = javaVersion() >= 9 && PlatformDependent0.hasAllocateArrayMethod() ?
+          tryAllocateUninitializedArray : -1;
+      ...
+  }
+  ```
 
-3. `InstrumentedUnpooledUnsafeHeapByteBuf`和`InstrumentedUnpooledHeapByteBuf`内存分配的区别
+  可以看到，对于java8及之前的jdk版本，`UNINITIALIZED_ARRAY_ALLOCATION_THRESHOLD`的值为-1。
+
+  因此，**`InstrumentedUnpooledUnsafeHeapByteBuf`是在`PlatformDependent`中通过new 的方式创建的堆内存**,也就是说，**不管是Unsafe的还是非Unsafe的，bytebuf数组的构造，都是一样，通过new的方式创建的**
+
+- >经过以上步骤，就把HeapBuffer构建好了，都是通过new的方式，构建的Byte数组
+
+
+
+#### Unsafe和非Unsafe的区别
+
+1. `InstrumentedUnpooledUnsafeHeapByteBuf`和`InstrumentedUnpooledHeapByteBuf`内存分配的区别
 
    这两个类，分别代表的是Unsafe和非Unsafe的堆内存分配，从上面的过程我们看到，都是通过`UnpooledHeapByteBuf`的构造器进行构造的，实际上，他们的区别主要在于`getByte`方法。
 
@@ -331,11 +339,13 @@ AbstractByteBufAllocator 是ByteBufAllocator的默认实现，大部分内存分
      }
      ```
 
-     最终，调用的是
+     最终，**是通过Unsafe的本地方法获取**
 
      ```java
      native sun.misc.Unsafe#getByte(java.lang.Object, long)
      ```
+
+
 
 ### `DirectBuffer`堆外内存分配
 
@@ -362,7 +372,11 @@ AbstractByteBufAllocator 是ByteBufAllocator的默认实现，大部分内存分
 
    可以看到，在Unsafe和非Unsafe情况下，分别构造了`UnpooledUnsafeDirectByteBuf`和`UnpooledDirectByteBuf`实例
 
-2. `io.netty.buffer.UnpooledDirectByteBuf#UnpooledDirectByteBuf(io.netty.buffer.ByteBufAllocator, int, int)`：
+
+
+#### 非Unsafe
+
+1. `io.netty.buffer.UnpooledDirectByteBuf#UnpooledDirectByteBuf(io.netty.buffer.ByteBufAllocator, int, int)`：
 
    ```java
    public UnpooledDirectByteBuf(ByteBufAllocator alloc, int initialCapacity, int maxCapacity) {
@@ -386,9 +400,18 @@ AbstractByteBufAllocator 是ByteBufAllocator的默认实现，大部分内存分
    }
    ```
 
-   首先，通过`java.nio.ByteBuffer#allocateDirect`构建了JDK底层的`java.nio.DirectByteBuffer`
 
-   然后，通过setByteBuffer保存到全局变量`buffer`中
+2. `java.nio.ByteBuffer#allocateDirect`：
+
+   ```java
+   public static ByteBuffer allocateDirect(int capacity) {
+       return new DirectByteBuffer(capacity);
+   }
+   ```
+
+   可以看到，**这里是直接通过JDK的API构建了`java.nio.DirectByteBuffer`**
+
+3. 然后，通过setByteBuffer保存到全局变量`buffer`中
 
    ```java
    private void setByteBuffer(ByteBuffer buffer) {
@@ -407,7 +430,24 @@ AbstractByteBufAllocator 是ByteBufAllocator的默认实现，大部分内存分
    }
    ```
 
-3. `io.netty.buffer.UnpooledDirectByteBuf#UnpooledDirectByteBuf(io.netty.buffer.ByteBufAllocator, int, int)`
+4. `io.netty.buffer.UnpooledDirectByteBuf#getByte`:
+
+   ```java
+   public byte getByte(int index) {
+       this.ensureAccessible();
+       return this._getByte(index);
+   }
+   
+   protected byte _getByte(int index) {
+       return this.buffer.get(index);
+   }
+   ```
+
+   **在获取的时候，是通过索引获取的**
+
+#### Unsafe
+
+1. `io.netty.buffer.UnpooledUnsafeDirectByteBuf#UnpooledUnsafeDirectByteBuf(io.netty.buffer.ByteBufAllocator, int, int)`
 
    ```java
    public UnpooledUnsafeDirectByteBuf(ByteBufAllocator alloc, int initialCapacity, int maxCapacity) {
@@ -433,9 +473,25 @@ AbstractByteBufAllocator 是ByteBufAllocator的默认实现，大部分内存分
 
    可以看到，该构造器和`UnpooledDirectByteBuf`的逻辑完全一致。
 
-   首先，通过`java.nio.ByteBuffer#allocateDirect`构建了JDK底层的`java.nio.DirectByteBuffer`
+2. `io.netty.buffer.UnpooledUnsafeDirectByteBuf#allocateDirect`：
 
-   然后，区别在于`setByteBuffer`的逻辑
+   ```java
+   protected ByteBuffer allocateDirect(int initialCapacity) {
+       return ByteBuffer.allocateDirect(initialCapacity);
+   }
+   ```
+
+3. `java.nio.ByteBuffer#allocateDirect`：
+
+   ```java
+   public static ByteBuffer allocateDirect(int capacity) {
+       return new DirectByteBuffer(capacity);
+   }
+   ```
+
+   可以看到，**这里也是直接通过JDK的API构建了`java.nio.DirectByteBuffer`**
+
+4. `io.netty.buffer.UnpooledUnsafeDirectByteBuf#setByteBuffer`：
 
    ```java
    final void setByteBuffer(ByteBuffer buffer, boolean tryFree) {
@@ -456,5 +512,199 @@ AbstractByteBufAllocator 是ByteBufAllocator的默认实现，大部分内存分
    }
    ```
 
-   这里不仅把`DirectByteBuffer`保存到了buffer变量，还**通过调用PlatformDependent.directBufferAddress()方法获取Buffer真实的内存地址，并保存到memoryAddress变量中**
+   可以看到，这里不仅把`DirectByteBuffer`保存到了buffer变量，还**通过调用PlatformDependent.directBufferAddress()方法获取Buffer真实的内存地址，并保存到memoryAddress变量中**
+
+5. `io.netty.buffer.UnpooledUnsafeDirectByteBuf#getByte`：
+
+   ```java
+   public long memoryAddress() {
+       this.ensureAccessible();
+       return this.memoryAddress;
+   }
+   
+   public byte getByte(int index) {
+       this.checkIndex(index);
+       return this._getByte(index);
+   }
+   
+   protected byte _getByte(int index) {
+       return UnsafeByteBufUtil.getByte(this.addr(index));
+   }
+   
+   final long addr(int index) {
+       return this.memoryAddress + (long)index;
+   }
+   ```
+
+   这里看到，**是通过地址值进行访问的**
+
+
+
+## PooledByteBufAllocator池化内存分配
+
+## 概述
+
+1. 针对堆内内存和堆外内存，分别使用newDirectBuffer()方法和newHeapBuffer()方法，进行内存分配
+
+   `io.netty.buffer.PooledByteBufAllocator#newDirectBuffer`
+
+   ```java
+   protected ByteBuf newHeapBuffer(int initialCapacity, int maxCapacity) {
+       PoolThreadCache cache = threadCache.get();
+       PoolArena<byte[]> heapArena = cache.heapArena;
+   
+       final ByteBuf buf;
+       if (heapArena != null) {
+           buf = heapArena.allocate(cache, initialCapacity, maxCapacity);
+       } else {
+           buf = PlatformDependent.hasUnsafe() ?
+               new UnpooledUnsafeHeapByteBuf(this, initialCapacity, maxCapacity) :
+           new UnpooledHeapByteBuf(this, initialCapacity, maxCapacity);
+       }
+   
+       return toLeakAwareBuffer(buf);
+   }
+   
+   protected ByteBuf newDirectBuffer(int initialCapacity, int maxCapacity) {
+       PoolThreadCache cache = (PoolThreadCache)this.threadCache.get();
+       PoolArena<ByteBuffer> directArena = cache.directArena;
+       Object buf;
+       if (directArena != null) {
+           buf = directArena.allocate(cache, initialCapacity, maxCapacity);
+       } else {
+           buf = PlatformDependent.hasUnsafe() ? UnsafeByteBufUtil.newUnsafeDirectByteBuf(this, initialCapacity, maxCapacity) : new UnpooledDirectByteBuf(this, initialCapacity, maxCapacity);
+       }
+   
+       return toLeakAwareBuffer((ByteBuf)buf);
+   }
+   ```
+
+   可以看到，这两个方法的结构基本一致，逻辑如下：
+
+   - 通过`threadCache.get()`获取`PoolThreadCache`类型的cache对象
+   - 通过cache获得`PoolArena`类型的`arena`对象（`heapArena`对象或者`directArena`对象）
+   - 如果`arena`对象不为空，则通过`arena`对象分配内存，否则，分配逻辑就和 非池化内存分配一致了
+
+## `PoolArena`
+
+1.  跟踪一下PoolThreadLocalCache的初始化
+
+   - `io.netty.buffer.PooledByteBufAllocator.PoolThreadLocalCache#initialValue`
+
+     ```java
+     protected synchronized PoolThreadCache initialValue() {
+         // 从heapArenas中获取一个使用率最少的Arena
+         final PoolArena<byte[]> heapArena = leastUsedArena(heapArenas);
+         // // 从directArenas中获取一个使用率最少的Arena
+         final PoolArena<ByteBuffer> directArena = leastUsedArena(directArenas);
+     
+         Thread current = Thread.currentThread();
+         // 有缓存
+         if (useCacheForAllThreads || current instanceof FastThreadLocalThread) {
+             return new PoolThreadCache(
+                 heapArena, directArena, tinyCacheSize, smallCacheSize, normalCacheSize,
+                 DEFAULT_MAX_CACHED_BUFFER_CAPACITY, DEFAULT_CACHE_TRIM_INTERVAL);
+         }
+         // 无缓存
+         return new PoolThreadCache(heapArena, directArena, 0, 0, 0, 0, 0);
+     }
+     ```
+
+   - 关于arenas的初始化
+
+     ```java
+      public PooledByteBufAllocator(boolean preferDirect, int nHeapArena, int nDirectArena, int pageSize, int maxOrder,
+                                       int tinyCacheSize, int smallCacheSize, int normalCacheSize,
+                                       boolean useCacheForAllThreads, int directMemoryCacheAlignment) {
+             ....
+     
+             if (nHeapArena > 0) {
+                 heapArenas = newArenaArray(nHeapArena);
+                 ...
+             } else {
+                 heapArenas = null;
+                 heapArenaMetrics = Collections.emptyList();
+             }
+              if (nDirectArena > 0) {
+                  directArenas = newArenaArray(nDirectArena);
+                  ...
+              } else {
+                  directArenas = null;
+                  directArenaMetrics = Collections.emptyList();
+              }
+          ....
+      }
+     
+     ```
+
+   - `io.netty.buffer.PooledByteBufAllocator#newArenaArray`：
+
+     ```java
+     private static <T> PoolArena<T>[] newArenaArray(int size) {
+         return new PoolArena[size];
+     }
+     ```
+
+     其实就是创建了一个固定大小的PoolArena数组，数组大小由传入的参数nHeapArena和nDirectArena决定。
+
+     再回到`PooledByteBufAllocator`的构造器源码，重载构造器的源码为：
+
+     ```java
+     public PooledByteBufAllocator(boolean preferDirect) {
+         this(preferDirect, DEFAULT_NUM_HEAP_ARENA, DEFAULT_NUM_DIRECT_ARENA, DEFAULT_PAGE_SIZE, DEFAULT_MAX_ORDER);
+     }
+     ```
+
+     可以看到：nHeapArena和nDirectArena是通过DEFAULT_NUM_HEAP_ARENA和DEFAULT_NUM_DIRECT_ARENA这两个常量默认赋值的
+
+     相关赋值代码为:
+
+     ```java
+     final int defaultMinNumArena = NettyRuntime.availableProcessors() * 2;  // CPU核数×2
+     final int defaultChunkSize = DEFAULT_PAGE_SIZE << DEFAULT_MAX_ORDER;
+     DEFAULT_NUM_HEAP_ARENA = Math.max(0,
+                                       SystemPropertyUtil.getInt(
+                                           "io.netty.allocator.numHeapArenas",
+                                           (int) Math.min(
+                                               defaultMinNumArena,
+                                               runtime.maxMemory() / defaultChunkSize / 2 / 3)));
+     DEFAULT_NUM_DIRECT_ARENA = Math.max(0,
+                                         SystemPropertyUtil.getInt(
+                                             "io.netty.allocator.numDirectArenas",
+                                             (int) Math.min(
+                                                 defaultMinNumArena,
+                                                 PlatformDependent.maxDirectMemory() / defaultChunkSize / 2 / 3)));
+     ```
+
+     上面的代码看出：**defaultMinNumArena的值赋给nHeapArena和nDirectArena，也就是说，nHeapArena和nDirectArena的默认值就是CPU核数×2**
+
+     **而EventLoopGroup分配线程时，默认线程数也是CPU核数×2。这样，就可以保证Netty中的每一个任务线程都可以有一个独享的Arena，保证在每个线程分配内存的时候不用加锁。**
+
+   
+
+   综上：**Arena有heapArena和directArena。假设有四个线程，那么对应会分配四个Arena。在创建ByteBuf的时候，首先通过PoolThreadCache获取Arena对象并赋值给其成员变量，然后每个线程通过PoolThreadCache调用get()方法的时候会获得它底层的Arena，也就是说通过EventLoop1获得Arena1，通过EventLoop2获得Arena2，依次类推：**
+
+   ![image-20220302185621822](https://gitee.com/firewolf/allinone/raw/master/images/image-20220302185621822.png)
+
+
+
+## ByteBuf缓存列表
+
+PoolThreadCache除了可以在Arena上进行内存分配，还可以在它底层维护的ByteBuf缓存列表进行分配。举个例子：我们通过PooledByteBufAllocator创建了一个1024字节的ByteBuf，当用完释放后，可能在其他地方会继续分配1024字节的ByteBuf。这时，其实不需要在Arena上进行内存分配，而是直接通过PoolThreadCache中维护的ByteBuf的缓存列表直接拿过来返回。在PooledByteBufAllocator中维护着三种规格大小的缓存列表，分别是三个值tinyCacheSize、smallCacheSize、normalCacheSize
+
+```java
+public PooledByteBufAllocator(boolean preferDirect, int nHeapArena, int nDirectArena, int pageSize, int maxOrder,
+                              int tinyCacheSize, int smallCacheSize, int normalCacheSize,
+                              boolean useCacheForAllThreads, int directMemoryCacheAlignment) {
+    super(preferDirect);
+    threadCache = new PoolThreadLocalCache(useCacheForAllThreads);
+    this.tinyCacheSize = tinyCacheSize;
+    this.smallCacheSize = smallCacheSize;
+    this.normalCacheSize = normalCacheSize;
+    chunkSize = validateAndCalculateChunkSize(pageSize, maxOrder);
+    ....
+
+```
+
+PooledByteBufAllocator的构造器中，分别赋值tinyCacheSize=512，smallCacheSize=256，normalCacheSize=64。通过这种方式，Netty预创建了固定规格的内存池，大大提高了内存分配的性能。
 
