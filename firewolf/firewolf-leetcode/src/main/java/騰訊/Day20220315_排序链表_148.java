@@ -120,10 +120,8 @@ class Day20220315_排序链表_148 {
             }
         }
 
-        ListNode<Integer> node1 = _sortListMerger2(head, slow);
+        ListNode<Integer> node1 = _sortListMerger2(head, slow); // 不包含slow
         ListNode<Integer> node2 = _sortListMerger2(slow, tail);
         return mergeSortedList(node1, node2);
     }
-
-
 }
