@@ -12,3 +12,4 @@
 10. 熟悉Linux系统，掌握常用的Linux操作和命令；
 12. 熟练使用Maven管理工具，Git和SVN等版本控制工具；
 13. 熟悉junit、testcontainer、mock测试、契约测试等常用的测试用例编写方法；
+
