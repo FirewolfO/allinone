@@ -39,3 +39,13 @@ ThreadLocal的原理是操作Thread内部的一个ThreadLocalMap，这个Map的E
 > - 调用set()方法时，采样清理、全量清理，扩容时还会继续检查。
 > - 调用get()方法，没有直接命中，向后环形查找时。
 > - 调用remove()时，除了清理当前Entry，还会向后继续清理
+
+
+
+
+
+# JDK代理和Cglib代理
+
+各自局限
+
+cglib原理上，是使用的继承，所以，被代理的类，不能使用final修饰
