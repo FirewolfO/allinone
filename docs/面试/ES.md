@@ -40,3 +40,43 @@
 
 # 常用的查询API
 
+
+
+
+
+# 选举策略
+
+https://blog.csdn.net/ailiandeziwei/article/details/87856210
+
+## 使用的算法
+
+- 因为可能有多个候选节点，所以可能出现脑裂
+- ES采用了常见的分布式系统思路，保证选举出的master被多数派(quorum)的master-eligible node认可，以此来保证只有一个master
+
+## 谁发起的？
+
+master选举是由master-eligible节点发起，当一个master-eligible节点发现满足以下条件时发起选举：
+
+1. 该master-eligible节点的当前状态不是master。
+2. 该master-eligible节点通过ZenDiscovery模块的ping操作询问其已知的集群其他节点，没有任何节点连接到master。
+3. 包括本节点在内，当前已有超过minimum_master_nodes个节点没有连接到master。
+
+
+
+# PAX_OS 协议缺点
+
+
+
+
+
+# 节点注册
+
+ZenDiscovery
+
+在本节点到每个hosts中的节点建立一条边，当整个集群所有的node形成一个联通图时，所有节点都可以知道集群中有哪些节点，不会形成孤岛
+
+
+
+
+
+# 主从同步机制
