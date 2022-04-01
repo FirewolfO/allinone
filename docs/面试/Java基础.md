@@ -46,6 +46,117 @@ ThreadLocal的原理是操作Thread内部的一个ThreadLocalMap，这个Map的E
 
 # JDK代理和Cglib代理
 
-各自局限
+## JDK代理
 
-cglib原理上，是使用的继承，所以，被代理的类，不能使用final修饰
+#### 要求
+
+**<font color=red>jdk代理要求被代理的对象必须实现了某个接口</font>**
+
+#### 核心API
+
+- `InvocationHandler`：代理类需要实现
+- `Proxy.newProxyIntance`：构建代理对象
+
+#### 实现
+
+1. 创建代理：代理类需要实现`InvocationHandler`接口，然后通过method.invoke来调用原始方法
+
+   ```java
+   public class ProxyClass implements InvocationHandler{
+       private Object target;// 被代理对象
+       public ProxyClass(Object target) {
+           this.target = target;
+       }
+       //proxy：被代理的对象
+       //method：要调用的方法
+       //args：参数
+       @Override
+       public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+           // 方法调用前增强
+           Object invoke = method.invoke(target, args); // 调用代理方法
+           // 方法调用后增强
+           return invoke; //也可以对原始方法调用的结果进行修改
+       }
+   }
+   ```
+
+2. 构建代理：这里可以通过构建代理工厂来达到方便调用的目的
+
+   ```java
+   public class ProxyFactory {
+       public static TargetClass getInstance(Object target) {
+           InvocationHandler handler = new ProxyClass(target);
+           TargetClass proxy = null;
+           proxy = (TargetClass) Proxy.newProxyInstance(
+                   target.getClass().getClassLoader(),
+                   target.getClass().getInterfaces(),
+                   handler);
+           return proxy;
+       }
+   }
+   ```
+
+3. 使用
+
+   ```java
+   ProxyFactory.getIntance(targetObject).xxxMethod();
+   ```
+
+## cglib代理
+
+#### 要求
+
+- cglib通过动态修改字节码达到代理的目的，通过集成需要代理的类，然后调用方法的时候，通过super.xxx调用原始方法。所以，<font color=red><b>被代理的类，不能使用final修饰</b></font>
+
+#### 核心API
+
+- `MethodInterceptor`：代理接口，在这里实现代理逻辑
+- `Enhancer`：主要的增强类，用来生成代理。
+
+#### 实现
+
+1. 创建代理类
+
+   ```java
+   public class ProxyClass implements MethodInterceptor{
+   	//methodProxy：方法的代理类
+   	@Override
+   	public Object intercept(Object obj, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
+   		 // 增强
+   		Object result =  methodProxy.invokeSuper(obj, args);
+           //增强
+           return result;
+   	}
+   
+   }
+   ```
+
+2. 创建代理工厂
+
+   ```java
+   public class ProxyFactory {
+   	public static Object getInstance(Class<?> clazz){
+   		Enhancer enhancer = new Enhancer();
+   		enhancer.setSuperclass(clazz);
+           enhancer.setCallback(new ProxyClass());
+           return enhancer.create();
+   	}
+   }
+   ```
+
+3. 使用
+
+   ```java
+   ProxyFactory.getIntance(TargetClass.class).xxxMethod();
+   ```
+
+   
+
+# 设计模式原则
+
+- 单一职责：一个类或者一个方法只负责一项职责，尽量做到类的只有一个行为原因引起变化；
+- 里氏替换：子类可以扩展父类的功能，但不能改变原有父类的功能
+- 依赖倒置：不应该依赖具体的类，而应该依赖抽象，强调面向接口编程
+- 接口隔离：接口的职责尽量小
+- 迪米特原则：强调尽量少依赖不需要的类，减少耦合
+- 开闭原则：对修改关闭，对扩展开房

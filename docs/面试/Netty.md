@@ -19,3 +19,8 @@
 - ChannelHandler、ChannelPipeline：负责处理接受和发送数据的业务逻辑
 - ByteBuf：内存单元
 - 核心三件套：Buffer、Selector、Channel
+
+
+
+
+
