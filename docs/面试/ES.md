@@ -158,9 +158,44 @@ Mysql只有term dictionary这一层，是以b-tree排序的方式存储在磁盘
 
 ### 单term检索
 
+比如：查找name=“zhangsan”的信息
+
 根据上面的结构，查询的时候，从term index开始，通过trie树查找到相应的term，然后找到posting list（文档id），从而找到文档存储在磁盘的地址，加载数据即可
 
 ### 多term联合检索
+
+比如：查找 name="zhangsan" AND age=18 的信息
+
+先分别找到各自的posting list ，然后做一个“与”的合并，合并方式有两种：
+
+#### skip list
+
+对要合并的多个字段的posting list同时进行遍历，通过跳跃表的方式，可以一次跳过多个元素，可以高效获取交集
+
+> 具体skip list的结构，和redis 跳跃表是一致的；
+
+同时，考虑到频繁出现的term，如：gender字段中的男或女，使用 Frame of Reference编码进行压缩来减少磁盘占用，减少索引大小；
+
+ ![image-20220402135428313](https://gitee.com/firewolf/allinone/raw/master/images/image-20220402135428313.png)
+
+#### bitset
+
+> 这种结构比较直观，是一个byte数组，如果相应位置的数据出现，值就是1，否则就是0，比如：
+>
+> [1,3,4,7,10] ，使用 bitset表示为： [1,0,1,1,0,0,1,0,0,1] 
+
+bitset自身就有压缩的特点，用一个byte就可以代表8个文档，所以如果是100万个文档，则只需要12.5万个byte，
+
+然而，由于es支持海量数据，所以如果每一个filter都要消耗一个bitset，那么就比较奢侈。
+
+<font color=red><b>ES底层的Lucence使用 Roaring Bitmap来完成</b></font>
+
+- 可以很压缩地保存上亿个bit代表对应的文档是否匹配filter
+- 这个压缩的bitset仍然可以很快地进行AND和 OR的逻辑操作
+
+ ![image-20220402142221824](https://gitee.com/firewolf/allinone/raw/master/images/image-20220402142221824.png)
+
+
 
 
 
@@ -175,6 +210,14 @@ Mysql只有term dictionary这一层，是以b-tree排序的方式存储在磁盘
 ### FST
 
 参考文献：https://blog.csdn.net/lsx2017/article/details/113917796
+
+
+
+### Roaring Bitmap
+
+参考文献：https://zhuanlan.zhihu.com/p/351365841
+
+
 
 
 
