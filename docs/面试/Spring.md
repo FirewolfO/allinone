@@ -1,6 +1,18 @@
 [toc]
 
-# 生命周期回调方法
+# Filter 、拦截器区别，项目使用地方
+
+- filter接口在javax.servlet包下面，是servlet规定的。inteceptor定义在org.springframework.web.servlet中，可以用于web程序，也可以用于普通的应用；
+- filter是servlet容器支持的，interceptor是spring框架支持的
+- filter通过dochain放行，interceptor通过prehandler放行。
+- filter只在方法前后执行，interceptor粒度更细，可以深入到方法前后，异常抛出前后
+- 拦截器是基于Java反射的，
+
+> 执行顺序：Filter > Listener > Interceptor
+
+
+
+# Bean生命周期回调方法
 
 有两个回调方法：init 和 destory
 
