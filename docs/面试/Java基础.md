@@ -160,3 +160,9 @@ ThreadLocal的原理是操作Thread内部的一个ThreadLocalMap，这个Map的E
 - 接口隔离：接口的职责尽量小
 - 迪米特原则：强调尽量少依赖不需要的类，减少耦合
 - 开闭原则：对修改关闭，对扩展开房
+
+
+
+# Arthas原理
+
+https://zhuanlan.zhihu.com/p/328974405
