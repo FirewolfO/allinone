@@ -37,16 +37,16 @@ public class PathParse {
         long left = 0;
         long right = x;
         long res = 0;
+        long mid = 0;
         while (left < right) {
-            long mid = (left + right + 1) >> 1;
-            if (mult(mid, y) < x) {
-                left = mid + 1;
-                res = mid;
+            mid = (left + right + 1) >> 1;
+            if (mult(mid, y) <= x) {
+                left = mid;
             } else {
                 right = mid - 1;
             }
         }
-        res = res * flag;
+        res = left * flag;
         return (int) ((res > Integer.MAX_VALUE || res < Integer.MIN_VALUE) ? Integer.MAX_VALUE : res);
     }
 

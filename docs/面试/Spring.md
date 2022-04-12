@@ -12,12 +12,125 @@
 
 
 
+# IOC
+
+## IOC容器的加载过程
+
+### 从概念态--->定义态的过程（解析得到BeanDefinition）
+
+1. 实例化一个ApplicationContext的对象； 
+2. 调用bean工厂后置处理器完成扫描； 
+3. 循环解析扫描出来的类信息； 
+4. 实例化一个BeanDefinition对象来存储解析出来的信息； 
+5. 把实例化好的beanDefinition对象put到beanDefinitionMap当中缓存起来， 以便后面实例化bean； 
+6. 再次调用其他bean工厂后置处理器；
+
+### 从定义态到纯净态（实例化）
+
+1. 实现化对象。（检查是否是lazy，作用域、是否是abstract等、构造方法推断）
+
+### 从纯净态到成熟态（属性注入）
+
+1. spring处理合并后的beanDefinition 
+2. 判断是否需要完成**属性注入**(循环依赖的解决)
+
+### 初始化
+
+1. 判断bean的类型回调Aware接口 
+
+2. 调用生命周期回调方法 
+
+3. 如果需要代理则完成代理
+
+### **创建完成** 
+
+1. put到单例池——bean完成，存到Spring容器中
+
+
+
+# Spring Bean
+
+## Bean生命周期
+
+1. 实例化
+   - 通过反射去推断构造函数进行实例化
+   - 实例工厂、 静态工厂等方式实例化
+2. 属性赋值
+   - 解析自动装配（byname bytype constractor none @Autowired）  DI的体现
+   - 解决循环依赖
+3. 初始化
+   - 调用XXXAware回调方法
+     - BeanNameAware
+     - BeanFactoryAware
+     - ApplcationContextAware
+   - 调用初始化生命周期回调
+     - BeanPostProcessor接口的postProcessBeforeInitialization方法
+     - InitializingBean接口的afterPropertiesSet ；或者 工厂方法中声明的 init-mothod指定的方法； 或者 注解方式中 @PostConstuct标注的方法
+     - BeanPostProcessor 的 postProcessAfterInitialization 方法
+   - 如果bean实现aop 创建动态代理
+4. 销毁
+   - 在spring容器关闭的时候进行调用
+   - 调用销毁生命周期回调
+     - DisposableBean接口的destory 方法； 或者 工厂方法中destroy-method指定的方法； 或者 @PreDestory 标注的方法
+
 # Bean生命周期回调方法
 
-有两个回调方法：init 和 destory
+## 初始化回调
 
-- init-method、实现InitializingBean的afterPropertiesSet方法、@PostConstruct
-- destory-metbod 、实现DisposableBean的destory方法、@PreDestory
+- init-method指定的方法
+- 实现InitializingBean的afterPropertiesSet方法
+- @PostConstruct标注的方法
+
+## 销毁回调
+
+- destory-metbod 指定的方法
+- 实现DisposableBean的destory方法
+- @PreDestory标识的方法
+
+
+
+# 循环依赖
+
+参考文献：https://blog.csdn.net/cristianoxm/article/details/113246104
+
+互相引用， A->B->A 或者是 A->B->C->A
+
+## 解决办法
+
+三级缓存，准确的讲，是三个map
+
+- singletonObjects （一级缓存）：它是我们最熟悉的朋友，俗称“单例池”“容器”，缓存创建完成单例Bean的地方。
+- earlySingletonObjects（二级缓存）：映射Bean的早期引用，也就是说在这个Map里的Bean不是完整的，甚至还不能称之为“Bean”，只是一个Instance。如果bean被AOP切面代理了，则保存的是代理bean示例的ProxyBean；否则，是原始未完成属性填充的实例；
+- singletonFactories（三级缓存）： 映射创建Bean的原始工厂，存放的是ObjectFactory，传入的是一个匿名内部类，如果用到三级缓存，会调用objectFactory.getObject()，最终会调用getEarlyBeanReference方法，返回一个示例
+
+> ## 过程描述
+>
+> 1. 实例化 A，此时 A 还未完成属性填充和初始化方法（@PostConstruct）的执行，A 只是一个半成品。
+> 2. 为 A 创建一个 Bean工厂，并放入到 singletonFactories 中。
+> 3. 发现 A 需要注入 B 对象，但是一级、二级、三级缓存均为发现对象 B。
+> 4. 实例化 B，此时 B 还未完成属性填充和初始化方法（@PostConstruct）的执行，B 只是一个半成品。
+> 5. 为 B 创建一个 Bean工厂，并放入到 singletonFactories 中。
+> 6. 发现 B 需要注入 A 对象，此时在一级、二级未发现对象A，但是在三级缓存中发现了对象 A，从三级缓存中得到对象 A，并将对象 A 放入二级缓存中，同时删除三级缓存中的对象 A（注意，此时的 A还是一个半成品，并没有完成属性填充和执行初始化方法）
+> 7. 将对象 A 注入到对象 B 中。
+> 8. 对象 B 完成属性填充，执行初始化方法，并放入到一级缓存中，同时删除二级缓存中的对象 B。（此时对象 B 已经是一个成品）
+> 9. 对象 A 得到对象B，将对象 B 注入到对象 A 中。（对象 A 得到的是一个完整的对象 B）
+> 10. 对象 A完成属性填充，执行初始化方法，并放入到一级缓存中，同时删除二级缓存中的对象 A。
+
+
+
+## 解决循环依赖必须要三级缓存吗
+
+二级缓存也是可以解决循环依赖的。
+
+如果 Spring 选择二级缓存来解决循环依赖的话，那么就意味着所有 Bean 都需要在实例化完成之后就立马为其创建代理，而Spring 的设计原则是在<font color=red> Bean 初始化完成之后才为其创建代理</font>。所以，Spring 选择了三级缓存。但是因为循环依赖的出现，导致了 Spring 不得不提前去创建代理，因为如果不提前创建代理对象，那么注入的就是原始对象，这样就会产生错误
+
+
+
+
+## 注意事项
+
+- 非单例模式下，无法处理
+- 构造函数的循环依赖会报错。可以通过人工进行解决：@Lazy
 
 
 
