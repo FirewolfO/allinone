@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static utils.LinkUtil.*;
@@ -10,7 +11,6 @@ class Solution {
 
     public static void main(String[] args) {
         List<String> strings = new Solution().restoreIpAddresses("25525511135");
-        System.out.println("xx");
     }
 
     public List<String> restoreIpAddresses(String s) {
