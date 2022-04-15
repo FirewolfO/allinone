@@ -413,7 +413,7 @@ ThreadLocal
 
 ## AOP底层
 
-https://www.cnblogs.com/zedosu/p/6709921.html
+
 
 
 
@@ -423,7 +423,7 @@ https://www.cnblogs.com/zedosu/p/6709921.html
 
 切面配置错误、切点表达式错误等
 
-### 方法被生命为private的
+### 方法被声明为private
 
 修改为public
 
@@ -438,7 +438,111 @@ https://www.cnblogs.com/zedosu/p/6709921.html
 
 
 
+## Spring AOP在哪里创建的动态代理
+
+1. 正常的Bean会在Bean的生命周期的‘初始化’后， 通过BeanPostProcessor.postProcessAfterInitialization创建aop的动态代理
+2. 循环依赖的Bean会在Bean的生命周期‘属性注入’时存在的循环依赖的情况下， 也会为循环依赖的Bean通过MergedBeanDefinitionPostProcessor.postProcessMergedBeanDefinition创建aop
+
+
+
+## Spring的 Aop实现原理
+
+源码参看：https://www.cnblogs.com/zedosu/p/6709921.html
+
+大概可以分为三个步骤：
+
+1. 解析切面
+
+    在Bean创建之前的第一个Bean后置处理器会去解析切面（解析切面中通知、切点，一个通知就会解析成一个advisor(通知、切点)），然后把这些advisor缓存起来（用addAdvisorOnChainCreation方法注册到advisor链上。）。
+
+2. 创建动态代理
+
+   正常的Bean初始化后调用BeanPostProcessor 拿到之前缓存的advisor ，再通过advisor中pointcut 判断当前Bean是否被切点表达式匹配，如果匹配，就会为Bean创建动态代理（创建方式1.jdk动态代理2.cglib)。
+
+3. 调用
+
+   拿到动态代理对象， 调用方法 就会判断当前方法是否增强的方法， 就会通过**调用链**的方式依次去执行通知.
+
+
+
 # 事务
+
+## Spring事务支持方式
+
+### 编程式事务
+
+通过编程的方式管理事务，给你带来极大的灵活性，但是难维护
+
+### 声明式事务
+
+可以将业务代码和事务管理分离，你只需用注解和XML配置来管理事务
+
+- 基于接口
+
+  - 基于 **TransactionInterceptor** 的声明式事务：Spring 声明式事务的基础，通常也不建议使用这种方式，但是与aop一样，了解这种方式对理解 Spring 声明式事务有很大作用。
+  -  基于 **TransactionProxyFactoryBean**的声明式事务：第一种方式的改进版本，简化的配置文件的书写，这是Spring 早期推荐的声明式事务管理方式，但是在 Spring 2.0 中已经不推荐了。
+
+- 基于**配置文件**方式
+
+  - 使用<tx><aop>等命名空间的一些标签，来管理事务
+
+    ```xml
+    <tx:advice id="txAdvice" transaction-manager="txManager">
+        <tx:attributes>
+            <!-- 配置需要开启事务的方法，事务的传播行为，隔离级别等 -->
+            <tx:method name="*" propagation="REQUIRED" />
+        </tx:attributes>
+    </tx:advice>
+    <!-- 配置切面 -->
+    <aop:config>
+        <aop:pointcut expression="execution(* com.firewolf.spring.tx.xml.*Service.*(..))" id="pc"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="pc"/>
+    </aop:config>
+    ```
+
+- 基于**@Transactional 的注解方式**
+
+  ```java
+  public @interface Transactional {
+      @AliasFor("transactionManager")
+      String value() default "";
+  
+      @AliasFor("value")
+      String transactionManager() default "";
+  
+      Propagation propagation() default Propagation.REQUIRED;
+  
+      Isolation isolation() default Isolation.DEFAULT;
+  
+      int timeout() default -1;
+  
+      boolean readOnly() default false;
+  
+      Class<? extends Throwable>[] rollbackFor() default {};
+  
+      String[] rollbackForClassName() default {};
+  
+      Class<? extends Throwable>[] noRollbackFor() default {};
+  
+      String[] noRollbackForClassName() default {};
+  }
+  ```
+
+
+
+## Spring支持的事务属性
+
+**1. propagation** ：指定事务的传播行为，即当前的事务方法被另外一个事务调用时如何使用事务
+
+**2. isolation** ：  指定事务的隔离级别，最常用的值为READ_COMMITED;
+
+**3. 回滚规则**：事务的回滚规则，默认情况下声明式事务对所有的运行时异常进行回滚，也可以通过对应的属性进行设置，通常使用默认值；
+
+**4. readOnly**：指定事务是否为只读，表示这个事务只读取数据但不更新数据，这样可以帮助数据库引擎优化事务；若真的是只读取的，应设置为true，否则默认为false；
+
+**5. timeout** ： 指定强制回滚之前事务可以占用的时间
+
+
 
 ## 传播行为
 
@@ -449,6 +553,24 @@ https://www.cnblogs.com/zedosu/p/6709921.html
 - NOT_SUPPORTED：以非事务方式执行，如果当前操作在一个事务中，则把当前事务挂起，直到当前操作完成再恢复事务的执行。如果当前操作存在事务，则把事务挂起，以非事务的方式运行
 - NEVER：以非事务的方式执行，如果当前操作存在事务，则抛出异常
 - NESTED：如果当前方法有一个事务正在运行，则这个方法应该运行在一个嵌套事务中，被嵌套的事务可以独立于被封装的事务进行提交或者回滚。如果没有活动事务，则按照REQUIRED事务传播类型执行。
+
+
+
+## 隔离级别
+
+### 常见问题
+
+- 脏读（Dirty reads）——脏读发生在一个事务读取了另一个事务改写但尚未提交的数据时。如果改写在稍后被回滚了，那么第一个事务获取的数据就是无效的。
+- 不可重复读（Nonrepeatable read）——不可重复读发生在一个事务执行相同的查询两次或两次以上，但是每次都得到不同的数据时。这通常是因为另一个并发事务在两次查询期间进行了更新。
+- 幻读（Phantom read）——幻读与不可重复读类似。它发生在一个事务（T1）读取了几行数据，接着另一个并发事务（T2）插入了一些数据时。在随后的查询中，第一个事务（T1）就会发现多了一些原本不存在的记录。
+
+### Spring隔离级别
+
+- ISOLATION_DEFAULT：使用后端数据库默认的隔离级别
+- ISOLATION_READ_UNCOMMITTED：最低的隔离级别，允许读取尚未提交的数据变更，可能会导致脏读、幻读或不可重复读
+- ISOLATION_READ_COMMITTED：允许读取并发事务已经提交的数据，可以阻止脏读，但是幻读或不可重复读仍有可能发生
+- ISOLATION_REPEATABLE_READ：对同一字段的多次读取结果都是一致的，除非数据是被本身事务自己所修改，可以阻止脏读和不可重复读，但幻读仍有可能发生
+- ISOLATION_SERIALIZABLE：最高的隔离级别，完全服从ACID的隔离级别，确保阻止脏读、不可重复读以及幻读，也是最慢的事务隔离级别，因为它通常是通过完全锁定事务相关的数据库表来实现的。
 
 
 
