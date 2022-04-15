@@ -767,58 +767,195 @@ SpringBoot的用来快速开发Spring应用的一个脚手架、其设计目的�
 
 ## SpringBoot启动过程
 
-### 初始化SpringApplication
+参看文献：《SpringBoot揭秘》
+
+### 简化步骤
+
+1. 使用SpringFactoriesLoader在应用的classpath中（spring.factories或者是实现了接口的）收集各种条件和回调接口
+   - ApplicationContextInitializer：容器刷新前的回调接口
+   - ApplicationListener：容器各种状态变化事件的回调接口，如：ContextRefreshedEvent、ContextStartedEvent、ContextStoppedEvent、ContextClosedEvent等；
+2. 遍历调用SpringApplicationRunListener的started()方法。告诉要开始执行了
+3. 创建并准备环境变量，通过environmentPrepared方法通知SpringApplicationRunListener
+4. 推断需要创建的ApplicationContext类型并创建，然后给其设置环境变量，并调用这些ApplicationContextInitializer的initialize方法来对已经创建好的ApplicationContext进行进一步的处理。
+5. 遍历SpringApplicationRunListener的contextPrepared（）方法。通知ApplicationContext准备就绪。
+6. 将通过@EnableAutoConfiguration获取的所有配置以及其他形式的IoC容器配置加载到已经准备完毕的ApplicationContext
+7. 调用ApplicationContext的refresh（）方法。
+8. 查找当前ApplicationContext中是否注册有CommandLineRunner，如果有，则遍历执行它们。
+9. 正常情况下，遍历执行SpringApplicationRunListener的finished（）方法，通知启动完成
 
 
 
-### 执行SpringApplication的run方法
+### 完整过程
 
-1. 运行main方法： 初始化new SpringApplication，从spring.factories 读取 listener ApplicationContextInitializer  
-2. 运行SpringApplication的run方法，
+1. 如果我们使用的是SpringApplication的静态run方法，那么，这个方法里面首先需要创建一SpringApplication对象实例，然后调用这个创建好的SpringApplication的实例run方法
+   - ·根据classpath里面是否存在某个特征类（org.springframework.web.context.ConfigurableWebApplicationContext）来决定是否应该创建一个为Web应用使用的ApplicationContext类型，还是应该创建一个标准Standalone应用使用的ApplicationContext类型。
+   - 使用SpringFactoriesLoader在应用的classpath中查找并加载所有可用的ApplicationContextInitializer
+   - 使用SpringFactoriesLoader在应用的classpath中查找并加载所有可用的ApplicationListener。
+   - 推断并设置main方法的定义类
+2. 遍历执行所有通过SpringFactoriesLoader可以查找到并加载的SpringApplicationRunListener，调用它们的started（）方法，通知他们应该要开始执行了
+3. 创建并配置当前SpringBoot应用将要使用的Environment（包括配置要使用的PropertySource以及Profile）
+4. 遍历调用所有SpringApplicationRunListener的environmentPrepared（）的方法，通知Environment已经准备好了
+5. 如果SpringApplication的showBanner属性被设置为true，则打印banner
+6. 根据用户是否明确设置了applicationContextClass类型以及初始化阶段的推断结果，决定该为当SpringBoot应用创建什么类型的ApplicationContext并创建完成，然后根据条件决定是否添加ShutdownHook，决定是否使用自定义的BeanNameGenerator，决定是否使用自定义的ResourceLoader，当然，最重要的，将之前准备好的Environment设置给创建好的ApplicationContext使用。
+7. ApplicationContext创建好之后，SpringApplication会再次借助Spring-FactoriesLoader，查找并加载classpath中所有可用的ApplicationContext-Initializer，然后遍历调用这些ApplicationContextInitializer的initialize（applicationContext）方法来对已经创建好的ApplicationContext进行进一步的处理。
+8. 遍历调用所有SpringApplicationRunListener的contextPrepared（）方法。通知ApplicationContext准备就绪
+9. 将通过@EnableAutoConfiguration获取的所有配置以及其他形式的IoC容器配置加载到已经准备完毕的ApplicationContext
+10. 遍历调用所有SpringApplicationRunListener的contextLoaded（）方法。通知其ApplicationContext装配就绪
+11. 调用ApplicationContext的refresh（）方法，完成IoC容器可用的最后一道工序
+12. 查找当前ApplicationContext中是否注册有CommandLineRunner，如果有，则遍历执行它们。
+13. 正常情况下，遍历执行SpringApplicationRunListener的finished（）方法，通知启动完成。（如果整个过程出现异常，则依然调用所有SpringApplicationRunListener的finished（）方法，只不过这种情况下会将异常信息一并传入处理）
 
-https://blog.csdn.net/weixin_44688301/article/details/115872167
+## 内置Tomcat启动原理
 
+1. 当依赖Spring-boot-starter-web依赖时会在SpringBoot中添加servlet容器自动配置类：ServletWebServerFactoryAutoConfiguration
 
+2. 该自动配置类通过@Import导入了可用(通过@ConditionalOnClass判断决定使用哪一个)的一个Web容器工厂（默认Tomcat)
 
+3. 在内嵌Tomcat类中配置了一个TomcatServletWebServerFactory的Bean（Web容器工厂）
 
+4. 它会在SpringBoot启动时 加载ioc容器(refresh)  OnRefersh 创建内嵌的Tomcat并启动 
+
+   
 
 ## 自定义starter
 
+- 编写代码，主要是自动配置类，通过一些@ConditionalOnXXX的形式来进行条件装配
 - META-INF下面创建spring.factories文件，里面配置 autoConfiguration= 自动配置类
-- 在自己的自动配置类里面，装配自己的bean，通过一些@ConditionalOnXXX的形式来进行条件装配
+
+一般分为两部分：autoconfigurer和starter两部分
 
 
 
-# Springcloud组件
+## SpringBoot读取配置文件
 
-- Feign、Ribbon、loadbalance：服务调用、负载均衡
-- Hystrix、sentinel：限流、雪崩、熔断
-- Nacos、spring cloud config：服务注册
-- GateWay、zuul：网关
+### 原理
+
+通过事件监听的方式读取的配置文件：ConfigFileApplicationListener
+
+### 加载顺序
+
+- file:./config/
+- file:./config/xxx/application.properties
+- file:./application.properties
+- classpath:config
+- claspath:
 
 
 
-# Zuul 和 gateway 
+## SpringBoot默认日志框架
 
-区别
+slf4j + logback
+
+
+
+# Springcloud
+
+## 微服务架构优缺点
+
+### 优点
+
+- 方便分工协作
+- 并发能力强（通过集群）
+- 容错能力强（减少单点故障如OOM导致整个系统崩溃）
+- 方便扩展
+
+### 缺点
+
+- 需要解决分布式的问题：编程难度、一致性、运维复杂性等
+- 需要更多的资源
+
+
+
+## SOA、分布式、微服务
+
+- 分布式：是指将单体架构中的各个部分拆分，然后部署不同的机器或进程中去，SOA和微服务基本上都是分布式架构的
+- SOA：是一种面向服务的架构，系统的所有服务都注册在总线上，当调用服务时，从总线上查找服务信息，然后调用
+- 微服务：是一种更彻底的面向服务的架构，将系统中各个功能个体抽成一个个小的应用程序，基本保持一个应用对应的一个服务的架构
+
+
+
+## 微服务拆分原则
+
+1. 高内聚低耦合，职责单一，服务粒度适中，服务不要太细
+2. 以业务模型切入：比如产品，用户，订单为一个模型来切入）
+3. 演进式拆分：刚开始不要划分太细，可以随着迭代过程来逐步优化
+
+
+
+## SpringCloud常用组件
+
+- 服务注册中心：<font color=blue>Nacos</font>、Eureka、Zookeeper、Consul
+- 负载均衡：<font color=blue>LoadBalancer</font>、 Ribbon
+- 服务调用：<font color=blue>OpenFeign</font>、Feign、Dubbo RPC
+- 服务配置中心：<font color=blue>Nacos Config </font>、Spring Cloud Config
+- 服务熔断：<font color=blue>sentinel </font>、Hystrix
+- 服务网关：<font color=blue>Spring Cloud Gateway</font>、Zuul、Kong
+- 分布式事务：<font color=blue>Seata</font>
+
+
+
+## Zuul 和 gateway对比
+
+### 区别
 
 - gateway吞吐率比zuul高，耗时比zuul少，性能比zuul高
 - gateway对比zuul多依赖了spring-webflux，
 - zuul仅支持同步，gateway支持异步。
 - gateway具有更好的扩展性
 
-相同点
+### 相同点
 
 - 底层都是servlet
 - 两者均是web网关，处理的是http请求
 
 
 
-# 服务限流
+## 注册中心原理
+
+- 服务注册： 当服务启动 通过Rest请求的方式向Nacos Server注册自己的服务
+
+- 服务心跳：Nacose Client 会维护一个定时心跳持续通知Nacos Server , 默认5s一次， 如果nacos Client超过了15秒没有接收心跳，会将服务健康状态设置false（拉取的时候会忽略）,  如果nacos Client超过了30 秒没有接收心跳 剔除服务。
+- 服务发现：Nacose Client 会有一个定时任务，实时去Nacos Server 拉取健康服务
+- 服务停止： Nacose Client 会主动通过Rest请求Nacos Server 发送一个注销的请求
+
+
+
+## 配置中心
+
+### 实现原理
+
+- Nacos 服务端创建了相关的配置项后，客户端就可以进行监听了。
+- 客户端是通过一个定时任务来检查自己监听的配置项的数据的，一旦服务端的数据发生变化时，客户端将会拉取到最新的数据，并将最新的数据保存在一个 CacheData 对象中，然后会重新计算 CacheData 的 md5 属性的值，此时就会对该 CacheData 所绑定的 Listener 触发 receiveConfigInfo（接收配置信息） 回调。
+
+### 推还是拉
+
+Nacos采用拉的方式拉是实现的。
+
+- 如果用推的方式，服务端需要维持与客户端的长连接，这样的话需要耗费大量的资源，并且还需要考虑连接的有效性，例如需要通过心跳来维持两者之间的连接。而用拉的方式，客户端只需要通过一个无状态的 http 请求即可获取到服务端的数据。
+- 需要监控客户端是否接受到配置
+
+
+
+## 网关作用
+
+- 关注稳定与安全：全局性流控、屏蔽工具扫描、日志统计、黑白IP名单、证书/加解密等
+- 提供公共服务：服务降级、服务熔断、服务限流、路由与负载均衡、业务校验等；
+
+
+
+## 服务熔断、降级
+
+服务熔断：当服务A调用的某个服务B不可用时，上游服务A为了保证自己不受影响，及时切断与服务B的通讯。  防止服务雪崩一种措施
+
+服务降级：提前预想好另外一种兜底措施， 可以进行后期补救。 直到服务B恢复，再恢复和B服务的正常通讯。  当被调用服务不可用时的一种兜底措施
+
+
+
+## 服务限流
 
 https://blog.csdn.net/hxyascx/article/details/89512278
 
-## 为什么要限？
+### 为什么要限？
 
 - 用户增长过快 
 - 热点事件（如微博热搜）
@@ -827,7 +964,7 @@ https://blog.csdn.net/hxyascx/article/details/89512278
 
 这些情况都是无法预知的，不知道什么时候会有10倍甚至20倍的流量打进来，如果真碰上这种情况，扩容是根本来不及的。
 
-## 限流算法实现
+### 限流算法实现
 
 常用的限流算法有：计数器、令牌桶、漏桶
 
@@ -874,7 +1011,7 @@ https://blog.csdn.net/hxyascx/article/details/89512278
 >
 > RateLimiter是匀速添加令牌
 
-## 分布式限流
+### 分布式限流
 
 可以通过redis + lua 来实现，主要还是利用了incrby 和 expire命令
 
@@ -887,6 +1024,57 @@ https://blog.csdn.net/hxyascx/article/details/89512278
 > ```
 
 可以通过给网关整合上述限流能力达到分布式限流的效果
+
+### Sentinel限流原理
+
+
+
+## Seata实现原理
+
+参考文献：https://blog.csdn.net/weixin_36995355/article/details/109133713
+
+### 核心角色
+
+在应用中Seata整体事务逻辑基于两阶段提交的模型，
+
+- TC：事务协调者，即独立运行的seata-server，用于接收事务注册，提交和回滚。
+- TM：事务发起者。用来告诉TC全局事务的开始，提交，回滚。
+- RM：事务资源，每一个RM都会作为一个分支事务注册在TC
+
+### 实现机制
+
+默认使用AT模式，两阶段提交协议的演变：
+
+- 一阶段：业务数据和回滚日志记录在同一个本地事务中提交，释放本地锁和连接资源。
+- 二阶段：
+  - 提交异步化，非常快速地完成。
+    回滚通过一阶段的回滚日志进行反向补偿
+
+#### 一阶段加载
+
+在一阶段，Seata会拦截『业务SQL』
+
+1. 解析SQL语义，找到『业务SQL』要更新的业务数据，在业务数据被更新前，将其保存成"before image"
+2. 执行『业务SQL』更新业务数据
+3. 在业务数据更新之后其保存成"after image"，最后生成行锁，产生undo log。
+
+>  以上操作全部在一个数据库事务内完成，这样保证了一阶段操作的原子性
+
+![image-20220415231619128](https://gitee.com/firewolf/allinone/raw/master/images/image-20220415231619128.png)
+
+###  二阶段提交
+
+二阶段如是顺利提交的话，因为『业务SQL』在一阶段已经提交到数据库，所以Seata框架只需将一阶段快照数据和行锁删掉，完成数据清理即可。
+
+![image-20220415231811722](https://gitee.com/firewolf/allinone/raw/master/images/image-20220415231811722.png)
+
+### 二阶段回滚
+
+二阶段如果是回滚的话，Seata就需要回滚一阶段已经执行的『业务SQL』，还原数据。
+
+回滚的方式便是用"before image"还原业务数据；但在还原前首先要校验脏写，对比"数据库当前业务据"和"after image"，如果两份数据完全一致就说明没有脏写，可以还原业务数据，如果不一致就说明有脏写，出现脏写就需要转人工处理。
+
+![image-20220415231933135](https://gitee.com/firewolf/allinone/raw/master/images/image-20220415231933135.png)
 
 
 
@@ -907,22 +1095,28 @@ https://blog.csdn.net/hxyascx/article/details/89512278
 ## Spring 框架中都用到的设计模式
 
 - 简单工厂：BeanFactory
-
 - 工厂方法：FactoryBean
-
 - 单例模式：Bean实例
-
 - 代理模式：AOP、事务支持
-
 - 观察者模式：Spring的事件监听
-
 - 模板方法模式：Spring提供的各种扩展，如Bean的生命周期，IOC容器过程。
-
 - 责任链模式：AOP的方法调用
-
 - 适配器模式：SpringMVC中的HandlerAdapter
-
 - 装饰器模式：BeanWrapper
 
-  
+
+
+## Spring监听器机制
+
+观察者模式、通过多线程实现一步发布事件能力
+
+spring的事件监听有三个部分组成：
+
+**事件**（ApplicationEvent) ：负责对应相应监听器 事件源发生某事件是特定事件监听器被触发的原因。
+
+**监听器(**ApplicationListener)： 对应于观察者模式中的**观察者**。监听器监听特定事件,并在内部定义了事件发生后的响应逻辑。
+
+**事件发布器**（ApplicationEventMulticaster ）：对应于观察者模式中的**被观察者/主题， 负责通知观察者** 对外提供发布事件和增删事件监听器的接口,维护事件和事件监听器之间的映射关系,并在事件发生时负责通知相关监听器
+
+
 
