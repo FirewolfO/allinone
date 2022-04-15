@@ -1,20 +1,6 @@
 [toc]
 
-# Filter 、拦截器区别，项目使用地方
-
-- filter接口在javax.servlet包下面，是servlet规定的。inteceptor定义在org.springframework.web.servlet中，可以用于web程序，也可以用于普通的应用；
-- filter是servlet容器支持的，interceptor是spring框架支持的
-- filter通过dochain放行，interceptor通过prehandler放行。
-- filter只在方法前后执行，interceptor粒度更细，可以深入到方法前后，异常抛出前后
-- 拦截器是基于Java反射的，
-
-> 执行顺序：Filter > Listener > Interceptor
-
-
-
 # IOC
-
-
 
 ## IOC实现机制
 
@@ -267,6 +253,22 @@ FactoryBean是一个bean，但是它是一个特殊的bean，所以也是由Bean
 ## Spring如何处理线程并发问题？
 
 ThreadLocal
+
+
+
+## Spring整合MyBatis将Mapper接口注册为Bean原理
+
+### 注册到Spring容器中
+
+- 首先MyBatis的Mapper接口核心是**JDK动态代理**，由于没有实现，Spring会排除接口，无法注册到IOC容器中。
+- 通过**自定义扫描器**（继承Spring内部扫描器ClassPathBeanDefinitionScanner ) 重写排除接口的方法（isCandidateComponent）
+- Mybatis通过实现**BeanDefinitionRegistryPostProcessor** 动态注册BeanDefinition；
+- 此时无法无法实例化
+
+### 实例化
+
+- 需要将BeanDefinition的BeanClass 替换成JDK动态代理的实例
+- Mybatis 通过**FactoryBean**的工厂方法设计模式可以自由控制Bean的实例化过程，可以在getObject方法中创建JDK动态代理
 
 
 
@@ -546,6 +548,8 @@ ThreadLocal
 
 ## 传播行为
 
+### 7种传播行为
+
 - REQUIRED：如果当前没有事务，就创建一个事务，如果已经存在一个事务，就加入这个事务
 - REQUIRES_NEW：如果当前存在事务，则把当前事务挂起，并重新创建新的事务并执行，直到新的事务提交或者回滚，才会恢复执行原来的事务
 - SUPPORTS：支持当前事务，如果当前没有事务，就以非事务的方式执行。外部不存在事务时，不会开启新的事务，外部存在事务时，将其加入外部事
@@ -553,6 +557,16 @@ ThreadLocal
 - NOT_SUPPORTED：以非事务方式执行，如果当前操作在一个事务中，则把当前事务挂起，直到当前操作完成再恢复事务的执行。如果当前操作存在事务，则把事务挂起，以非事务的方式运行
 - NEVER：以非事务的方式执行，如果当前操作存在事务，则抛出异常
 - NESTED：如果当前方法有一个事务正在运行，则这个方法应该运行在一个嵌套事务中，被嵌套的事务可以独立于被封装的事务进行提交或者回滚。如果没有活动事务，则按照REQUIRED事务传播类型执行。
+
+### 实现原理
+
+.Spring的事务信息是存在ThreadLocal中的， 所以一个线程永远只能有一个事务。
+
+如：
+
+- REQUIRED：当传播行为是融入外部事务则拿到ThreadLocal中的Connection、共享一个数据库连接共同提交、回滚； 
+
+- REQUIRES_NEW：当传播行为是创建新事务，会再将外部事务暂存起来，然后将嵌套新事务存入ThreadLocal； 当嵌套事务提交、回滚后，会将暂存的事务信息恢复到ThreadLocal中
 
 
 
@@ -574,17 +588,201 @@ ThreadLocal
 
 
 
-# 对Spring，SpringBoot的理解
+## Spring事务实现原理
+
+本质是上也是使用AOP来完成的，所以跟SpringAOP基本一致；
+
+1. 解析切面
+
+   bean的创建前第一个bean的后置处理器进行解析advisor（通过对@Transacational解析的切点）
+
+2. 创建动态代理
+
+   bean的初始化后调用bean的后置处理器进行创建动态代理(有接口使用jdk，没接口使用cglib)， 创建动态代理之前会先根据advisor中pointCut 匹配@Transacational( 方法里面是不是有、类上面是不是有、接口或父类上面是不是有 )  ， 匹配到就创建动态代理。
+
+   ```java
+   try{
+       a.创建一个数据库连接Connection, 并且修改数据库连接的autoCommit属性为false，禁止此连接的自动提交，这是
+       实现Spring事务非常重要的一步
+   
+       b.然后执行目标方法方法，方法中会执行数据库操作sql 
+   }catch{
+   	6.如果出现了异常，并且这个异常是需要回滚的就会回滚事务，否则仍然提交事务
+   }
+   ```
+
+3.调用： 动态代理
+
+
+
+## Spring事务的失效原因
+
+同AOP失效原因
+
+
+
+# SpringMVC
+
+## SpringMVC工作原理
+
+1. 用户向服务器发送请求，请求被Spring 前端控制Servelt DispatcherServlet的doDispatcher捕获；
+
+2. HandlerMapping根据请求获得该Handler配置的所有相关的对象（包括Handler对象以及Handler对象对应的拦截器），最后以HandlerExecutionChain对象的形式返回;
+
+3. DispatcherServlet 根据获得的Handler，选择一个合适的HandlerAdapter。（**附注**：如果成功获HandlerAdapter后，此时将开始执行拦截器的preHandler(...)方法）
+
+4. 通过HandlerAdapter提取Request中的模型数据，填充Handler入参，开始执行Handler（Controller)。 在填充Handler的入参过程中，根据你的配置，Spring将帮你做一些额外的工作：
+
+   - HttpMessageConveter： 将请求消息（如Json、xml等数据）转换成一个对象，将对象转换为指定的响应信息
+   - 数据转换：对请求消息进行数据转换。如String转换成Integer、Double等
+   - 数据格式化：对请求消息进行数据格式化。 如将字符串转换成格式化数字或格式化日期等
+   - 数据验证： 验证数据的有效性（长度、格式等），验证结果存储到BindingResult或Error；
+
+5. Handler执行完成后，向DispatcherServlet 返回一个ModelAndView对象
+
+6. 通过HandlerAdapter调用所有拦截器的postHandle方法
+
+7. 根据返回的ModelAndView，选择一个适合的ViewResolver（必须是已经注册到Spring容器中的ViewResolver)返回给DispatcherServlet ；
+
+8. ViewResolver 结合Model和View，来渲染视图
+
+9. 通过HandlerAdapter调用所有拦截器的afterCompletion方法
+
+10. 将渲染结果返回给客户端。
+
+    
+
+## Spring和SpringMVC父子容器
+
+### 什么是父子容器？
+
+springweb项目中创建了2个WebApplicationContext，分别是spring创建的容器applicationContext.xml和springmvc创建的dispatcher-servlet.xml。
+
+- **springmvc   dispatcher-servlet.xml**：在MVC三层模型中的controller控制层中，与视图解析器ViewReslover，HandlerMapping处理器映射器等打交道，用于前后端交互
+- **spring   applicationContext.xml**：在MVC三层模型中的service业务层和Dao持久层中，管理bean的注入以及bean所相关依赖对象的注入
+
+ ![image-20220415171131074](https://gitee.com/firewolf/allinone/raw/master/images/image-20220415171131074.png)
+
+### 父子容器特点
+
+1. 父容器和子容器是相互隔离的，他们内部可以存在名称相同的bean
+2. 子容器可以访问父容器中的bean，而父容器不能访问子容器中的bean
+3. 调用子容器的getBean方法获取bean的时候，会沿着当前容器开始向上面的容器进行查找，直到找到对应的bean为止
+4. 子容器中可以通过任何注入方式注入父容器中的bean，而父容器中是无法注入子容器中的bean，原因是第2点
+
+
+
+### 为什么需要父子容器
+
+就功能性来说不用子父容器也可以完成（参考：SpringBoot就没用子父容器）
+
+1. <font color=red>**划分框架边界**</font>。有点单一职责的味道。service、dao层我们一般使用spring框架来管理；controller层交给springmvc管理
+
+2. 规范整体架构：使父容器service无法访问子容器controller、子容器controller可以访问父容器 service
+
+3. 方便子容器的切换：如果现在我们想把web层从spring mvc替换成struts，那么只需要将spring­mvc.xml替换成Struts的配置文件struts.xml即可，而spring­core.xml不需要改变。
+
+4. 为了节省重复bean创建（避免子容器创建多余的Bean）
+
+   
+
+### 是否可以把所有Bean都通过Spring容器来管管理
+
+也就是，所有的Bean，都是用Spring容器进行管理（全部配置到Spring文件中）
+
+不可以。这样会导致我们请求接口的时候产生404。 如果所有的Bean都交给父容器，SpringMVC在初始化HandlerMethods的时候（initHandlerMethods）无法根据Controller的handler方法注册HandlerMethod，并没有去查找父容器的bean；也就无法根据请求URI 获取到HandlerMethod来进行匹配。
+
+
+
+### 是否可以用子容器来管理所有bean
+
+也就是，所有的Bean，都让spring-mvc子容器进行管理（全部配置到springmvc的文件中）
+
+可以。因为父容器的体现无非是为了获取子容器不包含的bean, 如果全部包含在子容器完全用不到父容器了， 所以是可以全部放在springmvc子容器来管理的。
+
+虽然可以这么做不过一般应该是不推荐这么去做的，一般人也不会这么干的。**如果你的项目里有用到事务、或者aop记得也需要把这部分配置需要放到Spring-mvc子容器的配置文件来，不然一部分内容在子容器和一部分内容在父容器,可能就会导致你的事务或者AOP不生效**。   所以如果aop或事物如果不生效也有可能是通过父容器(spring)去增强子容器(Springmvc)，也就无法增强。
+
+
+
+# SpringBoot
+
+
+
+## SpringBoot相对于Spring有什么优点？
+
+SpringBoot的用来快速开发Spring应用的一个脚手架、其设计目的是用来简新Spring应用的初始搭建以及开发过程。
+
+- 提供了很多内置的Starter结合自动配置，对主流框架无配置集成、开箱即用。
+- 简化了开发，采用JavaConfig的方式可以使用零xml的方式进行开发（Spring3具备了）
+- 内置Web容器无需依赖外部Web服务器，省略了Web.xml，直接运行jar文件就可以启动web应用；
+- 管理了常用的第三方依赖的版本，减少出现版本冲突的问题；
+- 自带了监控功能，可以监控应用程序的运行状况，或者内存、线程池、Http 请求统计等，同时还提供了优雅关闭应用程序等功能。
+
+
+
+## Spring和SpringBoot的关系和区别
+
+广义上：Spring是一个生态，SpringBoot是这个生态中的一个产品
+
+狭义上：Spring通常指SpringframeWork，提供了基础的容器能力；SpringBoot是用来快速构建Spring应用的脚手架；
+
+
+
+## SpringBoot核心注解
+
+- @SpringBootApplication注解：这个注解标识了一个SpringBoot工程，它实际上是另外三个注解的组合
+  - @SpringBootConfiguration：这个注解实际就是一个@Configuration，表示启动类也是一个配置类
+  - @EnableAutoConfiguration：向Spring容器中导入了一个Selector，用来加载ClassPath下SpringFactories中所定义的自动配置类，将这些自动加载为配置Bean 
+  - @ComponentScan（Spring的）：指定要扫描的类
+- @Conditional 也很关键， 如果没有它我们无法在自定义应用中进行定制开发
+  - @ConditionalOnBean
+  - @ConditionalOnClass
+  - @ConditionalOnExpression
+  - @ConditionalOnMissingBean
+  - .....
+
+
+
+## SpringBoot自动装配原理
+
+1. 通过在启动类标注@SpringBootApplication，该注解中的@SpringBootConfiguration 引入了**@EnableAutoConfiguration** (负责启动自动配置功能）
+2. @EnableAutoConfiguration 引入了**@Import**
+3. Spring容器启动时：加载Ioc容器时会解析@Import 注解
+4. @Import导入了一个**DeferredImportSelector**(它会使SpringBoot的自动配置类的顺序在最后，这样方便我们扩展和覆盖)
+5. 然后读取所有的**/META-INF/spring.factories**文件（伪SPI)
+6. 通过查找`org.springframework.boot.autoconfigure.EnableAutoConfiguration`key后面配置的类，过滤出所有**AutoConfigurtionClass**类型的类。
+7. 最后通过**@ConditioOnXXX**排除无效的自动配置类
+8. 加载有效的Bean进行加载
+
+
+
+## 为什么SpringBoot的Jar可以直接运行
+
+1. SpringBoot提供了一个插件spring-boot-maven-plugin用于把程序打包成一个可执行的jar包。
+2. Spring Boot应用打包之后，生成一个Fat jar(jar包中包含jar)，包含了应用依赖的jar包和Spring Boot loader相关的类。并在manifest配置了Main-Class
+3. java -jar会去找jar中的manifest.mf文件，在那里面找到真正的启动类（mainfest.mf文件中的Main-Class属性值））；他是一个JarLauncher（`org.springframework.boot.loader.JarLauncher`）
+4. JarLauncher负责创建一个LaunchedURLClassLoader来加载boot-lib下面的jar，并以一个新线程启动应用的启动类的Main函数（找到mainfest.mf中的Start-Class属性值）
+
+
+
+## SpringBoot启动过程
+
+### 初始化SpringApplication
+
+
+
+### 执行SpringApplication的run方法
+
+1. 运行main方法： 初始化new SpringApplication，从spring.factories 读取 listener ApplicationContextInitializer  
+2. 运行SpringApplication的run方法，
+
+https://blog.csdn.net/weixin_44688301/article/details/115872167
 
 
 
 
 
-# SpringBoot自动装配原理
-
-
-
-# 自定义过starter么？用来做什么？怎么自定义的
+## 自定义starter
 
 - META-INF下面创建spring.factories文件，里面配置 autoConfiguration= 自动配置类
 - 在自己的自动配置类里面，装配自己的bean，通过一些@ConditionalOnXXX的形式来进行条件装配
@@ -689,4 +887,42 @@ https://blog.csdn.net/hxyascx/article/details/89512278
 > ```
 
 可以通过给网关整合上述限流能力达到分布式限流的效果
+
+
+
+# 其他
+
+## Filter 、拦截器区别，项目使用地方
+
+- filter接口在javax.servlet包下面，是servlet规定的。inteceptor定义在org.springframework.web.servlet中，可以用于web程序，也可以用于普通的应用；
+- filter是servlet容器支持的，interceptor是spring框架支持的
+- filter通过dochain放行，interceptor通过prehandler放行。
+- filter只在方法前后执行，interceptor粒度更细，可以深入到方法前后，异常抛出前后
+- 拦截器是基于Java反射的，
+
+> 执行顺序：Filter > Listener > Interceptor
+
+
+
+## Spring 框架中都用到的设计模式
+
+- 简单工厂：BeanFactory
+
+- 工厂方法：FactoryBean
+
+- 单例模式：Bean实例
+
+- 代理模式：AOP、事务支持
+
+- 观察者模式：Spring的事件监听
+
+- 模板方法模式：Spring提供的各种扩展，如Bean的生命周期，IOC容器过程。
+
+- 责任链模式：AOP的方法调用
+
+- 适配器模式：SpringMVC中的HandlerAdapter
+
+- 装饰器模式：BeanWrapper
+
+  
 
