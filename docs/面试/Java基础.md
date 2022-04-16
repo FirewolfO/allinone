@@ -1,3 +1,5 @@
+[toc]
+
 # JAVA创建对象方式
 
 1. new
@@ -6,10 +8,101 @@
 4. clone
 5. String = "xxx"（特殊）
 
-# HashMap get操作时间复杂度
+# HashMap 
+
+## 底层实现
+
+### JDK7
+
+数组 + 链表
+
+### JDK8
+
+数组 + 红黑树 + 链表
+
+
+
+## Get操作时间复杂度
 
 - 在理想状态下，及未发生任何hash碰撞，数组中的每一个链表都只有一个节点，那么get方法可以通过hash直接定位到目标元素在数组中的位置，时间复杂度为O(1)。
 - 若发生hash碰撞，则可能需要进行遍历寻找，n个元素的情况下，链表时间复杂度为O(n)、红黑树为O(logn)
+
+
+
+## 存在问题
+
+- JDK7
+  - 并发问题
+  - 死循环
+  - 数据丢失
+- JDK8
+  - 并发问题
+
+# ConcurrentHashMap
+
+参考文献：
+
+- https://blog.csdn.net/qq_39625353/article/details/107019472
+- https://blog.csdn.net/xuxinyuande/article/details/105738873
+
+## 底层结构
+
+### JDK7
+
+ **Segment 数组 + HashEntry 数组 + 链表，同步使用Lock实现，锁粒度为Segment**
+
+![image-20220416103005463](https://gitee.com/firewolf/allinone/raw/master/images/image-20220416103005463.png)
+
+#### put操作
+
+1. 第一次计算key的hash，找到Segment元素的位置
+2. 判断当前Segment元素是否初始化，若没有初始化，则通过CAS进行初始化
+3. 第二次计算key的hash，找到HashEntry数组的位置；
+4. 由于Segment继承了ReentrantLock锁，所以TryLock() 尝试获取锁，如果锁获取成功，将数据插入到HashEntry位置，如果遇到Hash冲突，则插入到链表的末端；如果锁被其他线程获取，那么就会以自旋的方式重新获取锁，超过指定的次数之后还获取不到的话，就会挂起，等待唤醒；
+
+#### get操作
+
+1. 第一次计算key的hash，找到Segment元素的位置；
+2. 第二次计算key的hash，找到HashEntry数组的位置；
+3. 遍历链表，匹配就返回，否则返回null；
+
+#### size操作
+
+1. 采用不加锁的方式，多次计算count，（最多三次），比较结果，如果相同的话，就准确，否则的话计算的结果不准确；
+2. 采用加锁的方式，给所有Segment元素加锁，计算出count值，这个是准确的；
+
+
+
+### JDK8
+
+**Node 数组 + 链表 / 红黑树，同步使用CAS + Synchronized，锁粒度为HashEntry**
+
+![image-20220416101717080](https://gitee.com/firewolf/allinone/raw/master/images/image-20220416101717080.png)
+
+#### put操作
+
+1. 计算hashCode
+2. 判断是否需要初始化，如果没有初始化就先调用initTable（）方法来进行初始化过程
+   - 这里会判断一个变量sizeCtl
+     - -1 说明正在初始化
+     - -N 说明有N-1个线程正在进行扩容
+     - 表示 table 初始化大小，如果 table 没有初始化
+     - 表示 table 容量，如果 table　已经初始化。
+3. 如果没有hash冲突就直接CAS插入，失败则自旋保证成功
+4. 如果当前位置的 `hashcode == MOVED == -1表明还在进行扩容操作就先进行扩容；
+5. 如果以上都不满足，就通过synchronized加锁来保证线程安全，这里有两种情况，一种是链表形式就直接遍历到尾端插入，一种是红黑树就按照红黑树结构插入；
+6. 最后一个如果该链表的数量大于阈值TREEIFY_THRESHOLD（默认是8），就要先转换成黑红树的结构，break再一次进入循环；
+7. 如果添加成功就调用addCount（）方法统计size，并且检查是否需要扩容；
+
+#### get操作
+
+1. 计算hash值，定位到该table索引位置，如果是首节点符合就返回；
+2. 如果遇到扩容的时候，会调用标志正在扩容节点ForwardingNode的find方法，查找该节点，匹配就返回
+3. 以上都不符合的话，就往下遍历节点，匹配就返回，否则最后就返回null；
+
+#### size操作
+
+直接返回count
 
 
 
@@ -57,18 +150,10 @@ ThreadLocal的原理是操作Thread内部的一个ThreadLocalMap，这个Map的E
 - 依赖倒置：不应该依赖具体的类，而应该依赖抽象，强调面向接口编程
 - 接口隔离：接口的职责尽量小
 - 迪米特原则：强调尽量少依赖不需要的类，减少耦合
-- 开闭原则：对修改关闭，对扩展开房
+- 开闭原则：对修改关闭，对扩展开放
 
 
 
 # Arthas原理
 
 https://zhuanlan.zhihu.com/p/328974405
-
-
-
-# HashMap问题
-
-
-
-# HashMap、ConcurrentHashMap底层实现
