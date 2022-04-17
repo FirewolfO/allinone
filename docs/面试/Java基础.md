@@ -200,4 +200,71 @@ ThreadLocal的原理是操作Thread内部的一个ThreadLocalMap，这个Map的E
 
 参考文献：https://zhuanlan.zhihu.com/p/328974405
 
+https://blog.csdn.net/fenglllle/article/details/119737716
+
 简化：探针 agent（类加载）  + AOP（功能实现）
+
+
+
+
+
+# Java Agent
+
+参考文献：
+
+- https://www.jianshu.com/p/d573456401eb
+- https://blog.csdn.net/chuixue24/article/details/103829931
+
+## 支持方式
+
+1.在 JVM 启动的时加载 JDK5开始支持
+
+       使用javaagent VM参数 java -javaagent:xxxagent.jar xxx，这种方式在 main 方法之前执行 agent 中的 premain 方法
+       public static void premain(String agentArgument, Instrumentation instrumentation) throws Exception
+
+
+ 2.在 JVM 启动后 Attach JDK6开始支持
+
+    通过 Attach API 进行加载，在进程存在的时候，动态attach，这种方式会在 agent 加载以后执行 agentmain 方法
+       public static void agentmain(String agentArgument, Instrumentation instrumentation) throws Exception
+## 实现原理
+
+### 启动时修改
+
+![image-20220417122419080](https://gitee.com/firewolf/allinone/raw/master/images/image-20220417122419080.png)
+
+启动时修改主要是在jvm启动时，执行native函数的Agent_OnLoad方法，在方法执行时，执行如下步骤：
+
+- 创建InstrumentationImpl对象
+- 监听ClassFileLoadHook事件
+- 调用InstrumentationImpl的loadClassAndCallPremain方法，在这个方法里会去调用javaagent里MANIFEST.MF里指定的Premain-Class类的premain方法
+
+### 运行时修改
+
+![image-20220417122509863](https://gitee.com/firewolf/allinone/raw/master/images/image-20220417122509863.png)
+
+运行时修改主要是通过jvm的attach机制来请求目标jvm加载对应的agent，执行native函数的Agent_OnAttach方法，在方法执行时，执行如下步骤：
+
+- 创建InstrumentationImpl对象
+- 监听ClassFileLoadHook事件
+- 调用InstrumentationImpl的loadClassAndCallAgentmain方法，在这个方法里会去调用javaagent里MANIFEST.MF里指定的Agentmain-Class类的agentmain方法
+
+### 核心API
+
+- Instrument
+
+  利用 java.lang.instrument 做动态 Instrumentation 是 Java SE 5 的新特性，**它把 Java 的 instrument 功能从本地代码中解放出来，使之可以用 Java 代码的方式解决问题**。使用 Instrumentation，**开发者可以构建一个独立于应用程序的代理程序（Agent），用来监测和协助运行在 JVM 上的程序，甚至能够替换和修改某些类的定义**。有了这样的功能，开发者就可以实现更为灵活的运行时虚拟机监控和 Java 类操作了，这样的特性实际上提供了 **一种虚拟机级别支持的 AOP 实现方式**，使得开发者无需对 JDK 做任何升级和改动，就可以实现某些 AOP 的功能了。
+
+- ClassFileLoadHook
+
+  ClassFileLoadHook是一个jvmti（jvm tool interface）事件，该事件是instrument agent的一个核心事件，主要是在读取字节码文件回调时调用，内部调用了TransFormClassFile函数。
+
+- TranFormClassFile
+
+  TransFormClassFile的主要作用是调用java.lang.instrument.ClassFileTransformer的tranform方法，该方法由开发者实现，通过instrument的addTransformer方法进行注册
+
+整体流程：
+
+在字节码文件加载的时候，会触发ClassFileLoadHook事件，该事件调用TransFormClassFile，通过经由instrument的addTransformer注册的方法完成整体的字节码修改。
+
+对于已加载的类，需要调用retransformClass函数，然后经由redefineClasses函数，在读取已加载的字节码文件后，若该字节码文件对应的类关注了ClassFileLoadHook事件，则调用ClassFileLoadHook事件。后续流程与类加载时字节码替换一致。
