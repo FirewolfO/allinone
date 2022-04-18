@@ -52,6 +52,19 @@
    - epoll 只会对“活跃”的socket进行操作——这是因为在内核实现中，epoll是根据每个fd上面的callback函数实现的，实现了伪异步I/O
 3. 使用mmap加速内核与用户空间的消息传递
 
+### epoll原理
+
+参考文献：https://www.cnblogs.com/wangcp-2014/p/15828998.html
+
+过程：
+
+- 创建epoll对象
+- 维护监视列表
+- 接受数据
+- 阻塞和唤醒进程
+
+
+
 ### 信号驱动I/O模型
 
  ![image-20220405212534129](https://gitee.com/firewolf/allinone/raw/master/images/image-20220405212534129.png)
