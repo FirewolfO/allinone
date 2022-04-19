@@ -5,52 +5,27 @@ import java.util.List;
 import static utils.LinkUtil.*;
 
 class Solution {
-    List<String> res = new ArrayList<>();
-    List<String> one = new ArrayList<>();
-
-
     public static void main(String[] args) {
-        List<String> strings = new Solution().restoreIpAddresses("25525511135");
+        int i = new Solution().canCompleteCircuit(new int[]{2, 3, 4}, new int[]{3, 4, 3});
+        System.out.println(i);
     }
 
-    public List<String> restoreIpAddresses(String s) {
-        dfs(s, 0);
-        return res;
-    }
-
-    private void dfs(String s, int index) {
-        if (index >= s.length()) {
-            if (one.size() == 4) {
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < one.size() - 1; i++) {
-                    sb.append(one.get(i)).append(".");
+    public int canCompleteCircuit(int[] gas, int[] cost) {
+        int len = gas.length;
+        for (int i = 0; i < gas.length; i++) {
+            int k = i;
+            int other = 0;
+            while (k < i + len) {
+                int index = (k + len) % len;
+                other += (gas[index] - cost[(k + len + 1) % len]);
+                if (index == (i - 2 + len) % len) {
+                    return i;
                 }
-                sb.append(one.get(one.size() - 1));
-                res.add(sb.toString());
-            }
-            return;
-        }
-        if (one.size() > 4) return;
-        one.add(s.substring(index, index + 1));
-        dfs(s, index + 1);
-        one.remove(one.size() - 1);
-
-        if (s.charAt(index) == '0') return;
-        if (index < s.length() - 1) {
-            one.add(s.substring(index, index + 2));
-            dfs(s, index + 2);
-            one.remove(one.size() - 1);
-        }
-
-
-        if (index < s.length() - 2) {
-            String item = s.substring(index, index + 3);
-            int count = Integer.parseInt(item);
-            if (count <= 255) {
-                one.add(s.substring(index, index + 3));
-                dfs(s, index + 3);
-                one.remove(one.size() - 1);
+                if (other < 0) break;
+                k++;
             }
         }
+        return -1;
     }
+
 }
