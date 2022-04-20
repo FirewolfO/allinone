@@ -100,7 +100,7 @@ max_binlog_size=100M
 
 
 
-## Bin Log 格式
+## Bin Log 记录模式
 
 - Statement
 

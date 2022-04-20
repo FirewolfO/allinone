@@ -12,6 +12,8 @@
 
 ## 底层实现
 
+元素用Node维护：`static class Node<K,V> implements Map.Entry<K,V>`
+
 - JDK7：数组（hash桶） + 链表
 - JDK8：数组 +  链表 + 红黑树
 
@@ -54,6 +56,8 @@
   
 
 # ConcurrentHashMap
+
+元素用Node维护：`static class Node<K,V> implements Map.Entry<K,V>`
 
 参考文献：
 

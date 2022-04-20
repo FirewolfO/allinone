@@ -252,6 +252,15 @@ rocketmq:
 6. Producer处理回查消息，返回对应的本地事务的执行结果；
 7. Broker针对回查消息的结果，执行Commit或Rollback操作，同Step4
 
+
+
+#### 执行本地事务和消息回查机制
+
+RocketMQ内部提供了本地事务的监听接口RocketMQLocalTransactionListener。Rocket-MQLocalTransactionListener接口中主要有executeLocalTransaction(Message,Object)和check-LocalTransaction(Message)两个方法
+
+- 执行本地事务：调用executeLocalTransaction方法，参数：一个是Message类型参数，表示回传的消息；另一个是Object类型参数，是事务发起方调用RocketMQ的send()方法时传递的参数。此方法会返回事务的状态，当返回COMMIT时，表示事务提交，当返回ROLLBACK时，表示事务回滚，当返回UNKNOW时，表示事务回调
+- 回查事务状态：调用checkLocalTransaction方法，参数表示要回查的事务消息。此方法返回事务的状态，同executeLocalTransaction(Message,Object)方法返回的事务状态
+
 ### 使用
 
 1. 给消息设置属性为事务消息PROPERTY_TRANSACTION_PREPARED；
