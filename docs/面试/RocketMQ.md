@@ -254,7 +254,7 @@ rocketmq:
 
 
 
-#### 执行本地事务和消息回查机制
+### 执行本地事务和消息回查机制
 
 RocketMQ内部提供了本地事务的监听接口RocketMQLocalTransactionListener。Rocket-MQLocalTransactionListener接口中主要有executeLocalTransaction(Message,Object)和check-LocalTransaction(Message)两个方法
 
