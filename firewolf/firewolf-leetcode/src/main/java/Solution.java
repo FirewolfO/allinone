@@ -7,50 +7,23 @@ import static utils.LinkUtil.*;
 class Solution {
 
     public static void main(String[] args) {
-        int res = new Solution().minCut("aaba");
-        System.out.println(res);
+        new Solution().compareVersion("0.1","1.1");
     }
 
-    boolean[][] dp;
-    int minCount;
-    public int minCut(String s) {
-        minCount = s.length();
-        int len = s.length();
-        dp = new boolean[len][len];
-        for(int i = 0; i < len; i++){
-            dp[i][i] = true;
-        }
-        for(int Len = 2; Len <= len; Len++){
-            for(int i = 0; i < len; i++){
-                int j = Len + i - 1;
-                if(j >= len) break;
-                if(s.charAt(i) != s.charAt(j)){
-                    dp[i][j] = false;
-                }else{
-                    if(Len <= 3){
-                        dp[i][j] = true;
-                    }else{
-                        dp[i][j] = dp[i+1][j-1];
-                    }
-                }
+    public int compareVersion(String version1, String version2) {
+        String[] versionToken1 = version1.split("\\.");
+        String[] versionToken2 = version2.split("\\.");
+        int index = 0;
+        while (index < versionToken1.length && index < versionToken2.length) {
+            int v1 = Integer.parseInt(versionToken1[index]);
+            int v2 = Integer.parseInt(versionToken2[index]);
+            if (v1 < v2) {
+                return -1;
+            } else if (v1 > v2) {
+                return 1;
             }
+            index++;
         }
-        dfs(s,0,0);
-        return minCount-1;
-    }
-
-    private void dfs(String s, int index,int count){
-        if(index == s.length()){
-            minCount = Math.min(minCount,count);
-            return;
-        }
-        int i = s.length()-1;
-        while(i >= index){
-            if(dp[index][i]){
-                dfs(s,i+1,count+1);
-                break;
-            }
-            i--;
-        }
+        return 0;
     }
 }
