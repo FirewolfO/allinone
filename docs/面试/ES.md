@@ -246,10 +246,6 @@ master选举是由master-eligible节点发起，当一个master-eligible节点�
 
 https://blog.csdn.net/lsx2017/article/details/1139177
 
-定位CPU飙升的工具
-
-
-
 
 
 # 节点注册
@@ -264,8 +260,31 @@ ZenDiscovery
 
 # 主从同步机制
 
+参考文献：https://blog.csdn.net/u014618114/article/details/115417017
 
+## 写入步骤
 
+1. 客户端向 Node 1 发送新建、索引或者删除请求。coodinate（协调）节点通过hash算法可以计算出是在哪个主分片上，然后路由到对应的节点shard = hash(document_id) % (num_of_primary_shards)
+2. 节点使用文档的 _id 确定文档属于分片 0 。请求会被转发到 Node 3，因为分片 0 的主分片目前被分配在 Node 3 上。
+3. Node 3 在主分片上面执行请求。如果成功了，它将请求并行转发到 Node 1 和 Node 2 的副本分片上。一旦所有的副本分片都报告成功, Node 3 将向协调节点报告成功，协调节点向客户端报告成功。
+4. 在客户端收到成功响应时，文档变更已经在主分片和所有副本分片执行完成，变更是安全的
 
+## 写一致性保障
+
+对于增删改：es API为我们提供了一个可自定的参数consistency。该参数可以让我们自定义处理一次增删改请求，是不是必须要求所有分片都是active的才会执行
+
+有三个取值：
+
+- one：要求我们这个写操作，只要有一个primary shard是active活跃可用的，就可以执行。
+- all：要求我们这个写操作，必须所有的primary shard和replica shard都是活跃的，才可以执行这个写操作
+- quorum：默认的值，要求所有的shard中，必须是大部分的shard都是活跃的，可用的，才可以执行这个写操作
+  
 
 # 相关度原理
+
+① TF(词频term frequency): 关键词在每个doc中出现的次数
+② IDF(反文档词频inversed document frequency):关键词在整个索引中出现的次数
+③ norm:字段长度越长，值越小。
+
+公式计算
+
