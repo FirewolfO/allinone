@@ -1,3 +1,5 @@
+import utils.ArrayUtils;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -7,23 +9,28 @@ import static utils.LinkUtil.*;
 class Solution {
 
     public static void main(String[] args) {
-        new Solution().compareVersion("0.1","1.1");
+        int[][] ints = ArrayUtils.to2Array("[[1,4,7,11,15],[2,5,8,12,19],[3,6,9,16,22],[10,13,14,17,24],[18,21,23,26,30]]", ",");
+        boolean b = new Solution().searchMatrix(ints, 5);
+        System.out.println(b);
     }
 
-    public int compareVersion(String version1, String version2) {
-        String[] versionToken1 = version1.split("\\.");
-        String[] versionToken2 = version2.split("\\.");
-        int index = 0;
-        while (index < versionToken1.length && index < versionToken2.length) {
-            int v1 = Integer.parseInt(versionToken1[index]);
-            int v2 = Integer.parseInt(versionToken2[index]);
-            if (v1 < v2) {
-                return -1;
-            } else if (v1 > v2) {
-                return 1;
+    public boolean searchMatrix(int[][] matrix, int target) {
+        int m = matrix.length;
+        int n = matrix[0].length;
+        for (int row = 0; row < m; row++) {
+            int left = 0;
+            int right = n - 1;
+            while (left <= right) {
+                int mid = (left + right + 1) >> 1;
+                if (matrix[row][mid] == target) return true;
+                if (matrix[row][mid] > target) {
+                    right = mid - 1;
+                } else {
+                    left = mid + 1;
+                }
             }
-            index++;
         }
-        return 0;
+        return false;
     }
+
 }

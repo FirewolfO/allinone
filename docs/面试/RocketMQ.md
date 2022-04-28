@@ -297,6 +297,14 @@ RocketMQ内部提供了本地事务的监听接口RocketMQLocalTransactionListen
 
 
 
+### 长轮询 vs 短轮询
+
+- http 长轮询：是服务器收到请求后如果有数据, 立刻响应请求; 如果没有数据就会 hold 一段时间,这段时间内如果有数据立刻响应请求; 如果时间到了还没有数据, 则响应 http 请求;浏览器受到 http 响应后立在发送一个同样http 请求查询是否有数据;
+- http端轮询：是服务器收到请求不管是否有数据都直接响应 http 请求; 浏览器受到 http 响应隔一段时间在发送同样的http 请求查询是否有数据;
+- <font color=red>长轮询实时性更强，但是更消耗资源</font>
+
+
+
 参考文献：
 
 - https://blog.csdn.net/a646705816/article/details/111461528
