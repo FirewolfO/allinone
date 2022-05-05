@@ -892,25 +892,6 @@ slf4j + logback
 - 服务网关：<font color=blue>Spring Cloud Gateway</font>、Zuul、Kong
 - 分布式事务：<font color=blue>Seata</font>
 
-
-
-## Zuul 和 gateway对比
-
-### 区别
-
-- gateway吞吐率比zuul高，耗时比zuul少，性能比zuul高
-- gateway对比zuul多依赖了spring-webflux，
-- zuul仅支持同步，gateway支持异步。
-- gateway具有更好的扩展性
-
-### 相同点
-
-- 底层都是servlet
-
-- 两者均是web网关，处理的是http请求
-
-  
-
 ## Nacos
 
 参考文献：https://jishuin.proginn.com/p/763bfbd28d41
@@ -959,14 +940,38 @@ Nacos采用拉的方式拉是实现的。
 
   
 
-
-
 ## 网关
 
 ### 作用
 
 - 关注稳定与安全：全局性流控、屏蔽工具扫描、日志统计、黑白IP名单、证书/加解密等
-- 提供公共服务：服务降级、服务熔断、服务限流、路由与负载均衡、业务校验等；
+- 提供公共服务：服务降级、服务熔断、服务限流、动态路由与负载均衡、业务校验等；
+
+### GateWay原理
+
+客户端向 SpringCloud Gateway 发出请求。如果 Gateway Handler Mapping 中找到与请求相匹配的路由，将其发送到 Gateway Web Handler。Handler 再通过指定的过滤器链来将请求发送到我们实际的服务执行业务逻辑，然后返回。 过滤器之间用虚线分开是因为过滤器可能会在发送代理请求之前（pre）或之后（post）执行业务逻辑
+
+ ![image-20220429112340023](https://gitee.com/firewolf/allinone/raw/master/images/image-20220429112340023.png)
+
+### 使用方式
+
+#### 核心配置
+
+- id：我们自定义的路由 ID，保持唯一
+- uri：目标，要路由的服务地址。在这里路由的是 eureka-client-producer 提供方地址
+- predicates：路由条件，Predicate 接受一个输入参数，返回一个布尔值结果
+- filters：过滤规则，本示例暂时没用
+- /user/**：以 user 开头的接口 url，后面 * 是通配符
+
+动态路由：使用动态路由的时候，我们需要你通过配置注册中心的地址，从而动态发现多个服务实例
+
+### Zuul 和 gateway对比
+
+- gateway吞吐率比zuul高，耗时比zuul少，性能比zuul高
+- gateway对比zuul多依赖了spring-webflux，
+- zuul仅支持同步，gateway支持异步。
+- springcloud gateway 基于 spring 5、projec treactor、springboot 2，使用非阻塞式的 API，内置限流过滤器，支持长连接（比如 websockets），在高并发和后端服务响应慢的场景下比 zuul 1 的表现要好zuul 基于 servlet2.x 构建，使用阻塞的 API，没有内置限流过滤器，不支持长连接
+- gateway具有更好的扩展性
 
 
 
@@ -1011,9 +1016,21 @@ Hystrix通过将依赖的服务调用封装在Command中，监控统计服务调
 ##### 隔离机制
 
 - 线程隔离：Hystrix在用户请求和服务之间加入了线程池；Hystrix为每个依赖调用分配一个小的线程池，如果线程池已满调用将被立即拒绝，默认不采用排队.加速失败判定时间。线程数是可以被设定的。
+  - 线程池的主要缺点是增加了计算开销。每个命令的执行都在单独的线程完成，增加了排队、调度和上下文切换的开销
 - 信号隔离：信号隔离也可以用于限制并发访问，防止阻塞扩散, 与线程隔离最大不同在于执行依赖代码的线程依然是请求线程（该线程需要通过信号申请, 如果客户端是可信的且可以快速返回，可以使用信号隔离替换线程隔离,降低开销。）
+  - 但是信号量不支持异步，也不支持超时，也就是说当所请求的服务不可用时，信号量会控制超过限制的请求立即返回，但是已经持有信号量的线程只能等待服务响应或从超时中返回，即可能出现长时间等待
 
 ##### 整体流程
+
+1. 构造一个 HystrixCommand或HystrixObservableCommand对象，用于封装请求，并在构造方法配置请求被执行需要的参数；
+2. 执行命令，Hystrix提供了4种执行命令的方法，后面详述；
+3. 判断是否使用缓存响应请求，若启用了缓存，且缓存可用，直接使用缓存响应请求。Hystrix支持请求缓存，但需要用户自定义启动；
+4. 判断熔断器是否打开，如果打开，跳到第8步；
+5. 判断线程池/队列/信号量是否已满，已满则跳到第8步；
+6. 执行HystrixObservableCommand.construct()或HystrixCommand.run()，如果执行失败或者超时，跳到第8步；否则，跳到第9步；
+7. 统计熔断器监控指标；
+8. 走Fallback备用逻辑
+9. 返回请求响应
 
 ![image-20220428162358195](https://gitee.com/firewolf/allinone/raw/master/images/image-20220428162358195.png)
 

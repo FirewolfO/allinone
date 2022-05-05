@@ -10,11 +10,14 @@
     - 索引创建和删除
     - 跟踪节点状态
     - 决定分片如何分配
+  - Master-eligible：候选节点
+    - 和主节点的配置相同，在选举时可以被选举为主节点。
   - Voting ：投票节点
     - `node.voting_only = true` 仅仅投票，也可以作为数据节点
   - Coordinating：协调节点
     - 如果同时设置了data.master = false和data.data=false，那么此节点将成为仅协调节点。
     - 处理路由和搜索请求，智能的负载均衡
+    -  每一个节点都隐式的是一个协调节点
   - Data：数据节点
     - 存储索引数据
     - 对文档进行增删改查，聚合操作
@@ -104,7 +107,7 @@
 - 存储采用倒排索引
 -  https://www.jianshu.com/p/cd608a5cc8f2
 
-
+近实时刷盘
 
 
 
@@ -282,9 +285,9 @@ ZenDiscovery
 
 # 相关度原理
 
-① TF(词频term frequency): 关键词在每个doc中出现的次数
-② IDF(反文档词频inversed document frequency):关键词在整个索引中出现的次数
-③ norm:字段长度越长，值越小。
+① TF(词频term frequency)： 关键词在每个doc中出现的次数
+② IDF(反文档词频inversed document frequency)：关键词在整个索引中出现的次数
+③ norm：字段长度越长，值越小。
 
 公式计算
 

@@ -1,33 +1,24 @@
+import java.util.Arrays;
+
 public class Test {
 
-
     public static void main(String[] args) {
-        int x = 50;
-        int cont = 0;
-        while (x > 0) {
-            cont++;
-            x = x&(x-1);
-        }
-        System.out.println(cont);
+        int[] nums = new int[]{1,1,2,1,2,2,1};
+        new Test().wiggleSort(nums);
+        System.out.println("xxx");
     }
-
-    public int findLongestWrod(String str) {
-        int start = 0, end = 0;
-        int maxLen = 0;
-        int strLen = str.length();
-        char[] chars = str.toCharArray();
-        while (end < strLen) {
-            if (chars[end] == ' ') {
-                int curLen = end - start;
-                if (curLen > maxLen) {
-                    maxLen = curLen;
-                    if (maxLen > (strLen - start) / 2) break;
-                }
-                start = end + 1;
+    public void wiggleSort(int[] nums) {
+        Arrays.sort(nums);
+        int[] left = Arrays.copyOf(nums,nums.length / 2);
+        int[] right = Arrays.copyOfRange(nums,nums.length - left.length ,nums.length);
+        int l = 0;
+        int r =0;
+        for(int i = 0; i < nums.length;i++){
+            if(i % 2== 0){
+                nums[i] = left[l++];
+            }else{
+                nums[i] = right[r++];
             }
-            end++;
         }
-        if (end == strLen && maxLen == 0) return strLen - start;
-        return maxLen;
     }
 }
