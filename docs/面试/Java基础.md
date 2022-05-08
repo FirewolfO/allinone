@@ -25,6 +25,47 @@
 
 
 
+# Java中的集合
+
+## 单列集合
+
+![图片](https://gitee.com/firewolf/allinone/raw/master/images/640-20220508165657445.png)
+
+- 顶层接口Collection，常用有三类
+  - List：有序可重复
+  - Set：无序不重复
+  - Queue：FIFO的队列
+
+## 双列集合
+
+- 顶层接口：Map
+  - HashMap：线程不安全，默认大小16，负载因子0.75，当hash表的容量超过负载因子的时候开始扩容，扩容为原始容量的2倍。
+  - HashTable
+    - 线程安全，效率不高，synchronized
+    - 初始容量为11，负载因子为0.75。超过负载因子*容量开始扩容，扩容为旧的容量*2+1。
+    - 键和值都不能为null
+  - ConcurrentHashMap
+    - 线程安全，效率高，java7 分段锁，java8 cas synchronized
+    - 键和值可以为null
+  - LinkedHashMap：线程不安全，有顺序
+
+## 其他
+
+### CopyOnWriteArrayList
+
+CopyOnWriteArrayList 类的所有可变操作（add，set等等）都是通过创建底层数组的新副本来实现的（此过程使用Lock加锁）。当 List 需要被修改的时候，我并不修改原有内容，而是对原有数据进行一次复制，将修改的内容写入副本。写完之后，再将修改完的副本替换原来的数据，这样就可以保证写操作不会影响读操作了。
+
+从 CopyOnWriteArrayList 的名字就能看出CopyOnWriteArrayList 是满足CopyOnWrite 的ArrayList（注意，没有继承，），所谓CopyOnWrite 也就是说：在计算机，如果你想要对一块内存进行修改时，我们不在原有内存块中进行写操作，而是将内存拷贝一份，在新的内存中进行写操作，写完之后呢，就将指向原来内存指针指向新的内存，原来的内存就可以被回收掉了
+
+```java
+public class CopyOnWriteArrayList<E>
+    implements List<E>, RandomAccess, Cloneable, java.io.Serializable {
+    ...
+}
+```
+
+
+
 # HashMap 
 
 ## 底层实现
