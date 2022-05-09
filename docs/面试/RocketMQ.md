@@ -160,7 +160,7 @@ rocketmq:
 
 ## 全局顺序
 
-全局顺序就是消除一切并发，一个 Topic 一个队列，Producer 和 Consuemr 的并发都为一；
+全局顺序就是消除一切并发，一个 Topic 一个队列，Producer 和 Consumer 的并发都为一；
 
 ## 局部顺序
 
@@ -171,6 +171,12 @@ rocketmq:
 >可以通过 MessageQueueSelector 指定 Producer 某个业务只发这一个队列，然后 Comsuer 通过MessageListenerOrderly 接受消息，其实就是加锁消费。
 >
 >在 Broker 会有一个 mqLockTable ，顺序消息在创建拉取消息任务的时候需要在 Broker 锁定该消息队列，之后加锁成功的才能消费；
+
+```java
+public interface MessageQueueSelector {
+    MessageQueue select(final List<MessageQueue> mqs, final Message msg, final Object arg);
+}
+```
 
 # 延时队列
 
@@ -280,15 +286,15 @@ RocketMQ内部提供了本地事务的监听接口RocketMQLocalTransactionListen
 
 # kafka和rocketmq选型
 
-- 数据可靠性：kafka使用异步刷盘、异步复制；Rocket还支持同步刷盘和复制（更注重消息的可靠性）；
+- **<font color=red>数据可靠性</font>**：kafka使用异步刷盘、异步复制；Rocket还支持同步刷盘和复制（更注重消息的可靠性）；
+- **<font color=red>消息投递实时性</font>**：kafka采用短轮询，取决于轮询间隔；rocket采用长轮询，通常在几毫秒
+- **<font color=red>失败重试</font>**：kafka不支持；rocket支持，重试间隔时间随时间顺延
+- **<font color=red>事务消息</font>**：kafka不支持；rocket支持
+- **<font color=red>消息顺序</font>**：kafka支持顺序，但是如果一个broker宕机，会出现混乱；RocketMq支持严格顺序，在顺序场景下，如果一台broker宕机，发送消息会失败，但是不会乱序；
+- **<font color=red>消息查询</font>**：kafka不支持；rocket支持根据messageId及内容查询，方便问题定位
 - 性能：kafka单机几十、几百万tps; RocketMQ单机7万左右
 - 单机支持队列数：kafka 支持64； Rocket可高达5W
-- 消息投递实时性：kafka采用短轮询，取决于轮询间隔；rocket采用长轮询，通常在几毫秒
-- 失败重试：kafka不支持；rocket支持，重试间隔时间随时间顺延
-- 消息顺序：kafka支持顺序，但是如果一个broker宕机，会出现混乱；RocketMq支持严格顺序，在顺序场景下，如果一台broker宕机，发送消息会失败，但是不会乱序；
 - 定时消息：kafka不支持；rocket支持（开源只支持level，专业版支持定时level，可到毫秒级别）；
-- 事务消息：kafka不支持；rocket支持
-- 消息查询：kafka不支持；rocket支持根据messageId及内容查询，方便问题定位
 - 消息回溯：kafka按照offset支持；rocket按照时间支持，精确到毫秒
 - 消费并行度：kafka的消费并行度依赖Topic配置的分区数；RocketMQ消费并行度分两种情况：顺序消费和kafka一致，乱序方式并行度取决于Consumer的线程数;
 - broker端消息过滤：kafka不支持；rocket可以根据tag过滤；
@@ -300,13 +306,12 @@ RocketMQ内部提供了本地事务的监听接口RocketMQLocalTransactionListen
 ### 长轮询 vs 短轮询
 
 - http 长轮询：是服务器收到请求后如果有数据, 立刻响应请求; 如果没有数据就会 hold 一段时间,这段时间内如果有数据立刻响应请求; 如果时间到了还没有数据, 则响应 http 请求;浏览器受到 http 响应后立在发送一个同样http 请求查询是否有数据;
-- http端轮询：是服务器收到请求不管是否有数据都直接响应 http 请求; 浏览器受到 http 响应隔一段时间在发送同样的http 请求查询是否有数据;
-- <font color=red>长轮询实时性更强，但是更消耗资源</font>
-
-
+- http短轮询：是服务器收到请求不管是否有数据都直接响应 http 请求; 浏览器受到 http 响应隔一段时间在发送同样的http 请求查询是否有数据;
+- **<font color=red>长轮询实时性更强，但是更消耗资源</font>**
 
 参考文献：
 
 - https://blog.csdn.net/a646705816/article/details/111461528
 - https://blog.csdn.net/a1036645146/article/details/109581499
 - https://www.cnblogs.com/ynyhl/p/11320797.html
+

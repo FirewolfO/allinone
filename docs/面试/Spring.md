@@ -237,7 +237,7 @@ FactoryBean是一个bean，但是它是一个特殊的bean，所以也是由Bean
 | 对比项               | XML                                               | JavaConfig                                           |
 | -------------------- | ------------------------------------------------- | ---------------------------------------------------- |
 | Spring容器           | ClassPathXmlApplicationContext("xml")             | AnnotationConfigApplicationContext(javaconfig.class) |
-| 配置Bean             | Spring.xml文件                                    | @Configuration                                       |
+| 配置Bean             | Spring.xml文件                                    | @Configuration、@Bean                                |
 | Bean属性配置         | <bean scope=.... lazy=...>                        | @Scope、@Lazy                                        |
 | 包扫描               | <component-scan>                                  | @ComponentScan                                       |
 | 引入外部属性配置文件 | <property-placeHodeler resource="xxx.properties"> | @PropertySource("classpath:db.properties")           |
@@ -443,7 +443,7 @@ ThreadLocal
 ## Spring AOP在哪里创建的动态代理
 
 1. 正常的Bean会在Bean的生命周期的‘初始化’后， 通过BeanPostProcessor.postProcessAfterInitialization创建aop的动态代理
-2. 循环依赖的Bean会在Bean的生命周期‘属性注入’时存在的循环依赖的情况下， 也会为循环依赖的Bean通过MergedBeanDefinitionPostProcessor.postProcessMergedBeanDefinition创建aop
+2. 循环依赖的Bean会在Bean的生命周期‘属性注入’时存在的循环依赖的情况下， 也会为循环依赖的Bean通过MergedBeanDefinitionPostProcessor.postProcessMergedBeanDefinition创建aop（从三级缓存获取的时候）
 
 
 
@@ -574,6 +574,7 @@ ThreadLocal
 
 ### 常见问题
 
+- 脏写：所有的情况都不能人忍受，所有都做了保障
 - 脏读（Dirty reads）——脏读发生在一个事务读取了另一个事务改写但尚未提交的数据时。如果改写在稍后被回滚了，那么第一个事务获取的数据就是无效的。
 - 不可重复读（Nonrepeatable read）——不可重复读发生在一个事务执行相同的查询两次或两次以上，但是每次都得到不同的数据时。这通常是因为另一个并发事务在两次查询期间进行了更新。
 - 幻读（Phantom read）——幻读与不可重复读类似。它发生在一个事务（T1）读取了几行数据，接着另一个并发事务（T2）插入了一些数据时。在随后的查询中，第一个事务（T1）就会发现多了一些原本不存在的记录。
@@ -748,8 +749,8 @@ SpringBoot的用来快速开发Spring应用的一个脚手架、其设计目的�
 1. 通过在启动类标注@SpringBootApplication，该注解中的@SpringBootConfiguration 引入了**@EnableAutoConfiguration** (负责启动自动配置功能）
 2. @EnableAutoConfiguration 引入了**@Import**
 3. Spring容器启动时：加载Ioc容器时会解析@Import 注解
-4. @Import导入了一个**DeferredImportSelector**(它会使SpringBoot的自动配置类的顺序在最后，这样方便我们扩展和覆盖)
-5. 然后读取所有的**/META-INF/spring.factories**文件（伪SPI)
+4. @Import导入了一个（AutoConfigurationImportSelector）**继承自DeferredImportSelector**(它会使SpringBoot的自动配置类的顺序在最后，这样方便我们扩展和覆盖)
+5. 在AutoConfigurationImportSelector中，读取所有的**/META-INF/spring.factories**文件（伪SPI)
 6. 通过查找`org.springframework.boot.autoconfigure.EnableAutoConfiguration`key后面配置的类，过滤出所有**AutoConfigurtionClass**类型的类。
 7. 最后通过**@ConditioOnXXX**排除无效的自动配置类
 8. 加载有效的Bean进行加载
@@ -779,9 +780,9 @@ SpringBoot的用来快速开发Spring应用的一个脚手架、其设计目的�
 4. 推断需要创建的ApplicationContext类型并创建，然后给其设置环境变量，并调用这些ApplicationContextInitializer的initialize方法来对已经创建好的ApplicationContext进行进一步的处理。
 5. 遍历SpringApplicationRunListener的contextPrepared（）方法。通知ApplicationContext准备就绪。
 6. 将通过@EnableAutoConfiguration获取的所有配置以及其他形式的IoC容器配置加载到已经准备完毕的ApplicationContext
-7. 调用ApplicationContext的refresh（）方法。
+7. 调用ApplicationContext的refresh（）方法（IOC容器加载的过程）。
 8. 查找当前ApplicationContext中是否注册有CommandLineRunner，如果有，则遍历执行它们。
-9. 正常情况下，遍历执行SpringApplicationRunListener的finished（）方法，通知启动完成
+9. 正常情况下，遍历执行SpringApplicationRunListener的finished（）方法，通知启动完成吗，失败执行failed方法
 
 
 
@@ -819,7 +820,7 @@ SpringBoot的用来快速开发Spring应用的一个脚手架、其设计目的�
 
 ## 自定义starter
 
-- 编写代码，主要是自动配置类，通过一些@ConditionalOnXXX的形式来进行条件装配
+- 编写代码，主要是自动配置类（使用@Configuration标注），通过一些@ConditionalOnXXX的形式来进行条件装配
 - META-INF下面创建spring.factories文件，里面配置 autoConfiguration= 自动配置类
 
 一般分为两部分：autoconfigurer和starter两部分
@@ -855,9 +856,9 @@ slf4j + logback
 ### 优点
 
 - 方便分工协作
-- 并发能力强（通过集群）
+- 并发能力强（通过集群，为某些性能消耗大的服务提供多个实例）
 - 容错能力强（减少单点故障如OOM导致整个系统崩溃）
-- 方便扩展
+- 扩展容易
 
 ### 缺点
 
@@ -890,6 +891,7 @@ slf4j + logback
 - 服务配置中心：<font color=blue>Nacos Config </font>、Spring Cloud Config
 - 服务熔断：<font color=blue>sentinel </font>、Hystrix
 - 服务网关：<font color=blue>Spring Cloud Gateway</font>、Zuul、Kong
+- 服务限流：<font color=blue>sentinel</font>
 - 分布式事务：<font color=blue>Seata</font>
 
 ## Nacos
@@ -915,7 +917,7 @@ Nacos采用拉的方式拉是实现的。
 #### 实现原理
 
 - 服务注册： 当服务启动 通过Rest请求的方式向Nacos Server注册自己的服务
-- 服务心跳：Nacose Client 会维护一个定时心跳持续通知Nacos Server , 默认5s一次， 如果nacos Client超过了15秒没有接收心跳，会将服务健康状态设置false（拉取的时候会忽略）,  如果nacos Client超过了30 秒没有接收心跳 剔除服务。
+- 服务心跳：Nacos Client 会维护一个定时心跳持续通知Nacos Server , 默认5s一次， 如果nacos Client超过了15秒没有接收心跳，会将服务健康状态设置false（拉取的时候会忽略）,  如果nacos Client超过了30 秒没有接收心跳 剔除服务。
 - 服务发现：Nacose Client 会有一个定时任务，实时去Nacos Server 拉取健康服务
 - 服务停止： Nacose Client 会主动通过Rest请求Nacos Server 发送一个注销的请求
 
@@ -973,7 +975,7 @@ Nacos采用拉的方式拉是实现的。
 - springcloud gateway 基于 spring 5、projec treactor、springboot 2，使用非阻塞式的 API，内置限流过滤器，支持长连接（比如 websockets），在高并发和后端服务响应慢的场景下比 zuul 1 的表现要好zuul 基于 servlet2.x 构建，使用阻塞的 API，没有内置限流过滤器，不支持长连接
 - gateway具有更好的扩展性
 
-
+**总结：gateway支持长链接、支持异步，性能会更高；**
 
 ## 负载均衡
 
@@ -986,7 +988,7 @@ Nacos采用拉的方式拉是实现的。
 1. 轮询策略（RoundRobinRule）：轮询策略理解起来比较简单，就是拿到所有的server集合，然后根据id进行遍历
 2. 随机策略（RandomRule）：使用jdk自带的随机数生成工具，生成一个随机数，然后去可用服务列表中拉取服务节点Server。如果当前节点不可用，则进入下一轮随机策略，直到选到可用服务节点为止。
 3. 可用过滤策略（AvailabilityFilteringRule）：过滤掉连接失败的服务节点，并且过滤掉高并发的服务节点，然后从健康的服务节点中，使用轮询策略选出一个节点返回
-4. 响应时间权重策略：根据响应时间，分配一个权重weight，响应时间越长，weight越小，被选中的可能性越低。
+4. 响应时间权重策略（WeightedResponseTimeRule）：根据响应时间，分配一个权重weight，响应时间越长，weight越小，被选中的可能性越低。
 5. 轮询失败重试策略（RetryRule）：首先使用轮询策略进行负载均衡，如果轮询失败，则再使用轮询策略进行一次重试，相当于重试下一个节点，看下一个节点是否可用，如果再失败，则直接返回失败。
 6. 并发量最小可用策略（BestAvailableRule）：选择一个并发量最小的server返回。如何判断并发量最小呢？ServerStats有个属性activeRequestCount，这个属性记录的就是server的并发量。轮询所有的server，选择其中activeRequestCount最小的那个server，就是并发量最小的服务节点
 7. ZoneAvoidanceRule：复合判断server所在区域的性能和server的可用性，来选择server返回。
@@ -1009,7 +1011,7 @@ Hystrix通过将依赖的服务调用封装在Command中，监控统计服务调
 
 ##### 熔断器
 
-- 熔断器是位于线程池之前的组件。用户请求某一服务之后，Hystrix会先经过熔断器，此时如果熔断器的状态是打开（跳起），则说明已经熔断，这时将直接进行降级处理，不会继续将请求发到线程池\**。\**熔断器相当于在线程池之前的一层屏障。
+- 熔断器是位于线程池之前的组件。用户请求某一服务之后，Hystrix会先经过熔断器，此时如果熔断器的状态是打开（跳起），则说明已经熔断，这时将直接进行降级处理，不会继续将请求发到线程池。熔断器相当于在线程池之前的一层屏障。
 - 每个熔断器默认维护10个bucket ，每秒创建一个bucket ，每个blucket记录成功,失败,超时,拒绝的次数。当有新的bucket被创建时，最旧的bucket会被抛弃。
 - <font color=red>**服务调用原理：当触发熔断器阀值，熔断器打开：所有请求到降级方法； 熔断器等待时间到达会有个半开启状态，允许一个请求通行，如果成功则关闭熔断器，否则继续等待**</font>
 
@@ -1059,15 +1061,7 @@ https://blog.csdn.net/hxyascx/article/details/89512278
 
 实现思路：通过AtomicLong#incrementAndGet()来完成计数器的增加操作；
 
-缺陷：不能均衡请求，比如钱10ms已经有了100个请求，那么后面的990毫秒只能拒绝请求，形成"突刺"；
-
-> Jdk 提供的 Semaphore
->
-> ```java
-> Semaphore sp = new Semaphore(3); // 限制许可大小为3；
-> sp.acquire(); //获取许可，成功的话，许可数减1，否则会阻塞
-> sp.release(); //释放许可，许可数加1
-> ```
+缺陷：不能均衡请求，比如前10ms已经有了100个请求，那么后面的990毫秒只能拒绝请求，形成"突刺"；
 
 ### 漏桶算法
 
@@ -1084,6 +1078,16 @@ https://blog.csdn.net/hxyascx/article/details/89512278
 放令牌这个动作是持续不断的进行，如果桶中令牌数达到上限，就丢弃令牌，这样，如果桶中还剩余大量的令牌，则可以抵挡瞬间的“突刺”请求。在没有令牌的时候，才需要进行等待；以一定的速度执行；
 
 实现思路：可以准备一个队列，用来保存令牌，另外通过一个线程池定期生成令牌放到队列中，每来一个请求，就从队列中获取一个令牌，并继续执行
+
+> Jdk 提供的 Semaphore
+>
+> ```java
+> Semaphore sp = new Semaphore(3); // 限制许可大小为3；
+> sp.acquire(); //获取许可，成功的话，许可数减1，否则会阻塞
+> sp.release(); //释放许可，许可数加1
+> ```
+
+
 
 > Guava提供了一个令牌桶算法的限流器RateLimiter。
 >
