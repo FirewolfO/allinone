@@ -183,17 +183,19 @@ Redission，缓存过期时间，30s ~ 1d 不等，识别ppl中判断陌生人�
 
 ## 内存淘汰机制
 
-（1）volatile-lru：使用LRU算法移除key，只对设置了过期时间的键 
+1. volatile-lru：使用LRU算法移除key，只对设置了过期时间的键 
 
-（2）allkeys-lru：使用LRU算法移除key 
+2. allkeys-lru：使用LRU算法移除key 
 
-（3）volatile-random：在过期集合中移除随机的key，只对设置了过期时间的键 
+3. volatile-random：在过期集合中移除随机的key，只对设置了过期时间的键 
 
-（4）allkeys-random：移除随机的key 
+4. allkeys-random：移除随机的key 
 
-（5）volatile-ttl：移除那些TTL值最小的key，即那些最近要过期的key 
+5. volatile-ttl：移除那些TTL值最小的key，即那些最近要过期的key 
 
-（6）noeviction：不进行移除。针对写操作，只是返回错误信息 
+6. noeviction：不进行移除。针对写操作，只是返回错误信息 
+7. allkeys-lfu：不管 key 是否设置了过期，淘汰访问频率最低的 key（4.0+版本支持）
+8. volatile-lfu：只淘汰访问频率最低、并设置了过期时间 key（4.0+版本支持）
 
 
 

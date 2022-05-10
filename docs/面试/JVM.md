@@ -374,3 +374,8 @@ JIT编译器的发展与逃逸分析技术的成熟，可以通过栈上分配�
 
 ![image-20220418224804744](https://gitee.com/firewolf/allinone/raw/master/images/image-20220418224804744.png)
 
+### 各版本默认的垃圾收集器
+
+- jdk1.7：Parallel Scavenge（新⽣代【标记-复制算法】）+Parallel Old（⽼年代【标记整理算法】）
+- jdk1.8 ：Parallel Scavenge（新⽣代）+Parallel Old（⽼年代）
+- jdk1.9 ：G1【从局部(两个Region之间)来看是基于"标记—复制"算法实现，从整体来看是基于"标记-整理"算法实

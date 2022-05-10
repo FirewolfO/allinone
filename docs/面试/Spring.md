@@ -137,7 +137,7 @@ FactoryBean是一个bean，但是它是一个特殊的bean，所以也是由Bean
 
 - singletonObjects （一级缓存）：它是我们最熟悉的朋友，俗称“单例池”“容器”，缓存创建完成单例Bean的地方。
 - earlySingletonObjects（二级缓存）：映射Bean的早期引用，也就是说在这个Map里的Bean不是完整的，甚至还不能称之为“Bean”，只是一个Instance。如果bean被AOP切面代理了，则保存的是代理bean示例的ProxyBean；否则，是原始未完成属性填充的实例；
-- singletonFactories（三级缓存）： 映射创建Bean的原始工厂，存放的是ObjectFactory，传入的是一个匿名内部类，如果用到三级缓存，会调用objectFactory.getObject()，最终会调用getEarlyBeanReference方法，返回一个示例
+- singletonFactories（三级缓存）： 映射创建Bean的原始工厂，存放的是ObjectFactory，传入的是一个匿名内部类，如果用到三级缓存，会调用objectFactory.getObject()，最终会调用getEarlyBeanReference方法，返回一个实例
 
 > #### 过程描述
 >
@@ -153,6 +153,8 @@ FactoryBean是一个bean，但是它是一个特殊的bean，所以也是由Bean
 > 10. 对象 A完成属性填充，执行初始化方法，并放入到一级缓存中，同时删除二级缓存中的对象 A。
 
 #### 解决循环依赖必须要三级缓存吗
+
+三级缓存会创建代理
 
 二级缓存也是可以解决循环依赖的。
 
