@@ -1,4 +1,8 @@
-[toc]
+[TOC]
+
+# Hash算法
+
+Hash 算法常用的有 MD5 和 SHA 系列
 
 # JAVA创建对象方式
 
@@ -22,8 +26,6 @@
 - fastjson（阿里）
 - Gson（google）
 - Jackson（spring默认）
-
-
 
 # Java中的集合
 
@@ -64,9 +66,7 @@ public class CopyOnWriteArrayList<E>
 }
 ```
 
-
-
-# HashMap 
+# HashMap
 
 ## 底层实现
 
@@ -111,8 +111,6 @@ public class CopyOnWriteArrayList<E>
 
 - JDK1.8 HashMap线程不安全体现在：数据覆盖
 
-  
-
 # ConcurrentHashMap
 
 元素用Node维护：`static class Node<K,V> implements Map.Entry<K,V>`
@@ -150,8 +148,6 @@ public class CopyOnWriteArrayList<E>
 
 1. 采用不加锁的方式，多次计算count，（最多三次），比较结果，如果相同的话，就准确，返回结果；否则的话认为计算的结果不准确，转2；
 2. 如果1不成功，则采用加锁的方式，给所有Segment元素加锁，计算出count值，这个是准确的；
-
-
 
 ### JDK8
 
@@ -191,7 +187,7 @@ public class CopyOnWriteArrayList<E>
 - voliatile long baseCount
 
 - CounterCells[]  counterCells
-
+  
   ```java
   @sun.misc.Contended static final class CounterCell {
       volatile long value;
@@ -208,10 +204,6 @@ put操作的最后一步，会调用addCount方法，该方法逻辑如下：
 
 获取size的时候，当 counterCells 不是 null，就遍历元素，并和 baseCount 累加；返回结果；
 
-
-
-
-
 # 四种引用特点及是场景
 
 - 强引用（StrongReference）：永远不会被回收，即便OOM；通常我们都是使用的强引用；
@@ -221,8 +213,6 @@ put操作的最后一步，会调用addCount方法，该方法逻辑如下：
 - 弱引用（WeekReference）：每次GC都会回收；缓存
 
 - 虚引用（PhantomReference）：无法使用虚引用来关联对象；用于垃圾回收跟踪；
-
-  
 
 # 设计模式
 
@@ -270,8 +260,6 @@ put操作的最后一步，会调用addCount方法，该方法逻辑如下：
 - 访问者模式：在不改变数据结构的前提下，增加作用于一组对象元素的新功能。
 - 迭代器模式：一种遍历访问聚合对象中各个元素的方法，不暴露该对象的内部结构。
 
-
-
 # Arthas原理
 
 参考文献：https://zhuanlan.zhihu.com/p/328974405
@@ -279,10 +267,6 @@ put操作的最后一步，会调用addCount方法，该方法逻辑如下：
 https://blog.csdn.net/fenglllle/article/details/119737716
 
 简化：探针 agent（类加载）  + AOP（功能实现）
-
-
-
-
 
 # Java Agent
 
@@ -298,11 +282,11 @@ https://blog.csdn.net/fenglllle/article/details/119737716
        使用javaagent VM参数 java -javaagent:xxxagent.jar xxx，这种方式在 main 方法之前执行 agent 中的 premain 方法
        public static void premain(String agentArgument, Instrumentation instrumentation) throws Exception
 
-
  2.在 JVM 启动后 Attach JDK6开始支持
 
     通过 Attach API 进行加载，在进程存在的时候，动态attach，这种方式会在 agent 加载以后执行 agentmain 方法
        public static void agentmain(String agentArgument, Instrumentation instrumentation) throws Exception
+
 ## 实现原理
 
 ### 启动时修改
@@ -328,15 +312,15 @@ https://blog.csdn.net/fenglllle/article/details/119737716
 ### 核心API
 
 - Instrument
-
+  
   利用 java.lang.instrument 做动态 Instrumentation 是 Java SE 5 的新特性，**它把 Java 的 instrument 功能从本地代码中解放出来，使之可以用 Java 代码的方式解决问题**。使用 Instrumentation，**开发者可以构建一个独立于应用程序的代理程序（Agent），用来监测和协助运行在 JVM 上的程序，甚至能够替换和修改某些类的定义**。有了这样的功能，开发者就可以实现更为灵活的运行时虚拟机监控和 Java 类操作了，这样的特性实际上提供了 **一种虚拟机级别支持的 AOP 实现方式**，使得开发者无需对 JDK 做任何升级和改动，就可以实现某些 AOP 的功能了。
 
 - ClassFileLoadHook
-
+  
   ClassFileLoadHook是一个jvmti（jvm tool interface）事件，该事件是instrument agent的一个核心事件，主要是在读取字节码文件回调时调用，内部调用了TransFormClassFile函数。
 
 - TranFormClassFile
-
+  
   TransFormClassFile的主要作用是调用java.lang.instrument.ClassFileTransformer的tranform方法，该方法由开发者实现，通过instrument的addTransformer方法进行注册
 
 整体流程：
