@@ -1,9 +1,9 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"math"
-	"errors"
 )
 
 type Vertex struct {
@@ -277,32 +277,29 @@ func NewCar(color string, band string) *Car {
 	return &Car{color, band}
 }
 
-func Sqrt(f float64) (num float64, err error){
-    if f < 0 {
-        return 0, errors.New("负数不能开平方")
-    }
-    // 实现
-    return math.Sqrt(f), nil
+func Sqrt(f float64) (num float64, err error) {
+	if f < 0 {
+		return 0, errors.New("负数不能开平方")
+	}
+	// 实现
+	return math.Sqrt(f), nil
 }
-
-
 
 func main() {
 	value, error := Sqrt(-100)
-	if( error != nil) {
+	if error != nil {
 		fmt.Println(error)
-	}else{
+	} else {
 		fmt.Println(value)
 	}
-	
-    // r := gin.Default()
-    // r.GET("/ping", func(c *gin.Context) {
-    //     c.JSON(200, gin.H{
-    //         "message": "pong",
-    //     })
-    // })
-    // r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 
+	// r := gin.Default()
+	// r.GET("/ping", func(c *gin.Context) {
+	//     c.JSON(200, gin.H{
+	//         "message": "pong",
+	//     })
+	// })
+	// r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 
 	// car := NewCar("blue", "奔驰")
 	// fmt.Println(car.color)
