@@ -285,6 +285,17 @@ func Sqrt(f float64) (num float64, err error) {
 	return math.Sqrt(f), nil
 }
 
+type MyError struct {
+	message string
+	code    int
+}
+
+func (error *MyError) Error() string {
+	return fmt.Sprintf("{name=%s, code=%d}", error.message, error.code)
+}
+
+func 
+
 func main() {
 	value, error := Sqrt(-100)
 	if error != nil {
