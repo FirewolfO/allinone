@@ -1,4 +1,5 @@
 #!/bin/bash
+#该脚本用于处理shell脚本编码问题
 #需要被重新编码的文件所属目录
 dir=$1
 if [ -z $dir ]; then 
