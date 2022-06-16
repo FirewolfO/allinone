@@ -9,6 +9,7 @@ files=`ls -l $dir| grep -v '^d' | awk -F ' ' '{print $9}' | grep '.sh$'`
 echo $files
 for file in $files 
 do
-	echo "change $dir/$file encoding..."
+	echo "convert encoding for file: $dir/$file "
+    sudo chmod a+x $dir/$file
 	sed -i "s/\r//g" $dir/$file
 done 
