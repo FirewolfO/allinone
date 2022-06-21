@@ -1,9 +1,9 @@
 package main
 
 import (
-	"flag"
 	"fmt"
-	"time"
+
+	"github.com/gin-gonic/gin"
 )
 
 type Mover interface {
@@ -15,25 +15,30 @@ type dog struct{}
 func (d dog) move() {
 	fmt.Println("狗会动")
 }
+
+// 多种响应方式
 func main() {
+	r := gin.Default()
+	r.Use(Middle1("中间件1"))
+	r.Use(Middle1("中间件2"))
+	r.GET("/test", func(context *gin.Context) {
+		context.JSON(200, gin.H{"name": "liuxing"})
+	})
+	r.Run(":8001")
+}
 
-	//定义命令行参数方式1
-	var name string
-	var age int
-	var married bool
-	var delay time.Duration
-	flag.StringVar(&name, "name", "张三", "姓名")
-	flag.IntVar(&age, "age", 18, "年龄")
-	flag.BoolVar(&married, "married", false, "婚否")
-	flag.DurationVar(&delay, "d", 0, "延迟的时间间隔")
+func Middle1(name string) gin.HandlerFunc {
+	return func(context *gin.Context) {
+		fmt.Printf("%s start  \n", name)
+		//context.Next()
+		fmt.Printf("%s end  \n", name)
+	}
+}
 
-	//解析命令行参数
-	flag.Parse()
-	fmt.Println(name, age, married, delay)
-	//返回命令行参数后的其他参数
-	fmt.Println(flag.Args())
-	//返回命令行参数后的其他参数个数
-	fmt.Println(flag.NArg())
-	//返回使用的命令行参数个数
-	fmt.Println(flag.NFlag())
+func Middle2(name string) gin.HandlerFunc {
+	return func(context *gin.Context) {
+		fmt.Printf("%s start \n", name)
+		context.Next()
+		fmt.Printf("%s end  \n", name)
+	}
 }
