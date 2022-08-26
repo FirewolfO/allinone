@@ -1,0 +1,21 @@
+syntax = "proto2";
+
+import "api.proto";
+
+package ping;
+
+message PingReq{
+}
+message PingRes{
+  /** 返回描述信息 */
+  required string message = 1;
+}
+/** Quota 的API接口 */
+service Ping {
+  /** 健康检查测试连接*/
+  rpc Ping(PingReq) returns (PingRes){
+    option (api.get) = "/Ping";
+    option (api.version) = "";
+    option (api.category) = "Quota接口";
+  }
+}

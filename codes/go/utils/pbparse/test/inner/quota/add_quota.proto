@@ -1,0 +1,35 @@
+syntax = "proto2";
+
+package inner_quota;
+
+import "api.proto";
+message AddQuotaReq{
+  /** 服务编码 */
+  required string ServiceCode = 1;
+  /** 配额编码 */
+  required string QuotaCode = 2;
+  /** 配额单位 */
+  required string Unit = 3[(api.vd)="len($)>0"];
+  /** 配额下发地址*/
+  optional string CallbackURL = 4;
+  /** 用量下发地址 */
+  optional string UsageReportURL = 5;
+  /** 配额描述，要求长度为0~128 */
+  optional string Description = 6[(api.vd)="len($)>0&&len($)<128"];
+  /** Quota类型：normal-通用配额；spec-多维度配额 */
+  optional string QuotaType = 7;
+}
+
+message AddQuotaResp{
+
+}
+
+
+service AddQuota{
+  rpc InnerAddQuota20180101(AddQuotaReq) returns (AddQuotaResp){
+    option (api.post) = "/inner/quota/InnerAddQuota";
+    option (api.version) = "2018-01-01";
+    option (api.category) = "Quota接口/运维端接口/Quota";
+  }
+
+}

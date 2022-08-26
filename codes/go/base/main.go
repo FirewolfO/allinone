@@ -1,14 +1,16 @@
 package main
 
-const (
-	n1 = iota //0
-	n2        //1
-	_         // 跳过2
-	n4        //3
-	n5 = 100
-	n6 = iota // 4
-)
+import "fmt"
+
+type MyInt = int
+type AAA struct {
+	name string
+	age  int
+}
 
 func main() {
-
+	mapa := map[int]string{}
+	mapa[1] = "aaa"
+	name, ok := mapa[21]
+	fmt.Println("aaa", name, ok)
 }
